@@ -1,0 +1,9 @@
+{
+    "name" : "location-history-survey",
+    "version" : "1.0.0",
+    "description" : "A Browser extension being developed by Blockspaces under research grant from USF",
+    "browser_action" : {
+        "default_popup" : "popup.html"
+    },
+     "manifest_version" : 2
+}
