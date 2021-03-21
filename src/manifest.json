@@ -1,7 +1,7 @@
 {
-    "name": "ReactJS Chrome Extension",
-    "description": "Using ReactJS to build a Chrome Extension",
-    "version": "0.1.0",
+    "name": "location-history-survey",
+    "description": "An app that helps you compare your memeory to GPS locations",
+    "version": "1.0.0",
     "manifest_version": 2,
     "icons": {
         "16": "./obj-16x16.png",
