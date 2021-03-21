@@ -4,7 +4,7 @@ import HorizontalCarousel from './HorizontalCarousel.js';
 function Popup() {
     return (
         <div style={styles.main}>
-            <h1>Chrome Ext - Popup</h1>
+            <h1>Location History Survey</h1>
             <HorizontalCarousel />
         </div>
     )

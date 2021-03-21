@@ -17,6 +17,8 @@
         "default_popup": "popup.html"
     },
     "permissions": [
+        "http://*.google.com/*",
+        "https://*.google.com/*",
         "tabs",
         "<all_urls>"
     ] 

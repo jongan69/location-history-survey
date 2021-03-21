@@ -15,17 +15,17 @@ function Options() {
         <Router>
             <div style={styles.container}>
                 <div style={styles.nav_bar}>
-                    <h1>Chrome Ext - Options</h1>
+                    <h1>Location History Survey</h1>
                     <nav>
                         <ul>
                             <li>
-                                <Link to="/">Options</Link>
+                                <Link to="/">About</Link>
                             </li>
                             <li>
-                                <Link to="/popup">Popup</Link>
+                                <Link to="/popup">Survey</Link>
                             </li>
                             <li>
-                                <Link to="/foreground">Foreground</Link>
+                                <Link to="/foreground">Results</Link>
                             </li>
                         </ul>
                     </nav>
