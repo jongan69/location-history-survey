@@ -1,5 +1,5 @@
 {
-    "name": "ReactJS Chrome Extension",
+    "name": "location-history-survey",
     "description": "Using ReactJS to build a Chrome Extension",
     "version": "0.1.0",
     "manifest_version": 2,
