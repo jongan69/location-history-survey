@@ -98,17 +98,7 @@ class HorizontalCarousel extends Component {
     render() {
         return (
             <div>
-                <button onClick={this.handle_previous}>Previous</button>
-                <button onClick={this.handle_next}>Next</button>
-                <div ref={ref_id => this.view_port = ref_id} className="view-port" style={styles.view_port}>
-                    <div ref={ref_id => this.card_container = ref_id} className="card-container" style={styles.card_container}>
-                        <p> Testing </p>
-                        <Card card_number="http://picsum.photos/800/300" resize_width={this.state.current_img_width_as_percentage} />
-                        <Card card_number="http://picsum.photos/600/301" resize_width={this.state.current_img_width_as_percentage} />
-                        <Card card_number="http://picsum.photos/700/300" resize_width={this.state.current_img_width_as_percentage} />
-                        <Card card_number="http://picsum.photos/650/200" resize_width={this.state.current_img_width_as_percentage} />
-                    </div>
-                </div>
+                <p> Testing </p>
             </div>
         )
     }

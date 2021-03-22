@@ -3,7 +3,6 @@ import React from 'react';
 function Foreground() {
     return (
         <div style={styles.main}>
-            <h1>Location History Results</h1>
         </div>
     )
 }

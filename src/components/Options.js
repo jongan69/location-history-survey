@@ -15,7 +15,7 @@ function Options() {
         <Router>
             <div style={styles.container}>
                 <div style={styles.nav_bar}>
-                    <h1>Location History Survey</h1>
+                    <h1>Welcome to the Location History Survey</h1>
                     <nav>
                         <ul>
                             <li>
