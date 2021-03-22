@@ -33,5 +33,20 @@ const Popup = () => {
     </div>
   );
 }
+
+const styles = {
+  card: {
+      height: 'auto',
+      boxSizing: 'border-box',
+  },
+  image: {
+      width: '100%',
+      height: 'auto',
+      position: 'relative',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)'
+  }
+}
  
 export default Popup;
