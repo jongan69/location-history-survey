@@ -1,3 +1,8 @@
+chrome.browserAction.onClicked.addListener(tab => {
+    chrome.tabs.create({ url: chrome.extension.getURL('options.html') })
+  })
+
+
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     if (changeInfo.status === 'complete' && tab.url.includes('http')) {
         chrome.tabs.executeScript(tabId, { file: './inject_script.js' }, function () {

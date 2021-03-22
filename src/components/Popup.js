@@ -28,7 +28,7 @@ const Popup = () => {
  
   return (
     <div className="App">
-      <a href="https://www.locationhistorysurvey.com">Location History Survey</a><br /><br />
+      Location History Survey<br /><br />
       {!loadMap ? <div>Loading...</div> : <GPlace />}
     </div>
   );
