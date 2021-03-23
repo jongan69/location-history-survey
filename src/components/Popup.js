@@ -19,7 +19,7 @@ const loadGoogleMapScript = (callback) => {
  
 const Popup = () => {
   const [loadMap, setLoadMap] = useState(false);
-  const [pendingItem] = useState(false);
+  
   useEffect(() => {
     loadGoogleMapScript(() => {
       setLoadMap(true)

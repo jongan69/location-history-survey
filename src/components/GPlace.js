@@ -23,23 +23,26 @@ const GPlace = () => {
   };
 
 
-  const addNumber = () => {
-    setAddress([
-      ...saveAddress,
-      {
-        id: saveAddress.length,
-        value: place.address,
-      }
-    ]);
+  const addAddress = () => {
+      setAddress([
+        ...saveAddress,
+          {
+            id: saveAddress.length,
+            value: place.address,
+          }
+      ]);
+   
   };
    
-
-
+  useEffect(() => {
+    const json = JSON.stringify(saveAddress);
+    localStorage.setItem("savedAddress", json);
+  }, [saveAddress]);
 
   return (
     <>
       <input type="text" ref={placeInputRef} placeholder="Where have you been in the last 30 days?" />
-      <button onClick={addNumber}> Add Address</button>
+      <button onClick={addAddress}> Add Address</button>
 
      
       <button> Submit Results </button>
