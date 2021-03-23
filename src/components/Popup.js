@@ -19,7 +19,7 @@ const loadGoogleMapScript = (callback) => {
  
 const Popup = () => {
   const [loadMap, setLoadMap] = useState(false);
- 
+  const [pendingItem] = useState(false);
   useEffect(() => {
     loadGoogleMapScript(() => {
       setLoadMap(true)
@@ -30,8 +30,6 @@ const Popup = () => {
     <div style={styles.container}>
       Location History Survey<br /><br />
       {!loadMap ? <div>Loading...</div> : <GPlace />}
-      <button> Add </button>
-      <button> Submit </button>
     </div>
   );
 }

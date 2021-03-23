@@ -3,7 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 const GPlace = () => {
   const placeInputRef = useRef(null);
   const [place, setPlace] = useState(null);
- 
+  const [saveAddress, setAddress] = useState([]);
+
   useEffect(() => {
     initPlaceAPI();
   }, []);
@@ -20,16 +21,43 @@ const GPlace = () => {
       });
     });
   };
- 
+
+
+  const addNumber = () => {
+    setAddress([
+      ...saveAddress,
+      {
+        id: saveAddress.length,
+        value: place.address,
+      }
+    ]);
+  };
+   
+
+
+
   return (
     <>
       <input type="text" ref={placeInputRef} placeholder="Where have you been in the last 30 days?" />
-      {place && <div style={{ marginTop: 20, lineHeight: '25px' }}>
-        <div style={{ marginBottom: 10 }}><b>Selected Place</b></div>
-        <div><b>Address:</b> {place.address}</div>
-        <div><b>Lat:</b> {place.lat}</div>
-        <div><b>Lng:</b> {place.lng}</div>
-      </div>}
+      <button onClick={addNumber}> Add Address</button>
+
+     
+      <button> Submit Results </button>
+      {
+      place && 
+      <div style={{ marginTop: 20, lineHeight: '25px' }}>
+      <div style={{ marginBottom: 10 }}><b>Selected Place</b></div>
+      <div><b>Address:</b> {place.address}</div>
+      <b> Past Locations: </b>
+      <ul>
+        {saveAddress.map(item => (
+        <li key={item.id}>{item.value}</li>
+          ))}
+      </ul>
+      </div>
+      }
+      
+      
     </>
   );
 };
