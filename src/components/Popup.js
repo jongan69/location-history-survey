@@ -45,7 +45,7 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
+    width: '250px',
     height: '400px',
   }
 }

@@ -41,17 +41,17 @@ const GPlace = () => {
 
   return (
     <>
-      <input type="text" ref={placeInputRef} placeholder="Where have you been in the last 30 days?" />
-      <button onClick={addAddress}> Add Address</button>
+      <input style={{ width: '100%' }} type="text" ref={placeInputRef} placeholder="Where have you been in the last 30 days?" />
+      <button onClick={addAddress} style={{ marginTop: 10 }}> Add Address</button>
 
-     
-      <button> Submit Results </button>
+      <button style={{ marginTop: 5 }}> Submit Results </button>
+
       {
       place && 
       <div style={{ marginTop: 20, lineHeight: '25px' }}>
       <div style={{ marginBottom: 10 }}><b>Selected Place</b></div>
       <div><b>Address:</b> {place.address}</div>
-      <b> Past Locations: </b>
+      <b style={{ marginTop: 10, lineHeight: '25px' }}> Past Locations: </b>
       <ul>
         {saveAddress.map(item => (
         <li key={item.id}>{item.value}</li>
