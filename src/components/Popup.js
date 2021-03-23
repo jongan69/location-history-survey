@@ -27,18 +27,29 @@ const Popup = () => {
   }, []);
  
   return (
-    <div className="App">
+    <div style={styles.container}>
       Location History Survey<br /><br />
       {!loadMap ? <div>Loading...</div> : <GPlace />}
+      <button> Add </button>
+      <button> Submit </button>
     </div>
   );
 }
 
 const styles = {
-  card: {
-      height: 'auto',
+  App: {
+      height: '400px',
+      width: '600px',
       boxSizing: 'border-box',
   },
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '400px',
+},
   image: {
       width: '100%',
       height: 'auto',

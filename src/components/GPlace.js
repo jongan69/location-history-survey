@@ -23,7 +23,7 @@ const GPlace = () => {
  
   return (
     <>
-      <input type="text" ref={placeInputRef} />
+      <input type="text" ref={placeInputRef} placeholder="Where have you been in the last 30 days?" />
       {place && <div style={{ marginTop: 20, lineHeight: '25px' }}>
         <div style={{ marginBottom: 10 }}><b>Selected Place</b></div>
         <div><b>Address:</b> {place.address}</div>
@@ -33,5 +33,24 @@ const GPlace = () => {
     </>
   );
 };
+
+const styles = {
+  container: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+  },
+  bar: {
+    with: '100%'
+  },
+  nav_bar: {
+      // position: 'relative',
+      // left: '50%',
+      // transform: 'translate(-50%, 0%)',
+      // width: 'fit-content',
+      marginBottom: '50px'
+  }
+}
  
 export default GPlace;
