@@ -34,6 +34,7 @@
     "dependencies": {
         "@mapbox/togeojson": "^0.16.0",
         "axios": "^0.21.1",
+        "chrome-extension-async": "^3.4.1",
         "mapbox": "^1.0.0-beta10",
         "moment": "^2.29.1",
         "react": "^17.0.1",
