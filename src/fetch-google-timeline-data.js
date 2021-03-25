@@ -2,7 +2,7 @@ import axios from 'axios'
 import toGeoJSON from '@mapbox/togeojson'
 import moment from 'moment'
 
-module.exports.func = function fetchGoogleTimelineData(from, to) {
+function fetchGoogleTimelineData(from, to) {
   const fromDate = new Date(from)
   const toDate = new Date(to)
 
@@ -67,8 +67,4 @@ module.exports.func = function fetchGoogleTimelineData(from, to) {
   })
 }
 
-// export default fetchGoogleTimelineData
-
-// module.exports.func = function (){
-//   console.log("Hello World");
-// }
+export default fetchGoogleTimelineData

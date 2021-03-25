@@ -1,26 +1,12 @@
 import React from 'react';
-import axios from 'axios'
-import fetchGoogleTimelineData from './../fetch-google-timeline-data'
-
+// import fetchGoogleTimelineData from './../fetch-google-timeline-data'
+// var request = require('request');
 
 function Foreground() {
-
-    chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
-        fetchGoogleTimelineData(request.from, request.to)
-          .then(data => {
-            console.log('Received data', data)
-            sendResponse(data)
-          })
-          .catch(error => {
-            alert(`Failed to fetch timeline data: ${error}`)
-          })
-        // return true to indicate we wish to send a response asynchronously
-        return true
-      })
-
+ 
     return (
         <div style={styles.main}>
-            <button style={{ marginTop: 5 }} onClick={fetchGoogleTimelineData(request.from, request.to)}> 
+            <button style={{ marginTop: 5 }} onClick={() => {alert("This feature is in development!")}}> 
           Submit Results 
           </button>
         </div>

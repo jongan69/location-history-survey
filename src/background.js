@@ -1,4 +1,4 @@
-const fetchGoogleTimelineData = require("./fetch-google-timeline-data")
+// const fetchGoogleTimelineData = require("./fetch-google-timeline-data")
 
 chrome.browserAction.onClicked.addListener(tab => {
   chrome.tabs.create({ url: chrome.extension.getURL('options.html') })
