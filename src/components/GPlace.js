@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
- 
+// import Submit from './Submit';
+
 const GPlace = () => {
   const placeInputRef = useRef(null);
   const [place, setPlace] = useState(null);
@@ -43,8 +44,7 @@ const GPlace = () => {
     <>
       <input style={{ width: '100%' }} type="text" ref={placeInputRef} placeholder="Where have you been in the last 30 days?" />
       <button onClick={addAddress} style={{ marginTop: 10 }}> Add Address</button>
-
-      <button style={{ marginTop: 5 }}> Submit Results </button>
+      
 
       {
       place && 

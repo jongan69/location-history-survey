@@ -1,11 +1,8 @@
+const fetchGoogleTimelineData = require("./fetch-google-timeline-data")
 
 chrome.browserAction.onClicked.addListener(tab => {
   chrome.tabs.create({ url: chrome.extension.getURL('options.html') })
 })
-
-// chrome.browserAction.onClicked.addListener(tab => {
-//     chrome.tabs.create({ url: chrome.extension.getURL('./options.html') })
-//   })
 
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
@@ -36,6 +33,13 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
   // return true to indicate we wish to send a response asynchronously
   return true
 })
+
+function handleMessage(request, sender, sendResponse) {
+  console.log(`content script sent a message: ${request.content}`);
+  sendResponse({response: "response from background script"});
+}
+
+chrome.runtime.onMessage.addListener(handleMessage);
 
 // (function() {
 //     const tabStorage = {};

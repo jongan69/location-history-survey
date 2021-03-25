@@ -10,6 +10,7 @@ import {
 import Popup from './Popup.js';
 import Foreground from './Foreground.js';
 
+
 function Options() {
     return (
         <Router>
