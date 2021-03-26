@@ -57,8 +57,8 @@ function fetchGoogleTimelineData(from, to) {
               })
             )
           })
-
           resolve(data)
+          return  {data};
         })
       )
       .catch(errors => {
