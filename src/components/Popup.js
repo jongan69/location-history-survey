@@ -17,6 +17,7 @@ const loadGoogleMapScript = (callback) => {
     googleMapScript.addEventListener("load", callback);
   }
 }
+
  
 
 const Popup = () => {
@@ -40,10 +41,11 @@ const Popup = () => {
       <img src={image} style={styles.image} alt="loading..." />
 
       <p> Can  you remember your last 30 days?</p>
-      {!loadMap ? <div>Loading...</div> : <GPlace />}
       <button onClick={ () => {chrome.tabs.create( { url: chrome.extension.getURL('/foreground.html') })} }> 
         View Results!
       </button>
+      {!loadMap ? <div>Loading...</div> : <GPlace />}
+     
 
  
     
@@ -53,14 +55,14 @@ const Popup = () => {
 
 const styles = {
   container: {
+    width: '350px',
+    height: '500px',
+  },
+  image: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '250px',
-    height: '400px',
-  },
-  image: {
     height: '75px',
     width: '150px',
     boxSizing: 'border-box',

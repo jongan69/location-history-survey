@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import DatePicker from "react-datepicker";
+import DatePicker, { CalendarContainer } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-// import Submit from './Submit';
 
 const GPlace = () => {
   const placeInputRef = useRef(null);
@@ -27,13 +26,29 @@ const GPlace = () => {
   };
 
 
+  const MyContainer = ({ className, children }) => {
+    return (
+      <div style={{ padding: "16px", background: "#216ba5", color: "#fff" }}>
+        <CalendarContainer className={className}>
+          <div style={{ background: "#f0f0f0" }}>
+            (Day at location)
+          </div>
+          <div style={{ position: "relative" }}>{children}</div>
+        </CalendarContainer>
+      </div>
+    );
+  };
+
+
   const addAddress = () => {
+    const day = startDate.getDay();
+    console.log(day)
       setAddress([
         ...saveAddress,
           {
-            id: startDate,
+            id: day,
             value: place.address,
-          }
+          },
       ]);
    
   };
@@ -45,23 +60,31 @@ const GPlace = () => {
 
   return (
     <>
+      <div style={{ padding: "16px" }} >
       <p> What day ... </p>
-      <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
+
+      <DatePicker
+      selected={startDate}
+      onChange={date => setStartDate(date)}
+      calendarContainer={MyContainer}
+      />
+      </div>
+
+      <div>
       <p> were you at ... </p>
       <input style={{ width: '100%' }} type="text" ref={placeInputRef} placeholder="were  you at..." />
+      </div>
+
       <button onClick={addAddress} style={{ marginTop: 10 }}> Add Location </button>
     
-     
-      
 
       {
       place && 
       <div style={{ marginTop: 20, lineHeight: '25px' }}>
-      <div style={{ marginBottom: 10 }}><b>Selected Place</b></div>
-      <div><b>Address:</b> {place.address}</div>
+      <div><b>Selected Place</b> {place.address}</div>
+
       <b style={{ marginTop: 10, lineHeight: '25px' }}> Past Locations: </b>
       <ul>
-
         {saveAddress.map(item => (
         <li key={item.id}>You went to {item.value}  on {item.id} </li>
           ))}
