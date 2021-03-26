@@ -43,6 +43,13 @@ function handleMessage(request, sender, sendResponse) {
 
 chrome.runtime.onMessage.addListener(handleMessage);
 
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.method == "getLocalStorage")
+    sendResponse({data: localStorage[request.key]});
+  else
+    sendResponse({}); // snub them.
+});
+
 // (function() {
 //     const tabStorage = {};
 //     const networkFilters = {

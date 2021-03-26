@@ -7,6 +7,7 @@ const GPlace = () => {
   const [place, setPlace] = useState(null);
   const [saveAddress, setAddress] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
+  var count = 0;
 
   useEffect(() => {
     initPlaceAPI();
@@ -41,16 +42,28 @@ const GPlace = () => {
 
 
   const addAddress = () => {
+    count++;
     const day = startDate.getDay();
+    const month = startDate.getMonth();
     console.log(day)
       setAddress([
         ...saveAddress,
           {
-            id: day,
+            id: count,
+            day: day,
+            month: month,
             value: place.address,
           },
       ]);
-   
+      chrome.storage.sync.set({
+        SavedAddresses: {
+        id: count,
+        day: day,
+        month: month,
+        value: place.address,
+      }} , function() {
+        console.log('Address saved');
+      });
   };
    
   useEffect(() => {
@@ -86,7 +99,7 @@ const GPlace = () => {
       <b style={{ marginTop: 10, lineHeight: '25px' }}> Past Locations: </b>
       <ul>
         {saveAddress.map(item => (
-        <li key={item.id}>You went to {item.value}  on {item.id} </li>
+        <li key={item.id}>You went to {item.value} on {item.day} of {item.month}</li>
           ))}
       </ul>
       </div>

@@ -12,3 +12,7 @@ function handleResponse(message) {
   }
   
   window.addEventListener("click", sendMessage);
+
+  chrome.runtime.sendMessage({method: "getLocalStorage", key: "status"}, function(response) {
+    console.log(response.data);
+  });
