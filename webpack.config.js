@@ -40,7 +40,14 @@ module.exports = {
             {
                 test: /\.html$/,
                 use: ['html-loader']
-            }
+            },{
+                test: /\.css$/,
+                loader: "css-loader"
+              },
+            {
+                test: /\.(gif|svg|jpg|png)$/,
+                loader: "file-loader",
+              },
         ]
     },
     plugins: [

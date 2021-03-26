@@ -1,9 +1,8 @@
 // import HorizontalCarousel from './HorizontalCarousel.js';
 import React, { useState, useEffect, setState } from 'react';
-import { Redirect } from 'react-router-dom';
 import GPlace from './GPlace';
-import Foreground from './Foreground.js';
- 
+import image from  './plane.gif';
+
 // API key of the google map
 const GOOGLE_MAP_API_KEY = 'AIzaSyBFAMWOu-6ZKxWkZwC9Q7n0ekfJ8Szc85A';
  
@@ -22,13 +21,11 @@ const loadGoogleMapScript = (callback) => {
 
 const Popup = () => {
   const [loadMap, setLoadMap] = useState(false);
-  
   useEffect(() => {
     loadGoogleMapScript(() => {
       setLoadMap(true)
     });
   }, []);
-
 
 
   
@@ -39,8 +36,11 @@ const Popup = () => {
   return (
     <div style={styles.container}>
       Location History Survey<br /><br />
-      {!loadMap ? <div>Loading...</div> : <GPlace />}
 
+      <img src={image} style={styles.image} alt="loading..." />
+
+      <p> Can  you remember your last 30 days?</p>
+      {!loadMap ? <div>Loading...</div> : <GPlace />}
       <button onClick={ () => {chrome.tabs.create( { url: chrome.extension.getURL('/foreground.html') })} }> 
         View Results!
       </button>
@@ -52,11 +52,6 @@ const Popup = () => {
 }
 
 const styles = {
-  App: {
-      height: '400px',
-      width: '600px',
-      boxSizing: 'border-box',
-  },
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -64,7 +59,14 @@ const styles = {
     alignItems: 'center',
     width: '250px',
     height: '400px',
-  }
+  },
+  image: {
+    height: '75px',
+    width: '150px',
+    boxSizing: 'border-box',
+    marginTop: '10px',
+    marginBottom: '10px',
+}
 }
  
 export default Popup;

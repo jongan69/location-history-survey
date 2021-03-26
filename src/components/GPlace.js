@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 // import Submit from './Submit';
 
 const GPlace = () => {
   const placeInputRef = useRef(null);
   const [place, setPlace] = useState(null);
   const [saveAddress, setAddress] = useState([]);
+  const [startDate, setStartDate] = useState(new Date());
 
   useEffect(() => {
     initPlaceAPI();
@@ -28,7 +31,7 @@ const GPlace = () => {
       setAddress([
         ...saveAddress,
           {
-            id: saveAddress.length,
+            id: startDate,
             value: place.address,
           }
       ]);
@@ -42,8 +45,13 @@ const GPlace = () => {
 
   return (
     <>
-      <input style={{ width: '100%' }} type="text" ref={placeInputRef} placeholder="Can you remember your last 30 days?" />
-      <button onClick={addAddress} style={{ marginTop: 10 }}> Add Address</button>
+      <p> What day ... </p>
+      <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
+      <p> were you at ... </p>
+      <input style={{ width: '100%' }} type="text" ref={placeInputRef} placeholder="were  you at..." />
+      <button onClick={addAddress} style={{ marginTop: 10 }}> Add Location </button>
+    
+     
       
 
       {
@@ -53,8 +61,9 @@ const GPlace = () => {
       <div><b>Address:</b> {place.address}</div>
       <b style={{ marginTop: 10, lineHeight: '25px' }}> Past Locations: </b>
       <ul>
+
         {saveAddress.map(item => (
-        <li key={item.id}>{item.value}</li>
+        <li key={item.id}>You went to {item.value}  on {item.id} </li>
           ))}
       </ul>
       </div>
