@@ -2,6 +2,8 @@
 
 chrome.browserAction.onClicked.addListener(tab => {
   chrome.tabs.create({ url: chrome.extension.getURL('options.html') })
+  tabs.create( { url: chrome.extension.getURL('foreground.html') })
+
 })
 
 
@@ -14,6 +16,8 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         });
     }
 });
+
+
 
 
 chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
