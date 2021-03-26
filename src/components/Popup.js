@@ -1,6 +1,8 @@
 // import HorizontalCarousel from './HorizontalCarousel.js';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, setState } from 'react';
+import { Redirect } from 'react-router-dom';
 import GPlace from './GPlace';
+import Foreground from './Foreground.js';
  
 // API key of the google map
 const GOOGLE_MAP_API_KEY = 'AIzaSyBFAMWOu-6ZKxWkZwC9Q7n0ekfJ8Szc85A';
@@ -17,6 +19,7 @@ const loadGoogleMapScript = (callback) => {
   }
 }
  
+
 const Popup = () => {
   const [loadMap, setLoadMap] = useState(false);
   
@@ -25,11 +28,25 @@ const Popup = () => {
       setLoadMap(true)
     });
   }, []);
- 
+
+
+
+  
+
+
+
+// const {referrer} = this.state;
   return (
     <div style={styles.container}>
       Location History Survey<br /><br />
       {!loadMap ? <div>Loading...</div> : <GPlace />}
+
+      <button onClick={ () => {chrome.tabs.create( { url: chrome.extension.getURL('/foreground.html') })} }> 
+        View Results!
+      </button>
+
+ 
+    
     </div>
   );
 }

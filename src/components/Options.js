@@ -39,7 +39,7 @@ function Options() {
                         <Foreground />
                     </Route>
                     <Route exact path="/">
-                        <Redirect to="/options.html" />
+                        <Redirect to="/foreground" />
                     </Route>
                 </Switch>
             </div>

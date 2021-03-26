@@ -42,7 +42,7 @@ const GPlace = () => {
 
   return (
     <>
-      <input style={{ width: '100%' }} type="text" ref={placeInputRef} placeholder="Where have you been in the last 30 days?" />
+      <input style={{ width: '100%' }} type="text" ref={placeInputRef} placeholder="Can you remember your last 30 days?" />
       <button onClick={addAddress} style={{ marginTop: 10 }}> Add Address</button>
       
 
