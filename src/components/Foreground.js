@@ -5,14 +5,16 @@ import Bar from "./Bar";
 
 const to = new Date();
 const from = moment().subtract(29, 'days').calendar();
-var GoogledataLocal = {}
-
+var GoogledataLocal = {};
+const Answers = {
+    items: []
+};
 
 function Foreground() {   
     
     function ifObjectIsEmpty(object){
         var isEmpty=true;
-        if(JSON.stringify(object)==JSON.stringify({})){
+        if(JSON.stringify(object)==JSON.stringify({items:[]})){
           // Object is Empty
           isEmpty = true;
         }
@@ -34,24 +36,34 @@ function Foreground() {
                 {
                     fetchGoogleTimelineData(from, to)
                     .then(data => {
-                        console.log('Checking Data', data)
+                        console.log('Checking Google Data', data)
                             if(GoogledataLocal !== data ){
-                                let GoogledataLocal = data
-
-                                console.log('Checking Survey', Answers)
-                                let Answers = chrome.storage.sync.get(['SavedAddresses'], function(items) {
-                                   console.log('Answers retrieved', items);
+                                let GoogledataLocal = data;
+                                // let Answers = chrome.storage.sync.get(['SavedAddresses'], 
+                                chrome.storage.sync.get(['id'], 
+                                function ifObjectIsEmpty(Answers) {
+                                    console.log('Checking Survey Data', id)
+                                    const id = id.object
+                                    Answers.items.push({
+                                        items: id,
+                                        day:  id.day,
+                                        month: id.month,
+                                        address: id.address,
+                                      })
+                                      console.log('Display answers', Answers)
+                                    return Answers;
                                   });
 
-                                if(Answers==0){
+                                  
+                                if(ifObjectIsEmpty(id)==true){
                                     alert('You didnt do the survey!')
                                     alert('Youve been to ' + JSON.stringify(GoogledataLocal.items.length) + ' locations in the past 30 days')
 
                                 } else {
                                     alert('Got your data!')
                                     alert('Youve been to ' + JSON.stringify(GoogledataLocal.items.length) + ' locations in the past 30 days')
-                                    alert('You had ' + JSON.stringify(Answers.length) + ' Answers')
-                                    alert(JSON.stringify('You got ' + (JSON.stringify(GoogledataLocal.items.length)-JSON.stringify(Answers.length)) + ' wrong'))
+                                    alert('You had ' + JSON.stringify(items.length) + ' Answers')
+                                    alert(JSON.stringify('You got ' + (JSON.stringify(GoogledataLocal.items.length)-JSON.stringify(items.length)) + ' wrong'))
                                     return <p style={{ marginTop: 5 }}>{JSON.stringify(GoogledataLocal.items.address)}</p>;
                                 }
                                 
@@ -60,7 +72,7 @@ function Foreground() {
                             }
                         })
                     .catch(error => {
-                        alert(`Failed to fetch timeline data: ${error}`)
+                        alert(`Error fetching Timeline/Answer data: ${error}`)
                     })
                 }
             }> 
@@ -81,9 +93,11 @@ const styles = {
         alignItems: 'center',
     },
     buttons: {
+        flexDirection: 'row',
+        alignHorizontal: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'red',
+        backgroundColor: 'black',
     }
 }
 

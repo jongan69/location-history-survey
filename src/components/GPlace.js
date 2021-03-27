@@ -8,7 +8,7 @@ const GPlace = () => {
   const [saveAddress, setAddress] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   var count = 0;
-
+  var id = {}
   useEffect(() => {
     initPlaceAPI();
   }, []);
@@ -26,7 +26,7 @@ const GPlace = () => {
     });
   };
 
-
+// Calender Component
   const MyContainer = ({ className, children }) => {
     return (
       <div style={{ padding: "16px", background: "#216ba5", color: "#fff" }}>
@@ -41,35 +41,74 @@ const GPlace = () => {
   };
 
 
-  const addAddress = () => {
-    count++;
-    const day = startDate.getDay();
-    const month = startDate.getMonth();
-    console.log(day)
-      setAddress([
+  function createItems() {
+    // Set item in local storage. 
+        setAddress([
         ...saveAddress,
           {
-            id: count,
             day: day,
             month: month,
-            value: place.address,
+            address: place.address,
           },
       ]);
       chrome.storage.sync.set({
-        SavedAddresses: {
-        id: count,
-        day: day,
-        month: month,
-        value: place.address,
+        id: {
+        saveAddress,
       }} , function() {
-        console.log('Address saved');
+        console.log('Address saved',id);
       });
+      const json = JSON.stringify(id);
+      localStorage.setItem("id", json);
+  }
+
+
+
+// Function for clearing the local storage
+  function deleteItems() {
+    // Clear localStorage items 
+    localStorage.clear();
+  }
+
+
+  const addAddress = () => {
+    // Set variables equal to state from the components
+    const day = startDate.getDay();
+    const month = startDate.getMonth();
+    console.log(count)
+    if(localStorage.getItem('addresses',[]) == null){
+      localStorage.setItem(count)
+
+
+
+
+      chrome.storage.sync.get([id],
+        function ifObjectIsEmpty(object){
+          var isEmpty=true;
+
+
+
+          if(JSON.stringify(object)==JSON.stringify({items:[]})){
+            // Object is Empty
+            isEmpty = true;
+            console.log('The local storage has no data, proceeding to add')
+            createItems(id,day,month,);
+
+
+
+          } else{
+            //Object is Not Empty
+            isEmpty = false;
+            console.log('The local storage has data')
+            var count = 0;
+          }
+          return isEmpty;
+       }) 
+    }
+
+       
   };
    
-  useEffect(() => {
-    const json = JSON.stringify(saveAddress);
-    localStorage.setItem("savedAddress", json);
-  }, [saveAddress]);
+
 
   return (
     <>
@@ -89,7 +128,8 @@ const GPlace = () => {
       </div>
 
       <button onClick={addAddress} style={{ marginTop: 10 }}> Add Location </button>
-    
+      <button onClick={deleteItems} style={{ marginTop: 10 }}> Clear Old </button>
+
 
       {
       place && 
@@ -98,8 +138,8 @@ const GPlace = () => {
 
       <b style={{ marginTop: 10, lineHeight: '25px' }}> Past Locations: </b>
       <ul>
-        {saveAddress.map(item => (
-        <li key={item.id}>You went to {item.value} on {item.day} of {item.month}</li>
+        {id.map(item => (
+        <li key={item.id}>You went to {item.address} on {item.day} of {item.month}</li>
           ))}
       </ul>
       </div>
