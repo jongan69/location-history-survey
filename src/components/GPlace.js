@@ -39,22 +39,21 @@ const GPlace = () => {
       </div>
     );
   };
-
-
   const addAddress = () => {
-    count++;
-    const day = startDate.getDay();
-    const month = startDate.getMonth();
-    console.log(day)
-      setAddress([
-        ...saveAddress,
-          {
-            id: count,
-            day: day,
-            month: month,
-            value: place.address,
-          },
-      ]);
+      if(localStorage.getItem('savedAddress')== null){
+        count++;
+        const day = startDate.getDay();
+        const month = startDate.getMonth();
+        console.log(day)
+        setAddress([
+          ...saveAddress,
+            {
+              id: count,
+              day: day,
+              month: month,
+              value: place.address,
+            },
+        ]);
       chrome.storage.sync.set({
         SavedAddresses: {
         id: count,
@@ -62,9 +61,9 @@ const GPlace = () => {
         month: month,
         value: place.address,
       }} , function() {
-        console.log('Address saved');
+        console.log('Address saved', saveAddress, 'Address saved', SavedAddresses);
       });
-  };
+  }};
    
   useEffect(() => {
     const json = JSON.stringify(saveAddress);
@@ -89,7 +88,7 @@ const GPlace = () => {
       </div>
 
       <button onClick={addAddress} style={{ marginTop: 10 }}> Add Location </button>
-    
+      <button onClick={addAddress} style={{ marginTop: 10 }}> Clear  Data </button>
 
       {
       place && 
