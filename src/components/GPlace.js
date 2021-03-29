@@ -7,12 +7,15 @@ const GPlace = () => {
   const [place, setPlace] = useState(null);
   const [saveAddress, setAddress] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
-  var count = 0;
+  let count = 0; 
 
   useEffect(() => {
+    savedAddress = JSON.parse(localStorage.getItem('savedAddress')) || [];
+    console.log('Current savedAddress is: ' , savedAddress );        
     initPlaceAPI();
   }, []);
  
+
   // initialize the google place autocomplete
   const initPlaceAPI = () => {
     let autocomplete = new window.google.maps.places.Autocomplete(placeInputRef.current);
@@ -27,6 +30,7 @@ const GPlace = () => {
   };
 
 
+// Calender Component
   const MyContainer = ({ className, children }) => {
     return (
       <div style={{ padding: "16px", background: "#216ba5", color: "#fff" }}>
@@ -39,36 +43,76 @@ const GPlace = () => {
       </div>
     );
   };
-  const addAddress = () => {
-      if(localStorage.getItem('savedAddress')== null){
-        count++;
-        const day = startDate.getDay();
-        const month = startDate.getMonth();
-        console.log(day)
-        setAddress([
-          ...saveAddress,
-            {
-              id: count,
-              day: day,
-              month: month,
-              value: place.address,
-            },
-        ]);
-      chrome.storage.sync.set({
-        SavedAddresses: {
-        id: count,
-        day: day,
-        month: month,
-        value: place.address,
-      }} , function() {
-        console.log('Address saved', saveAddress, 'Address saved', SavedAddresses);
-      });
-  }};
+
+
+// Sleep
+  const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  }
+
+
+  // const addAddress = () => {
+  //     }
+      // if(localStorage.getItem(('saveAddress') == null)&&(place)!=null){
+      //   var savedAddress = [];
+      //   alert(saveAddress);
+      //   alert(place);
+      //   alert(savedAddress);  // Should be something like [Object array
+      //   }
+      // } 
+      
+//       else {
+//        console.log('Place is null');
+//        var count = 0;
+//        console.log('count is ' + count);
+//       }
+// };
+
+
+function SaveDataToLocalStorage() {
+
+  count++;
+  const day = startDate.getDay();
+  const month = startDate.getMonth();
+  
+  // Parse the serialized data back into an aray of objects
+  var savedAddress = JSON.parse(localStorage.getItem('savedAddress')) || [];
+    if(place!=null){
+      setAddress([
+        ...saveAddress,
+          {
+          id: count,
+          day: day,
+          month: month,
+          value: place.address,
+          }
+      ]);
+    }
+
+        
+
+
+    if(saveAddress!=null) {
+      
+      // Push the new data (whether it be an object or anything else) onto the array
+      savedAddress.push(saveAddress);
+          
+      // Alert the array value
+      alert(savedAddress);  // Should be something like [Object array]
+          
+      // Re-serialize the array back into a string and store it in localStorage
+      localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
+      console.log('Address Successfully Saved: ', saveAddress)
+      console.log('Saved: ', savedAddress)
+      return saveAddress,savedAddress;
+    }
+}
+          
    
-  useEffect(() => {
-    const json = JSON.stringify(saveAddress);
-    localStorage.setItem("savedAddress", json);
-  }, [saveAddress]);
+  // useEffect(() => {
+  //   const json = JSON.stringify(saveAddress);
+  //   localStorage.setItem("savedAddress", json);
+  // }, [saveAddress]);
 
   return (
     <>
@@ -87,20 +131,28 @@ const GPlace = () => {
       <input style={{ width: '100%' }} type="text" ref={placeInputRef} placeholder="were  you at..." />
       </div>
 
-      <button onClick={addAddress} style={{ marginTop: 10 }}> Add Location </button>
-      <button onClick={addAddress} style={{ marginTop: 10 }}> Clear  Data </button>
+      <button onClick={SaveDataToLocalStorage()} style={{ marginTop: 10 }}> Add Location </button>
+
+      <button onClick={() => {
+        chrome.storage.local.clear(function() {
+          var error = chrome.runtime.lastError;
+          if (error) {
+              console.error(error);
+          }
+      });
+      }
+      } style={{ marginTop: 10 }}> Clear  Data </button>
 
       {
       place && 
       <div style={{ marginTop: 20, lineHeight: '25px' }}>
       <div><b>Selected Place</b> {place.address}</div>
-
       <b style={{ marginTop: 10, lineHeight: '25px' }}> Past Locations: </b>
       <ul>
-        {saveAddress.map(item => (
-        <li key={item.id}>You went to {item.value} on {item.day} of {item.month}</li>
-          ))}
-      </ul>
+      {saveAddress.map(item => (
+      <li key={item.id}>You went to {item.value} on {item.day} of {item.month}</li>
+        ))}
+      </ul> 
       </div>
       }
       

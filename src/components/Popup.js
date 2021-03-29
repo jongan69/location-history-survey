@@ -40,7 +40,7 @@ const Popup = () => {
 
       <img src={image} style={styles.image} alt="loading..." />
 
-      <p> Can  you remember your last 30 days?</p>
+      <p> Can  you remember your last 14 days?</p>
       <button onClick={ () => {chrome.tabs.create( { url: chrome.extension.getURL('/foreground.html') })} }> 
         View Results!
       </button>
