@@ -1,18 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
 import DatePicker, { CalendarContainer } from "react-datepicker";
+import regeneratorRuntime from "regenerator-runtime";
+import axios from 'axios';
 import "react-datepicker/dist/react-datepicker.css";
 
+
+// Initilize function
 const GPlace = () => {
   const placeInputRef = useRef(null);
   const [place, setPlace] = useState(null);
   const [saveAddress, setAddress] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   var count = 0;
+  
 
+
+  // On run all
   useEffect(() => {
     initPlaceAPI();
   }, []);
  
+
   // initialize the google place autocomplete
   const initPlaceAPI = () => {
     let autocomplete = new window.google.maps.places.Autocomplete(placeInputRef.current);
@@ -27,6 +35,23 @@ const GPlace = () => {
   };
 
 
+
+    // For side effect calculations
+    useEffect(async () => {
+       await place.address!=null;
+       console.log('Use Effect running');
+       const day = startDate.getDay();
+       const month = startDate.getMonth();
+       const id = count;
+       const SavedAddresses = {
+        items: []
+      }
+  },[]);
+
+
+
+
+// Calender Component
   const MyContainer = ({ className, children }) => {
     return (
       <div style={{ padding: "16px", background: "#216ba5", color: "#fff" }}>
@@ -39,42 +64,48 @@ const GPlace = () => {
       </div>
     );
   };
+
+
+
+// Function for Creating Local Storage Array of Objects if one doesnt exist
   const addAddress = () => {
-      if(localStorage.getItem('savedAddress')== null){
-        count++;
-        const day = startDate.getDay();
-        const month = startDate.getMonth();
-        console.log(day)
-        setAddress([
-          ...saveAddress,
-            {
-              id: count,
-              day: day,
-              month: month,
-              value: place.address,
-            },
-        ]);
-      chrome.storage.sync.set({
-        SavedAddresses: {
-        id: count,
+    
+    console.log('Button Clicked');
+    // Create Variables to save to local storage
+    const day = startDate.getDay();
+       const month = startDate.getMonth();
+       const id = count;
+       const SavedAddresses = {
+        items: []
+      }
+      SavedAddresses.items.set({
+        id: id,
         day: day,
         month: month,
-        value: place.address,
-      }} , function() {
-        console.log('Address saved', saveAddress, 'Address saved', SavedAddresses);
+        address: place.address
+      })
+      console.log('So far', SavedAddresses);
+
+    chrome.storage.sync.set({'SavedAddresses': SavedAddresses}, function(){
+    console.log('Address last saved', place.address);
+    });
+
+    chrome.storage.sync.get({'SavedAddresses': SavedAddresses}, function(){
+      console.log('Address last updated', items);
       });
-  }};
+
+  };
    
-  useEffect(() => {
-    const json = JSON.stringify(saveAddress);
-    localStorage.setItem("savedAddress", json);
-  }, [saveAddress]);
+
+
+    
+
 
   return (
     <>
+
       <div style={{ padding: "16px" }} >
       <p> What day ... </p>
-
       <DatePicker
       selected={startDate}
       onChange={date => setStartDate(date)}
@@ -87,8 +118,9 @@ const GPlace = () => {
       <input style={{ width: '100%' }} type="text" ref={placeInputRef} placeholder="were  you at..." />
       </div>
 
-      <button onClick={addAddress} style={{ marginTop: 10 }}> Add Location </button>
-      <button onClick={addAddress} style={{ marginTop: 10 }}> Clear  Data </button>
+
+      <button onClick={() => addAddress()} style={{ marginTop: 10 }}> Add Location </button>
+      <button onClick={localStorage.clear()} style={{ marginTop: 10 }}> Clear  Data </button>
 
       {
       place && 
@@ -96,14 +128,17 @@ const GPlace = () => {
       <div><b>Selected Place</b> {place.address}</div>
 
       <b style={{ marginTop: 10, lineHeight: '25px' }}> Past Locations: </b>
-      <ul>
-        {saveAddress.map(item => (
-        <li key={item.id}>You went to {item.value} on {item.day} of {item.month}</li>
-          ))}
-      </ul>
+      
+
+      { !saveAddress.address ? <div> Please enter an address </div> : 
+          <ul>
+            {SavedAddresses.map(item => (
+              <li key={item.id}>You went to {item.address} on {item.day} of {item.month}</li>
+            ))}
+          </ul>}
       </div>
       }
-      
+
       
     </>
   );

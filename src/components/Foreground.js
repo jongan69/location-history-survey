@@ -1,7 +1,6 @@
 import React from 'react';
 import moment from 'moment'
 import fetchGoogleTimelineData from '../fetch-google-timeline-data';
-import Bar from "./Bar";
 
 const to = new Date();
 const from = moment().subtract(29, 'days').calendar();
@@ -28,17 +27,23 @@ function Foreground() {
             Switch out the cases when not testing
             {!(ifObjectIsEmpty(GoogledataLocal))  ? <div> Display Data Here... </div> : <div> <Bar /> </div>  }
             <div style={styles.buttons}>
+            
+
+            <button style={{ marginTop: 5 }} onClick={() => {alert("This feature is in development!")}}> 
+                Take the survey
+            </button>
+
             <button 
                 style={{ marginTop: 5 }} 
                 onClick={ () =>
                 {
                     fetchGoogleTimelineData(from, to)
+                    console.log('Checking Data')
                     .then(data => {
-                        console.log('Checking Data', data)
+                        console.log('Google Timeline Data', data)
                             if(GoogledataLocal !== data ){
                                 let GoogledataLocal = data
-
-                                console.log('Checking Survey', Answers)
+                                console.log('Checking Survey')
                                 let Answers = chrome.storage.sync.get(['SavedAddresses'], function(items) {
                                    console.log('Answers retrieved', items);
                                   });
@@ -65,10 +70,6 @@ function Foreground() {
                 }
             }> 
                 Get Location Data
-            </button>
-
-            <button style={{ marginTop: 5 }} onClick={() => {alert("This feature is in development!")}}> 
-                Submit Results 
             </button>
             </div>
         </div>
