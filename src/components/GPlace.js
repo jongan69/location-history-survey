@@ -7,13 +7,14 @@ const GPlace = () => {
   const [place, setPlace] = useState(null);
   const [saveAddress, setAddress] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
+  let savedAddresses = JSON.parse(localStorage.getItem('savedAddress')) || [];
   let count = 0; 
 
   useEffect(() => {
-    savedAddress = JSON.parse(localStorage.getItem('savedAddress')) || [];
-    console.log('Current savedAddress is: ' , savedAddress );        
-    initPlaceAPI();
-  }, []);
+    console.log('useEffect is running');  
+    initPlaceAPI();  
+    console.log('Current saveAddress is: ' , saveAddress );        
+  }, [saveAddress]);
  
 
   // initialize the google place autocomplete
@@ -51,33 +52,24 @@ const GPlace = () => {
   }
 
 
-  // const addAddress = () => {
-  //     }
-      // if(localStorage.getItem(('saveAddress') == null)&&(place)!=null){
-      //   var savedAddress = [];
-      //   alert(saveAddress);
-      //   alert(place);
-      //   alert(savedAddress);  // Should be something like [Object array
-      //   }
-      // } 
-      
-//       else {
-//        console.log('Place is null');
-//        var count = 0;
-//        console.log('count is ' + count);
-//       }
-// };
 
-
+// Function for setting current state of address and then pushing that array to the savedAddress Object
 function SaveDataToLocalStorage() {
-
+  console.log('Button Clicked');
+  console.log('Sate of saveAddress: ', saveAddress);
+  console.log('Local Storage: ', savedAddress);
+  
   count++;
   const day = startDate.getDay();
   const month = startDate.getMonth();
-  
+ 
   // Parse the serialized data back into an aray of objects
-  var savedAddress = JSON.parse(localStorage.getItem('savedAddress')) || [];
-    if(place!=null){
+  let savedAddress = JSON.parse(localStorage.getItem('savedAddress')) || [];
+  
+  // If place  isnt  null, set the saveAddress Array
+  if(place!=null){
+    console.log('Place is not null');
+      // Set the saveAddress objecct to saveAddress
       setAddress([
         ...saveAddress,
           {
@@ -89,10 +81,19 @@ function SaveDataToLocalStorage() {
       ]);
     }
 
-        
+     // Check if saveAddress is empty
+     for(var key in savedAddress){
+      var isEmpty = true
+      if(savedAddress.hasOwnProperty(key)){
+          let isEmpty = false;
+          return isEmpty;
+      } else {
+        return isEmpty;
+      }
+  }
 
-
-    if(saveAddress!=null) {
+    // if saveAddress object is not empty
+    if(isEmpty=false) {
       
       // Push the new data (whether it be an object or anything else) onto the array
       savedAddress.push(saveAddress);
@@ -102,17 +103,14 @@ function SaveDataToLocalStorage() {
           
       // Re-serialize the array back into a string and store it in localStorage
       localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
-      console.log('Address Successfully Saved: ', saveAddress)
-      console.log('Saved: ', savedAddress)
-      return saveAddress,savedAddress;
+      console.log('Address Successfully Saved: ', saveAddress);
+      savedAddress = JSON.parse(localStorage.getItem('savedAddress'))
+      console.log('Local Storage: ', savedAddress);
     }
+  let savedAddresses = saveAddress;
+  return savedAddresses;
 }
-          
-   
-  // useEffect(() => {
-  //   const json = JSON.stringify(saveAddress);
-  //   localStorage.setItem("savedAddress", json);
-  // }, [saveAddress]);
+  
 
   return (
     <>
@@ -131,7 +129,7 @@ function SaveDataToLocalStorage() {
       <input style={{ width: '100%' }} type="text" ref={placeInputRef} placeholder="were  you at..." />
       </div>
 
-      <button onClick={SaveDataToLocalStorage()} style={{ marginTop: 10 }}> Add Location </button>
+      <button onClick={() => {SaveDataToLocalStorage()}} style={{ marginTop: 10 }}> Add Location </button>
 
       <button onClick={() => {
         chrome.storage.local.clear(function() {
@@ -148,13 +146,18 @@ function SaveDataToLocalStorage() {
       <div style={{ marginTop: 20, lineHeight: '25px' }}>
       <div><b>Selected Place</b> {place.address}</div>
       <b style={{ marginTop: 10, lineHeight: '25px' }}> Past Locations: </b>
-      <ul>
-      {saveAddress.map(item => (
-      <li key={item.id}>You went to {item.value} on {item.day} of {item.month}</li>
-        ))}
-      </ul> 
       </div>
       }
+
+      { (!savedAddresses) 
+      ? 
+      <div>No savedAddress</div> 
+      :
+      <ul>
+      {savedAddresses.map(item => (
+      <li key={item.id}>You went to {item.value} on {item.day} of {item.month}</li>
+        ))}
+      </ul> }
       
       
     </>
