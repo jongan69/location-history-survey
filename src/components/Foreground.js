@@ -25,7 +25,7 @@ function Foreground() {
 
     return (
         <div style={styles.main}>
-            Switch out the cases when not testing
+           View your results here:
             {!Answers || !GoogledataLocal 
             ? 
             <div> Display Data Here... </div>
@@ -46,8 +46,8 @@ function Foreground() {
                         console.log('Checking Google Timeline Data', data)
                             if(GoogledataLocal !== data ){
                                 let GoogledataLocal = data;
-
-                                let Answers = JSON.parse(localStorage.getItem('savedAddress'))
+                                let answersUnparsed = localStorage.getItem('savedAddress')
+                                let Answers = JSON.parse(answersUnparsed)
                                 console.log('Checking Survey', Answers);
 
 
@@ -57,11 +57,11 @@ function Foreground() {
                                     filename: 'Your_Google_Data.json'
                                 });
 
-                                var url2 = 'data:text/json;charset=utf-8,' + JSON.stringify(Answers);
-                                chrome.downloads.download({
-                                    url: url2,
-                                    filename: 'Your_Answers.json'
-                                });
+                                // var url2 = 'data:text/json;charset=utf-8,' + JSON.stringify(Answers);
+                                // chrome.downloads.download({
+                                //     url: url2,
+                                //     filename: 'Your_Answers.json'
+                                // });
 
                                 // let Answers = chrome.storage.sync.get(['savedAddress'], function(items) {
                                 //    console.log('Answers retrieved', items);

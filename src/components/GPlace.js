@@ -8,14 +8,14 @@ const GPlace = () => {
   const [saveAddress, setAddress] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   var $pull = localStorage.getItem('savedAddress');
+  var savedAddress = typeof $pull!='undefined' ? $pull : [];
+
   let count = 0; 
 
   useEffect(() => {
 
     console.log('useEffect is running');  
-    
-    // let savedAddress = localStorage.getItem('savedAddress')||[];
-    
+    console.log('Pull is: ', $pull);
     console.log('savedAddress is: ', savedAddress);  
    
     for(var key in savedAddress){
@@ -75,9 +75,8 @@ const GPlace = () => {
 
 // Function for setting current state of address and then pushing that array to the savedAddress Object
 function SaveDataToLocalStorage() {
+  // var savedAddress = $pull=='undefined' ? [] : $pull;
   console.log('Button Clicked');
-  var savedAddress = $pull!=null ? JSON.parse($pull) : [];
-  count++;
   const day = startDate.getDay();
   // const month = startDate.getMonth();
   const month = startDate.toLocaleString('default', { month: 'long' });
@@ -97,23 +96,6 @@ function SaveDataToLocalStorage() {
       savedAddress.push(saveAddress);
       console.log('savedAddress was not null so we push to local: ', saveAddress); 
       localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
-      savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
-      // Parse the serialized data back into an aray of objects
-      //     for(var key in savedAddress){
-      //       if(savedAddress.hasOwnProperty(key)){
-      //         savedAddress.push(saveAddress);
-      //         localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
-      //         savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
-      //         console.log('Address Successfully Saved: ', saveAddress);
-      //         console.log('Sate of saveAddress: ', saveAddress);
-      //         console.log('Local Storage: ', savedAddress);  
-      //       } else {
-      //       alert('savedAddress is empty')
-      //       console.log('Sate of saveAddress: ', saveAddress);
-      //       console.log('Local Storage: ', savedAddress);  
-      //     }
-      // }
-
     } 
 
       // Push the new data (whether it be an object or anything else) onto the array
@@ -131,6 +113,7 @@ function SaveDataToLocalStorage() {
     
     console.log('Local Storage: ', savedAddress);
     localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
+    savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
     return savedAddress;
 }
   
@@ -164,12 +147,12 @@ function SaveDataToLocalStorage() {
       </div>
       }
 
-      {!savedAddress 
+      {savedAddress
       ? 
-      <div>No savedAddress</div> 
+      <div>No saveAddress</div> 
       :
       <ul>
-      {savedAddress.map(item => (
+      {saveAddress.map(item => (
       <li key={item.id}>You went to {item.value} on {item.day} of {item.month}</li>
         ))}
       </ul> 
