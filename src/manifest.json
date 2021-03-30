@@ -24,6 +24,7 @@
         "https://*.google.com/*",
         "tabs",
         "<all_urls>",
-        "storage"
+        "storage",
+        "downloads"
     ] 
 }

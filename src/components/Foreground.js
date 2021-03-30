@@ -4,8 +4,8 @@ import fetchGoogleTimelineData from '../fetch-google-timeline-data';
 
 const to = new Date();
 const from = moment().subtract(13, 'days').calendar();
-var GoogledataLocal = {}
-var Answers = {}
+var GoogledataLocal = []
+var Answers = []
 
 
 function Foreground() {   
@@ -32,7 +32,7 @@ function Foreground() {
             : 
             <div> 
             <p style={{ marginTop: 5 }}>{JSON.stringify(GoogledataLocal.items)}</p>
-            <p style={{ marginTop: 5 }}>{JSON.stringify(Answers.items)}</p>
+            <p style={{ marginTop: 5 }}>{JSON.stringify(Answers)}</p>
             </div> 
             }
             
@@ -46,9 +46,24 @@ function Foreground() {
                         console.log('Checking Google Timeline Data', data)
                             if(GoogledataLocal !== data ){
                                 let GoogledataLocal = data;
+
                                 Answers = localStorage.getItem('savedAddress')
                                 let Answers = JSON.parse(Answers)
                                 console.log('Checking Survey', Answers);
+
+
+                                var url = 'data:text/json;charset=utf-8,' + JSON.stringify(data);
+                                chrome.downloads.download({
+                                    url: url,
+                                    filename: 'Your_Google_Data.json'
+                                });
+
+                                var url2 = 'data:text/json;charset=utf-8,' + JSON.stringify(Answers);
+                                chrome.downloads.download({
+                                    url: url2,
+                                    filename: 'Your_Answers.json'
+                                });
+
                                 // let Answers = chrome.storage.sync.get(['savedAddress'], function(items) {
                                 //    console.log('Answers retrieved', items);
                                 //   });
@@ -85,8 +100,10 @@ function Foreground() {
 
 const styles = {
     main: {
-        justifyContent: 'center',
-        alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
     },
     buttons: {
         justifyContent: 'center',

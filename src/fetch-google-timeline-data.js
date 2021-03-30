@@ -25,7 +25,6 @@ function fetchGoogleTimelineData(from, to) {
       .then(
         axios.spread((...responses) => {
           const data = {
-            name: `${moment(fromDate).format('YYYY-DD-MM')}_${moment(toDate).format('YYYY-DD-MM')}`,
             items: []
           }
           responses.forEach(response => {

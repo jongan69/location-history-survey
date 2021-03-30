@@ -41,10 +41,15 @@ const Popup = () => {
       <img src={image} style={styles.image} alt="loading..." />
 
       <p> Can  you remember your last 14 days?</p>
+     
+      {!loadMap ? <div>Loading...</div> : 
+      <div>
+      <GPlace />
       <button onClick={ () => {chrome.tabs.create( { url: chrome.extension.getURL('/foreground.html') })} }> 
-        View Results!
+      View Results!
       </button>
-      {!loadMap ? <div>Loading...</div> : <GPlace />}
+      </div>
+    }
      
 
  
@@ -55,8 +60,11 @@ const Popup = () => {
 
 const styles = {
   container: {
+    flexDirection: 'column',
+    display: 'flex',
     width: '350px',
     height: '500px',
+    backgroundColor: 'pink'
   },
   image: {
     display: 'flex',

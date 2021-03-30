@@ -7,13 +7,35 @@ const GPlace = () => {
   const [place, setPlace] = useState(null);
   const [saveAddress, setAddress] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
-  let savedAddresses = JSON.parse(localStorage.getItem('savedAddress')) || [];
+  var $pull = localStorage.getItem('savedAddress');
+  var savedAddress = $pull!=null ? JSON.parse($pull) : [];
+  var isEmpty;
   let count = 0; 
 
   useEffect(() => {
+
     console.log('useEffect is running');  
+    
+    // let savedAddress = localStorage.getItem('savedAddress')||[];
+    
+    console.log('savedAddress is: ', savedAddress);  
+   
+    for(var key in savedAddress){
+      var isEmpty = true
+      if(savedAddress.hasOwnProperty(key)){
+          console.log('savedAddress is not empty');
+          let isEmpty = false;
+          return isEmpty;
+
+      } else {
+          console.log('savedAddress is empty');
+          return isEmpty;
+      }
+
+    }
+
     initPlaceAPI();  
-    console.log('Current saveAddress is: ' , saveAddress );        
+    console.log('Current saveAddress is: ' , saveAddress );
   }, [saveAddress]);
  
 
@@ -56,64 +78,58 @@ const GPlace = () => {
 // Function for setting current state of address and then pushing that array to the savedAddress Object
 function SaveDataToLocalStorage() {
   console.log('Button Clicked');
-  console.log('Sate of saveAddress: ', saveAddress);
-  console.log('Local Storage: ', savedAddress);
-  
   count++;
   const day = startDate.getDay();
   // const month = startDate.getMonth();
   const month = startDate.toLocaleString('default', { month: 'long' });
   console.log(month);
 
- 
-  // Parse the serialized data back into an aray of objects
-  let savedAddress = JSON.parse(localStorage.getItem('savedAddress')) || [];
-  
-  // If place  isnt  null, set the saveAddress Array
+
   if(place!=null){
-    console.log('Place is not null');
-      // Set the saveAddress objecct to saveAddress
-      setAddress([
-        ...saveAddress,
-          {
-          id: count,
-          day: day,
-          month: month,
-          value: place.address,
+    setAddress([
+      ...saveAddress,
+        {
+        id: count,
+        day: day,
+        month: month,
+        value: place.address,
+        }
+        ]);
+      console.log('savedAddress was not null so we push to local: ', saveAddress); 
+      // Parse the serialized data back into an aray of objects
+      savedAddress.push(saveAddress);
+          for(var key in savedAddress){
+            if(savedAddress.hasOwnProperty(key)){
+              savedAddress.push(saveAddress);
+              localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
+              savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
+              console.log('Sate of saveAddress: ', saveAddress);
+              console.log('Local Storage: ', savedAddress);  
+            } else {
+            alert('savedAddress is empty')
+            console.log('Sate of saveAddress: ', saveAddress);
+            console.log('Local Storage: ', savedAddress);  
           }
-      ]);
-    }
-    // Push the new data (whether it be an object or anything else) onto the array
-    savedAddress.push(saveAddress);
-          
-    // Alert the array value
-     // Should be something like [Object array]
-        
-    // Re-serialize the array back into a string and store it in localStorage
-    localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
 
-
-    savedAddress = JSON.parse(localStorage.getItem('savedAddress'))
-    console.log('Address Successfully Saved: ', savedAddress);
-    console.log('Local Storage: ', savedAddress);
-
-
-     // Check if saveAddress is empty
-     for(var key in savedAddress){
-      var isEmpty = true
-      if(savedAddress.hasOwnProperty(key)){
-          console.log('savedAddress is not empty');
-          let isEmpty = false;
-          return isEmpty;
-      } else {
-          console.log('savedAddress is empty');
-          return isEmpty;
       }
-  }
+    } 
 
+      // Push the new data (whether it be an object or anything else) onto the array
+      // Re-serialize the array back into a string and store it in localStorage
+              
+        
+  if(savedAddress==null&&place!=null) {
+      console.log('savedAddress was null so we alert: ', savedAddress); 
+      alert('You have to enter an address')
+      console.log('Sate of saveAddress: ', saveAddress);
+      console.log('Local Storage: ', savedAddress);  
+    }
 
-  let savedAddresses = savedAddress;
-  return savedAddresses;
+     
+    console.log('Address Successfully Saved: ', saveAddress);
+    console.log('Local Storage: ', savedAddress);
+    localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
+    return savedAddress,isEmpty;
 }
   
 
@@ -136,13 +152,7 @@ function SaveDataToLocalStorage() {
 
       <button onClick={() => {SaveDataToLocalStorage()}} style={{ marginTop: 10 }}> Add Location </button>
 
-      <button onClick={ () => {
-          let savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
-          savedAddress.length = savedAddress.length - 1
-          localStorage.setItem('savedAddress', JSON.stringify(savedAddress));
-          alert('Updated Survey answers to: ' + [savedAddress]); 
-      }
-       } style={{ marginTop: 10 }}> Clear Last Entered</button>
+      <button onClick={ localStorage.clear() } style={{ marginTop: 10 }}> Clear Addreeses </button>
 
       {
       place && 
@@ -152,16 +162,16 @@ function SaveDataToLocalStorage() {
       </div>
       }
 
-      { (!savedAddresses) 
+      {!saveAddress 
       ? 
       <div>No savedAddress</div> 
       :
       <ul>
-      {savedAddresses.map(item => (
+      {saveAddress.map(item => (
       <li key={item.id}>You went to {item.value} on {item.day} of {item.month}</li>
         ))}
-      </ul> }
-      
+      </ul> 
+      }
       
     </>
   );
@@ -178,10 +188,10 @@ const styles = {
     with: '100%'
   },
   nav_bar: {
-      // position: 'relative',
-      // left: '50%',
-      // transform: 'translate(-50%, 0%)',
-      // width: 'fit-content',
+      position: 'relative',
+      left: '50%',
+      transform: 'translate(-50%, 0%)',
+      width: 'fit-content',
       marginBottom: '50px'
   }
 }
