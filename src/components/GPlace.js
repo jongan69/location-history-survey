@@ -61,7 +61,10 @@ function SaveDataToLocalStorage() {
   
   count++;
   const day = startDate.getDay();
-  const month = startDate.getMonth();
+  // const month = startDate.getMonth();
+  const month = startDate.toLocaleString('default', { month: 'long' });
+  console.log(month);
+
  
   // Parse the serialized data back into an aray of objects
   let savedAddress = JSON.parse(localStorage.getItem('savedAddress')) || [];
@@ -80,34 +83,36 @@ function SaveDataToLocalStorage() {
           }
       ]);
     }
+    // Push the new data (whether it be an object or anything else) onto the array
+    savedAddress.push(saveAddress);
+          
+    // Alert the array value
+     // Should be something like [Object array]
+        
+    // Re-serialize the array back into a string and store it in localStorage
+    localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
+
+
+    savedAddress = JSON.parse(localStorage.getItem('savedAddress'))
+    console.log('Address Successfully Saved: ', savedAddress);
+    console.log('Local Storage: ', savedAddress);
+
 
      // Check if saveAddress is empty
      for(var key in savedAddress){
       var isEmpty = true
       if(savedAddress.hasOwnProperty(key)){
+          console.log('savedAddress is not empty');
           let isEmpty = false;
           return isEmpty;
       } else {
-        return isEmpty;
+          console.log('savedAddress is empty');
+          return isEmpty;
       }
   }
 
-    // if saveAddress object is not empty
-    if(isEmpty=false) {
-      
-      // Push the new data (whether it be an object or anything else) onto the array
-      savedAddress.push(saveAddress);
-          
-      // Alert the array value
-      alert(savedAddress);  // Should be something like [Object array]
-          
-      // Re-serialize the array back into a string and store it in localStorage
-      localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
-      console.log('Address Successfully Saved: ', saveAddress);
-      savedAddress = JSON.parse(localStorage.getItem('savedAddress'))
-      console.log('Local Storage: ', savedAddress);
-    }
-  let savedAddresses = saveAddress;
+
+  let savedAddresses = savedAddress;
   return savedAddresses;
 }
   
@@ -131,20 +136,18 @@ function SaveDataToLocalStorage() {
 
       <button onClick={() => {SaveDataToLocalStorage()}} style={{ marginTop: 10 }}> Add Location </button>
 
-      <button onClick={() => {
-        chrome.storage.local.clear(function() {
-          var error = chrome.runtime.lastError;
-          if (error) {
-              console.error(error);
-          }
-      });
+      <button onClick={ () => {
+          let savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
+          savedAddress.length = savedAddress.length - 1
+          localStorage.setItem('savedAddress', JSON.stringify(savedAddress));
+          alert('Updated Survey answers to: ' + [savedAddress]); 
       }
-      } style={{ marginTop: 10 }}> Clear  Data </button>
+       } style={{ marginTop: 10 }}> Clear Last Entered</button>
 
       {
       place && 
       <div style={{ marginTop: 20, lineHeight: '25px' }}>
-      <div><b>Selected Place</b> {place.address}</div>
+      <div><b>Last Selected Place</b> {place.address} </div>
       <b style={{ marginTop: 10, lineHeight: '25px' }}> Past Locations: </b>
       </div>
       }

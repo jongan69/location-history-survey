@@ -57,6 +57,44 @@ function fetchGoogleTimelineData(from, to) {
               })
             )
           })
+
+          const fullResponse = data.items;
+
+          function withoutPropVal(ary, propVal){
+            var a = [];
+            for(var i=0,l=ary.length; i<l; i++){
+              var o = ary[i], g = 1;
+              for(var n in o){
+                if(o[n] === propVal)g = 0;
+              }
+              if(g)a.push(o);
+            }
+            return a;
+          }
+          data.items = withoutPropVal(data.items, "Driving" );
+          
+          
+          function withoutPropVal(ary, propVal){
+            var a = [];
+            for(var i=0,l=ary.length; i<l; i++){
+              var o = ary[i], g = 1;
+              for(var n in o){
+                if(o[n] === propVal)g = 0;
+              }
+              if(g)a.push(o);
+            }
+            return a;
+          }
+          data.items = withoutPropVal(data.items, "Moving" );
+          console.log(data)
+          // data.items = data.items.filter(function(currentObj){
+          //   return items.name !== entityObj["Driving"]||  entityObj["Moving"];
+          // })
+
+          // function drive(input) {
+          //   return input.name === '';
+          // }
+
           resolve(data)
           return  {data};
         })
