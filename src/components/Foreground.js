@@ -4,7 +4,7 @@ import fetchGoogleTimelineData from '../fetch-google-timeline-data';
 
 const to = new Date();
 const from = moment().subtract(13, 'days').calendar();
-var GoogledataLocal = []
+var GoogledataLocal = {}
 var Answers = []
 
 
@@ -47,8 +47,7 @@ function Foreground() {
                             if(GoogledataLocal !== data ){
                                 let GoogledataLocal = data;
 
-                                Answers = localStorage.getItem('savedAddress')
-                                let Answers = JSON.parse(Answers)
+                                let Answers = JSON.parse(localStorage.getItem('savedAddress'))
                                 console.log('Checking Survey', Answers);
 
 
