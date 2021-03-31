@@ -1,12 +1,8 @@
 {
     "name": "location-history-survey",
     "version": "1.0.0",
-    "description": "",
+    "description": "An  app for tracking location",
     "main": "index-popup.js",
-<<<<<<< HEAD
-=======
-    "license": "MIT",
->>>>>>> dev2
     "scripts": {
         "build": "webpack-dev-server",
         "build:prod": "webpack --mode production",
