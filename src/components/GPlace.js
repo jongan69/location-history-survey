@@ -80,7 +80,6 @@ function SaveDataToLocalStorage() {
   
   console.log('Month: ', monthset);
   console.log('Day: ', dayset);
-  console.log('setStartDate(date): ', setStartDate);
   if(place!=null){
     setAddress([
       ...saveAddress,

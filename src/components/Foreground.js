@@ -41,16 +41,21 @@ function Foreground() {
                     .then(data => {
                         console.log('Checking Google Timeline Data', data)
                         let GoogledataLocal = data;
-                        let tbodyData = GoogledataLocal.items
+                        let tbodyData = GoogledataLocal.items;
+
+                        let Answers = chrome.storage.sync.get('savedAddress', function(items) {
+                            console.log('Answers retrieved', items);
+                           });
+
                         console.log('Checking Table', tbodyData, items);
-                            
+                        console.log('Checking Survey', Answers);
+                        
                         if(GoogledataLocal !== data ){
-                                console.log('Checking Survey', Answers);
                                 chrome.storage.sync.get('savedAddress', function(items) {
                                     console.log('Answers retrieved', items);
                                    });
-                                console.log('Checking Table', GoogledataLocal, tbodyData);
-                                return tbodyData;                                
+                            console.log('Checking Table', GoogledataLocal, tbodyData);
+                            return tbodyData;                                
                         } 
                         else {
                                 alert('Got your data!')
@@ -67,7 +72,7 @@ function Foreground() {
             </button>
             </div>
 
-            {!tbodyData ? <div>Waiting..</div> : ifData() }
+            {tbodyData ? <div>Waiting..</div> : ifData() }
         </div>
     )
 }
