@@ -17,6 +17,7 @@ let tbodyData = []
 // }
 function ifData(){
     console.log('ifData hit ', tbodyData);
+    console.log('test ', Answers);
     if(tbodyData!=undefined){
         console.log('Dank ', GoogledataLocal.items);
         return   <div > <Table theadData={items} tbodyData={tbodyData} /> </div>

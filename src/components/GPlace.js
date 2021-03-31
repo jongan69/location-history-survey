@@ -9,14 +9,17 @@ const GPlace = () => {
   const [startDate, setStartDate] = useState(new Date());
   var $pull = localStorage.getItem('savedAddress');
   var savedAddress = typeof $pull!='undefined' ? $pull : [];
-
   let count = 0; 
+  const dayset = !setStartDate ? startDate.getDay() : null;
+  const monthset = startDate.toLocaleString('default', { month: 'long' });
 
   useEffect(() => {
 
     console.log('useEffect is running');  
     console.log('Pull is: ', $pull);
-    console.log('savedAddress is: ', savedAddress);  
+    console.log('savedAddress is: ', savedAddress);
+    
+  
    
     for(var key in savedAddress){
       var isEmpty = true
@@ -71,40 +74,36 @@ const GPlace = () => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
   }
 
-
-
 // Function for setting current state of address and then pushing that array to the savedAddress Object
 function SaveDataToLocalStorage() {
-  // var savedAddress = $pull=='undefined' ? [] : $pull;
   console.log('Button Clicked');
-  const day = startDate.getDay();
-  // const month = startDate.getMonth();
-  const month = startDate.toLocaleString('default', { month: 'long' });
-  console.log(month);
-
-
+  
+  console.log('Month: ', monthset);
+  console.log('Day: ', dayset);
+  console.log('setStartDate(date): ', setStartDate);
   if(place!=null){
     setAddress([
       ...saveAddress,
         {
         id: count,
-        day: day,
-        month: month,
+        day: dayset,
+        month: monthset,
         value: place.address,
         }
         ]);
-      if(savedAddress!=null){
+
+        if(savedAddress==null){
+        localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
+        savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
+        }
+
         console.log('savedAddress was not null so we push to local: ', saveAddress); 
         savedAddress.push(saveAddress);
-      }
-      
-      localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
+        localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
+        savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
+        return savedAddress;
     } 
 
-      // Push the new data (whether it be an object or anything else) onto the array
-      // Re-serialize the array back into a string and store it in localStorage
-              
-        
   if(place==null) {
       console.log('savedAddress was null so we alert: ', savedAddress); 
       alert('You have to enter an address')
@@ -112,11 +111,10 @@ function SaveDataToLocalStorage() {
       console.log('Local Storage: ', savedAddress);  
     }
 
-     
-    
+
     console.log('Local Storage: ', savedAddress);
-    localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
-    savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
+    // localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
+    // savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
     return savedAddress;
 }
   
@@ -150,7 +148,7 @@ function SaveDataToLocalStorage() {
       </div>
       }
 
-      {savedAddress
+      {saveAddress==null
       ? 
       <div>No saveAddress</div> 
       :
