@@ -1,31 +1,42 @@
 import React from 'react';
-import moment from 'moment'
+import moment from 'moment';
 import fetchGoogleTimelineData from '../fetch-google-timeline-data';
+import Table from './Table';
+
 
 const to = new Date();
 const from = moment().subtract(13, 'days').calendar();
+<<<<<<< HEAD
 var GoogledataLocal = {}
 var Answers = {}
+=======
+var GoogledataLocal = []
+let unparsedAns = localStorage.getItem('savedAddress')
+var Answers = unparsedAns ? JSON.parse(unparsedAns ): [];
+
+let items = [ "address", "endTime"];
+let tbodyData = []
+// function BuildTable (){
+//     return  
+// }
+function ifData(){
+    console.log('ifData hit ', tbodyData);
+    if(tbodyData!=undefined){
+        console.log('Dank ', GoogledataLocal.items);
+        return   <div > <Table theadData={items} tbodyData={tbodyData} /> </div>
+    }   
+}
+>>>>>>> dev2
 
 
-function Foreground() {   
+
+function Foreground() {  
     
-    function ifObjectIsEmpty(object){
-        var isEmpty=true;
-        if(JSON.stringify(object)==JSON.stringify({})){
-          // Object is Empty
-          isEmpty = true;
-        }
-        else{
-          //Object is Not Empty
-          isEmpty = false;
-        }
-        return isEmpty;
-     }           
-
+    
     return (
         <div style={styles.main}>
            View your results here:
+<<<<<<< HEAD
             {!Answers || !GoogledataLocal 
             ? 
             <div> Display Data Here... </div>
@@ -34,15 +45,17 @@ function Foreground() {
             <p style={{ marginTop: 5 }}>{JSON.stringify(GoogledataLocal.items)} </p>
             </div> 
             }
+=======
+>>>>>>> dev2
             
             <div style={styles.buttons}>
             <button 
                 style={{ marginTop: 5 }} 
-                onClick={ () =>
-                {
+                onClick={ () => {
                     fetchGoogleTimelineData(from, to)
                     .then(data => {
                         console.log('Checking Google Timeline Data', data)
+<<<<<<< HEAD
                             if(GoogledataLocal !== data ){
                                 let GoogledataLocal = data;
 
@@ -71,6 +84,24 @@ function Foreground() {
                                 
                             } else {
                                 alert('Already got your data!')
+=======
+                        let GoogledataLocal = data;
+                        let tbodyData = GoogledataLocal.items
+                        console.log('Checking Table', tbodyData, items);
+                            
+                        if(GoogledataLocal !== data ){
+                                console.log('Checking Survey', Answers);
+                                chrome.storage.sync.get('savedAddress', function(items) {
+                                    console.log('Answers retrieved', items);
+                                   });
+                                console.log('Checking Table', GoogledataLocal, tbodyData);
+                                return tbodyData;                                
+                        } 
+                        else {
+                                alert('Got your data!')
+                                console.log('Checking Table again', GoogledataLocal,tbodyData);
+                                return tbodyData; 
+>>>>>>> dev2
                             }
                         })
                     .catch(error => {
@@ -78,28 +109,32 @@ function Foreground() {
                     })
                 }
             }> 
-                Get Location Data
-            </button>
-
-            <button style={{ marginTop: 5 }} onClick={() => {alert("This feature is in development!")}}> 
-                Submit Results 
+                Load Data and  Build Table
             </button>
             </div>
+
+            {!tbodyData ? <div>Waiting..</div> : ifData() }
         </div>
     )
 }
 
 const styles = {
     main: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
+    height: '100%',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center'
     },
     buttons: {
-        justifyContent: 'center',
+        flexDirection: 'row',
+        padding: '10px',
         alignItems: 'center',
-        backgroundColor: 'red',
+        backgroundColor: 'gray',
+    },
+    table: {
+        backgroundColor: 'gray',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 }
 

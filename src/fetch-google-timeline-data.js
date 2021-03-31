@@ -5,7 +5,6 @@ import moment from 'moment'
 function fetchGoogleTimelineData(from, to) {
   const fromDate = new Date(from)
   const toDate = new Date(to)
-
   const requests = []
   // eslint-disable-next-line no-unmodified-loop-condition
   for (let date = fromDate; date <= toDate; date.setDate(date.getDate() + 1)) {
@@ -26,7 +25,7 @@ function fetchGoogleTimelineData(from, to) {
         axios.spread((...responses) => {
           const data = {
             items: []
-          }
+            }
           responses.forEach(response => {
             const kml = new DOMParser().parseFromString(response.data, 'application/xml')
             const gj = toGeoJSON.kml(kml)

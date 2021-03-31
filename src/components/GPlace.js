@@ -118,8 +118,8 @@ function SaveDataToLocalStorage() {
 
   return (
     <>
-      <div style={{ padding: "16px" }} >
-      <p> What day ... </p>
+      <div style={{ padding: "16px", marginTop: '10px' }} >
+      <p style={{ alignItems: 'center' }}> What day ... </p>
 
       <DatePicker
       selected={startDate}
@@ -129,7 +129,7 @@ function SaveDataToLocalStorage() {
       </div>
 
       <div>
-      <p> were you at ... </p>
+      <p style={{ alignItems: 'center' }}> were you at ... </p>
       <input style={{ width: '100%' }} type="text" ref={placeInputRef} placeholder="were  you at..." />
       </div>
 
@@ -166,6 +166,9 @@ const styles = {
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center'
+  },
+  text: {
+    alignItems: 'center'
   },
   bar: {
     with: '100%'

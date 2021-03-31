@@ -1,52 +1,25 @@
-import React from "react";
-import { useTable } from "react-table";
+import React from 'react';
+import TableRow from "./TableRow";
+import TableHeadItem from "./TableHead";
 
-import useData from "./useData";
-import useColumns from "./useColumns";
-import "./App.css";
+const Table = ({ theadData, tbodyData }) => {
+    return (
+        <table >
+            <thead>
+                <tr>
+                    {theadData.map((h) => {
+                        return <TableHeadItem key={h} item={h} />;
+                    })}
+                </tr>
+            </thead>
 
-function Table() {
-  const data = useData();
-  const columns = useColumns();
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow
-  } = useTable({ columns, data });
-
-  return (
-    <div className="container">
-      <table {...getTableProps()}>
-        <thead>
-          {headerGroups.map(headerGroup => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map(row => {
-            prepareRow(row);
-
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                  );
+            <tbody>
+                {tbodyData.map((item) => {
+                    return <TableRow key={item.index} data={item.data} />;
                 })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  );
-}
+            </tbody>
+        </table>
+    );
+};
 
 export default Table;
