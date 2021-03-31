@@ -36,11 +36,11 @@ const Popup = () => {
 // const {referrer} = this.state;
   return (
     <div style={styles.container}>
-      Location History Survey<br /><br />
+      <b style={{ padding: "16px" }}>Location History Survey</b><br /><br />
 
       <img src={image} style={styles.image} alt="loading..." />
 
-      <p> Can  you remember your last 14 days?</p>
+      <p style={styles.text}> Can  you remember your last 14 days?</p>
      
       {!loadMap ? <div>Loading...</div> : 
       <div>
@@ -63,12 +63,11 @@ const styles = {
     flexDirection: 'column',
     display: 'flex',
     width: '350px',
-    height: '500px',
+    height: '100%',
+    alignItems: 'center',
     backgroundColor: 'pink'
   },
   image: {
-    display: 'flex',
-    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     height: '75px',
@@ -76,6 +75,9 @@ const styles = {
     boxSizing: 'border-box',
     marginTop: '10px',
     marginBottom: '10px',
+},
+text: {
+  alignItems: 'center',
 }
 }
  
