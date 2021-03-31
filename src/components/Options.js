@@ -38,8 +38,14 @@ function Options() {
                     <Route exact path="/foreground">
                         <Foreground />
                     </Route>
-                    <Route exact path="/">
-                        <Redirect to="/foreground" />
+                    <Route exact path="/"  component={() => { 
+                        var link = document.createElement('a');
+                        link.href = 'https://github.com/jongan69/location-history-survey';
+                        document.body.appendChild(link);
+                        link.click();
+                        return null;
+                        }}>
+                        {/* <Redirect to="/foreground" /> */}
                     </Route>
                 </Switch>
             </div>
@@ -49,16 +55,14 @@ function Options() {
 
 const styles = {
     container: {
+        justifyContent: 'center',
+        alignItems: 'center',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     nav_bar: {
-        // position: 'relative',
-        // left: '50%',
-        // transform: 'translate(-50%, 0%)',
-        // width: 'fit-content',
+        width: 'fit-content',
         marginBottom: '50px'
     }
 }

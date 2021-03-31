@@ -33,6 +33,7 @@ function Foreground() {
         <div style={styles.main}>
            View your results here:
             
+
             <div style={styles.buttons}>
             <button 
                 style={{ marginTop: 5 }} 
@@ -71,20 +72,20 @@ function Foreground() {
                 Load Data and  Build Table
             </button>
             </div>
-
-            {tbodyData ? <div>Waiting..</div> : ifData() }
+            {tbodyData ? ifData() : <div>Waiting..</div> }
         </div>
     )
 }
 
 const styles = {
     main: {
-    height: '100%',
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center'
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     buttons: {
+        justifyContent: 'center',
         flexDirection: 'row',
         padding: '10px',
         alignItems: 'center',
