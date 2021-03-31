@@ -93,8 +93,11 @@ function SaveDataToLocalStorage() {
         value: place.address,
         }
         ]);
-      savedAddress.push(saveAddress);
-      console.log('savedAddress was not null so we push to local: ', saveAddress); 
+      if(savedAddress!=null){
+        console.log('savedAddress was not null so we push to local: ', saveAddress); 
+        savedAddress.push(saveAddress);
+      }
+      
       localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
     } 
 
