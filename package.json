@@ -3,7 +3,6 @@
     "version": "1.0.0",
     "description": "",
     "main": "index-popup.js",
-    "license": "ur-mom",
     "scripts": {
         "build": "webpack-dev-server",
         "build:prod": "webpack --mode production",

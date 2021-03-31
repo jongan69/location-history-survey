@@ -7,34 +7,33 @@ const GPlace = () => {
   const [place, setPlace] = useState(null);
   const [saveAddress, setAddress] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
+  const day = startDate.getDay();
+  const month = startDate.toLocaleString('default', { month: 'long' });
   var $pull = localStorage.getItem('savedAddress');
-  var savedAddress = typeof $pull!='undefined' ? $pull : [];
-
+  var savedAddress = $pull!=null ? JSON.parse($pull) : [];
   let count = 0; 
 
   useEffect(() => {
-
     console.log('useEffect is running');  
     console.log('Pull is: ', $pull);
-    console.log('savedAddress is: ', savedAddress);  
-   
+    console.log('Last saveAddress is: ', saveAddress);
+
     for(var key in savedAddress){
+
       var isEmpty = true
       if(savedAddress.hasOwnProperty(key)){
           console.log('savedAddress is not empty');
           let isEmpty = false;
           return isEmpty;
-
       } else {
           console.log('savedAddress is empty');
           return isEmpty;
       }
 
     }
-
     initPlaceAPI();  
     console.log('Current saveAddress is: ' , saveAddress );
-  }, [saveAddress]);
+  }, [savedAddress]);
  
 
   // initialize the google place autocomplete
@@ -71,50 +70,49 @@ const GPlace = () => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
   }
 
-
-
 // Function for setting current state of address and then pushing that array to the savedAddress Object
 function SaveDataToLocalStorage() {
-  // var savedAddress = $pull=='undefined' ? [] : $pull;
-  console.log('Button Clicked');
-  const day = startDate.getDay();
-  // const month = startDate.getMonth();
-  const month = startDate.toLocaleString('default', { month: 'long' });
-  console.log(month);
-
-
   if(place!=null){
     setAddress([
       ...saveAddress,
-        {
+      {
         id: count,
         day: day,
         month: month,
         value: place.address,
-        }
-        ]);
-      savedAddress.push(saveAddress);
-      console.log('savedAddress was not null so we push to local: ', saveAddress); 
-      localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
-    } 
+      }
+    ]);
+  }
+  savedAddress = !saveAddress ? JSON.parse($pull) : saveAddress;
+  console.log('Button Clicked');  
+  count++
 
-      // Push the new data (whether it be an object or anything else) onto the array
-      // Re-serialize the array back into a string and store it in localStorage
-              
+// Check and see if savedAddress is updated to saveAddress but isnt null
+  if(JSON.stringify(savedAddress)!=JSON.stringify(saveAddress)&&savedAddress!=null){
+    savedAddress.push(saveAddress);
+    localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
+    console.log('Last savedAddress is: ', saveAddress); 
+    savedAddress = JSON.parse(localStorage.getItem('savedAddress'))
+  }    
+ 
+  // if(JSON.stringify(savedAddress)!=JSON.stringify(saveAddress)&&saveAddress!=null&&typeof savedAddress!='undefined'){
+  //   savedAddress.push(saveAddress);
+  //   localStorage.setItem('savedAddress', JSON.stringify(savedAddress));
+  //   console.log('Last savedAddress is: ', savedAddress); 
+  //   savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
+  // }
+
         
   if(place==null) {
-      console.log('savedAddress was null so we alert: ', savedAddress); 
-      alert('You have to enter an address')
-      console.log('Sate of saveAddress: ', saveAddress);
-      console.log('Local Storage: ', savedAddress);  
-    }
+    console.log('savedAddress was null so we alert: ', savedAddress); 
+    alert('You have to enter an address')
+    console.log('Sate of saveAddress: ', saveAddress);
+    console.log('Local Storage: ', savedAddress);  
+  }
 
-     
-    
-    console.log('Local Storage: ', savedAddress);
-    localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
-    savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
-    return savedAddress;
+  console.log('Local Storage: ', savedAddress);
+  console.log('saveAddress Variable: ', saveAddress)
+  return savedAddress;
 }
   
 
@@ -147,12 +145,12 @@ function SaveDataToLocalStorage() {
       </div>
       }
 
-      {savedAddress
+      {!savedAddress
       ? 
       <div>No saveAddress</div> 
       :
       <ul>
-      {saveAddress.map(item => (
+      {savedAddress.map(item => (
       <li key={item.id}>You went to {item.value} on {item.day} of {item.month}</li>
         ))}
       </ul> 

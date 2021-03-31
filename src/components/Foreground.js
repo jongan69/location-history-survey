@@ -5,7 +5,7 @@ import fetchGoogleTimelineData from '../fetch-google-timeline-data';
 const to = new Date();
 const from = moment().subtract(13, 'days').calendar();
 var GoogledataLocal = {}
-var Answers = []
+var Answers = {}
 
 
 function Foreground() {   
@@ -31,8 +31,7 @@ function Foreground() {
             <div> Display Data Here... </div>
             : 
             <div> 
-            <p style={{ marginTop: 5 }}>{JSON.stringify(GoogledataLocal.items)}</p>
-            <p style={{ marginTop: 5 }}>{JSON.stringify(Answers)}</p>
+            <p style={{ marginTop: 5 }}>{JSON.stringify(GoogledataLocal.items)} </p>
             </div> 
             }
             
@@ -46,26 +45,19 @@ function Foreground() {
                         console.log('Checking Google Timeline Data', data)
                             if(GoogledataLocal !== data ){
                                 let GoogledataLocal = data;
+
                                 let answersUnparsed = localStorage.getItem('savedAddress')
                                 let Answers = JSON.parse(answersUnparsed)
                                 console.log('Checking Survey', Answers);
 
 
                                 var url = 'data:text/json;charset=utf-8,' + JSON.stringify(data);
+                                
                                 chrome.downloads.download({
                                     url: url,
                                     filename: 'Your_Google_Data.json'
                                 });
 
-                                // var url2 = 'data:text/json;charset=utf-8,' + JSON.stringify(Answers);
-                                // chrome.downloads.download({
-                                //     url: url2,
-                                //     filename: 'Your_Answers.json'
-                                // });
-
-                                // let Answers = chrome.storage.sync.get(['savedAddress'], function(items) {
-                                //    console.log('Answers retrieved', items);
-                                //   });
                                 if(Answers==0){
                                     alert('You didnt do the survey!')
                                     alert('Youve been to ' + JSON.stringify(GoogledataLocal.items.length) + ' locations in the past 30 days')
