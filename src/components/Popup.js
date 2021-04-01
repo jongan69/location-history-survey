@@ -83,7 +83,7 @@ const Popup = () => {
                 Check for Timeline Data
             </button>
 
-      <p style={styles.text}> First CCheck for Google Timeline data using the button above, if you have data take the quiz to see if you remember where you've been!</p>
+      <p style={styles.text}> First CCheck for Google Timeline data using the button above, if you have data take the quiz to see if you remember where you've been in the past 14 days!</p>
      
       {!loadMap 
       ? 
