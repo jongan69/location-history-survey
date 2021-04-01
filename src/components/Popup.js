@@ -83,7 +83,7 @@ const Popup = () => {
                 Check for Timeline Data
             </button>
 
-      <p style={styles.text}> To take the suvey, simply enter the locations you can remember for any day in the last 14 days and we'll  compare is to your Google Timeline!</p>
+      <p style={styles.text}> First CCheck for Google Timeline data using the button above, if you have data take the quiz to see if you remember where you've been!</p>
      
       {!loadMap 
       ? 
