@@ -4,6 +4,8 @@ import fetchGoogleTimelineData from '../fetch-google-timeline-data';
 import GPlace from './GPlace';
 import image from  './plane.gif';
 import moment from 'moment';
+import Table from './Table';
+
 
 const to = new Date();
 const from = moment().subtract(13, 'days').calendar();
@@ -26,6 +28,8 @@ const loadGoogleMapScript = (callback) => {
 
 
 
+
+
  
 
 const Popup = () => {
@@ -39,9 +43,6 @@ const Popup = () => {
 
   
 
-
-
-// const {referrer} = this.state;
   return (
     <div style={styles.container}>
       <b style={{ padding: "10px" }}>Location History Survey</b><br /><br />
@@ -55,19 +56,15 @@ const Popup = () => {
                     .then(data => {
                         console.log('Checking Google Timeline Data', data)
                         let GoogledataLocal = data;
-                        let tbodyData = GoogledataLocal.items;
-
-                        let Answers = localStorage.getItem('savedAddress')
-                        console.log('Answers retrieved', Answers);
-
-                        console.log('Checking Table', tbodyData);
-                        console.log('Checking Survey', Answers);
+                        let tbodyData = localStorage.setItem(GoogledataLocal, function(items){
+                          console.log('Google timeline data set to: ', items);
+                        });
                        
                         if(GoogledataLocal == data ){
-                          alert('Got your data!')
+                          alert('Youve got data!')
                           alert('Youve been to ' + JSON.stringify(GoogledataLocal.items.length) + ' locations in the past 14 days')
                           console.log('Checking Table again', GoogledataLocal, tbodyData);
-                          return GoogledataLocal, tbodyData, Answers;                            
+                          return GoogledataLocal, tbodyData;                            
                         } 
                         else {
                           alert('Make sure youve  logged into timeline!')
@@ -83,7 +80,7 @@ const Popup = () => {
                 Check for Timeline Data
             </button>
 
-      <p style={styles.text}> First CCheck for Google Timeline data using the button above, if you have data take the quiz to see if you remember where you've been in the past 14 days!</p>
+      <p style={styles.text}> First Check for Google Timeline data using the button above, if you have data take the quiz to see if you remember where you've been in the past 14 days!</p>
      
       {!loadMap 
       ? 
@@ -127,6 +124,7 @@ const styles = {
     boxSizing: 'border-box',
     marginTop: '10px',
     marginBottom: '10px',
+    padding: '5px'
 },
 text: {
   alignItems: 'center',

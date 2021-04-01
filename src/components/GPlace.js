@@ -1,6 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import DatePicker, { CalendarContainer } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import fetchGoogleTimelineData from '../fetch-google-timeline-data';
+import moment from 'moment';
+import Table from './Table';
+
+const to = new Date();
+const from = moment().subtract(13, 'days').calendar();
 
 const GPlace = () => {
   const placeInputRef = useRef(null);
@@ -15,7 +21,7 @@ const GPlace = () => {
 
   useEffect(() => {
 
-    console.log('useEffect is running');  
+    console.log('useEffect is has run: ', count, ' times');  
     console.log('Pull is: ', $pull);
     console.log('savedAddress is: ', savedAddress);
     
@@ -68,6 +74,37 @@ const GPlace = () => {
     );
   };
 
+  const TableBuilder = () => {
+    fetchGoogleTimelineData(from, to)
+    .then(data => {
+        console.log('Checking Google Timeline Data', data)
+        let GoogledataLocal = data;
+        localStorage.setItem(GoogledataLocal);
+        let tbodyData = GoogledataLocal.items;
+
+        let Answers = localStorage.getItem('savedAddress')
+        console.log('Answers retrieved', saveAddress);
+
+        console.log('Checking Table', tbodyData);
+        console.log('Checking Survey', saveAddress);
+       
+        if(GoogledataLocal == data && saveAddress != null){
+          alert('Youve got data!')
+          alert('Youve been to ' + JSON.stringify(GoogledataLocal.items.length) + ' locations in the past 14 days')
+          alert('You answered ' + JSON.stringify(savedAddress.length)+ 'addresses')
+          console.log('Checking Table again', GoogledataLocal, savedAddress);
+          return GoogledataLocal, tbodyData, saveAddress;                            
+        } 
+        else {
+          alert('Make sure youve  logged into timeline!')
+          console.log('no google data ', GoogledataLocal, tbodyData);
+          return tbodyData;     
+            }
+        })
+    .catch(error => {
+        alert(`Failed to fetch data: ${error}`)
+    })
+}
 
 // Sleep
   const sleep = (milliseconds) => {
