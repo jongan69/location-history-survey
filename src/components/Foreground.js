@@ -19,9 +19,9 @@ function ifData(){
     console.log('ifData hit ', tbodyData);
     console.log('test ', Answers);
     if(tbodyData!=undefined){
-        console.log('Dank ', GoogledataLocal.items);
+        console.log('Google Timeline Items ', tbodyData);
         return   <div > <Table theadData={items} tbodyData={tbodyData} /> </div>
-    }   
+    } 
 }
 
 
@@ -31,8 +31,15 @@ function Foreground() {
     
     return (
         <div style={styles.main}>
-           View your results here:
-            
+            <b  style={{ marginTop: '10px' }}> View your results here:</b>
+          
+
+           <div style={{ padding: '10px' }}>
+           {tbodyData ? <div>You haven't answered...</div> : <div>Got your survey!</div> }
+            {GoogledataLocal ? <div>Waiting  Google Timeline Data...</div> :  <div>Got your Timeline data!</div> }
+            {(GoogledataLocal!=undefined) ? <div> Waiting for table data</div> : ifData()}
+            </div>
+
 
             <div style={styles.buttons}>
             <button 
@@ -44,25 +51,28 @@ function Foreground() {
                         let GoogledataLocal = data;
                         let tbodyData = GoogledataLocal.items;
 
-                        let Answers = chrome.storage.sync.get('savedAddress', function(items) {
-                            console.log('Answers retrieved', items);
-                           });
+                        // let Answers = chrome.storage.sync.get('savedAddress', function(items) {
+                        //     console.log('Answers retrieved', items);
+                        //    });
+                        // chrome.storage.sync.get('savedAddress', function(items) {
+                        //     console.log('Answers retrieved', items);
+                        //    });
+
+                           let Answers = localStorage.getItem('savedAddress')
+                           console.log('Answers retrieved', savedAddress);
 
                         console.log('Checking Table', tbodyData, items);
                         console.log('Checking Survey', Answers);
-                        
+                       
                         if(GoogledataLocal !== data ){
-                                chrome.storage.sync.get('savedAddress', function(items) {
-                                    console.log('Answers retrieved', items);
-                                   });
-                            console.log('Checking Table', GoogledataLocal, tbodyData);
+                            console.log('If no google data ', GoogledataLocal, tbodyData);
                             return tbodyData;                                
                         } 
                         else {
                                 alert('Got your data!')
                                 alert('Youve been to ' + JSON.stringify(GoogledataLocal.items.length) + ' locations in the past 14 days')
-                                console.log('Checking Table again', GoogledataLocal,tbodyData);
-                                return tbodyData; 
+                                console.log('Checking Table again', GoogledataLocal, tbodyData);
+                                return GoogledataLocal, tbodyData, Answers;
                             }
                         })
                     .catch(error => {
@@ -73,7 +83,6 @@ function Foreground() {
                 Load Data and  Build Table
             </button>
             </div>
-            {tbodyData ? ifData() : <div>Waiting..</div> }
         </div>
     )
 }

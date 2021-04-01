@@ -1,7 +1,13 @@
 // import HorizontalCarousel from './HorizontalCarousel.js';
 import React, { useState, useEffect, setState } from 'react';
+import fetchGoogleTimelineData from '../fetch-google-timeline-data';
 import GPlace from './GPlace';
 import image from  './plane.gif';
+import moment from 'moment';
+
+const to = new Date();
+const from = moment().subtract(13, 'days').calendar();
+// var GoogledataLocal = []
 
 // API key of the google map
 const GOOGLE_MAP_API_KEY = 'AIzaSyBFAMWOu-6ZKxWkZwC9Q7n0ekfJ8Szc85A';
@@ -17,6 +23,8 @@ const loadGoogleMapScript = (callback) => {
     googleMapScript.addEventListener("load", callback);
   }
 }
+
+
 
  
 
@@ -39,6 +47,41 @@ const Popup = () => {
       <b style={{ padding: "10px" }}>Location History Survey</b><br /><br />
       <p style={styles.text}> Can  you remember your last 14 days?</p>
       <img src={image} style={styles.image} alt="loading..." />
+      
+      <button 
+                style={{ marginTop: 5 }} 
+                onClick={ () => {
+                    fetchGoogleTimelineData(from, to)
+                    .then(data => {
+                        console.log('Checking Google Timeline Data', data)
+                        let GoogledataLocal = data;
+                        let tbodyData = GoogledataLocal.items;
+
+                        let Answers = localStorage.getItem('savedAddress')
+                        console.log('Answers retrieved', Answers);
+
+                        console.log('Checking Table', tbodyData);
+                        console.log('Checking Survey', Answers);
+                       
+                        if(GoogledataLocal == data ){
+                          alert('Got your data!')
+                          alert('Youve been to ' + JSON.stringify(GoogledataLocal.items.length) + ' locations in the past 14 days')
+                          console.log('Checking Table again', GoogledataLocal, tbodyData);
+                          return GoogledataLocal, tbodyData, Answers;                            
+                        } 
+                        else {
+                          alert('Make sure youve  logged into timeline!')
+                          console.log('no google data ', GoogledataLocal, tbodyData);
+                          return tbodyData;     
+                            }
+                        })
+                    .catch(error => {
+                        alert(`Failed to fetch data: ${error}`)
+                    })
+                }
+            }> 
+                Check for Timeline Data
+            </button>
 
       <p style={styles.text}> To take the suvey, simply enter the locations you can remember for any day in the last 14 days and we'll  compare is to your Google Timeline!</p>
      

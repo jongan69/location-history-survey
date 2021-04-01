@@ -136,10 +136,12 @@ function SaveDataToLocalStorage() {
       <input style={{ width: '80%' }} type="text" ref={placeInputRef} placeholder="were  you at..." />
       </div>
 
-      <div>
+      <div style={styles.text}>
       <button onClick={() => {SaveDataToLocalStorage()}} style={{ marginTop: 10 }}> Add Location </button>
       <button onClick={ localStorage.clear() } style={{ marginTop: 10 }}> Clear Addreeses </button>
       </div>
+
+
       
       {
       place && 
