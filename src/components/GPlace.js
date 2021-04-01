@@ -120,8 +120,9 @@ function SaveDataToLocalStorage() {
 
   return (
     <>
-      <div style={{ padding: "16px", marginTop: '10px' }} >
-      <p style={{ alignItems: 'center' }}> What day ... </p>
+
+      <div style={styles.main} >
+      <p style={styles.text}> What day ... </p>
 
       <DatePicker
       selected={startDate}
@@ -130,15 +131,16 @@ function SaveDataToLocalStorage() {
       />
       </div>
 
-      <div>
-      <p style={{ alignItems: 'center' }}> were you at ... </p>
-      <input style={{ width: '100%' }} type="text" ref={placeInputRef} placeholder="were  you at..." />
+      <div style={styles.text}>
+      <p> were you at ... </p>
+      <input style={{ width: '80%' }} type="text" ref={placeInputRef} placeholder="were  you at..." />
       </div>
 
+      <div>
       <button onClick={() => {SaveDataToLocalStorage()}} style={{ marginTop: 10 }}> Add Location </button>
-
       <button onClick={ localStorage.clear() } style={{ marginTop: 10 }}> Clear Addreeses </button>
-
+      </div>
+      
       {
       place && 
       <div style={{ marginTop: 20, lineHeight: '25px' }}>
@@ -163,6 +165,12 @@ function SaveDataToLocalStorage() {
 };
 
 const styles = {
+  main: {
+    padding: "10px", 
+    marginTop: '5px', 
+    alignItems: 'center', 
+    justifyContent: 'center'
+  },
   container: {
       display: 'flex',
       flexDirection: 'column',
@@ -170,7 +178,8 @@ const styles = {
       alignItems: 'center'
   },
   text: {
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   bar: {
     with: '100%'

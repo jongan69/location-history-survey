@@ -1,5 +1,6 @@
 {
     "name": "location-history-survey",
+    "license": "MIT",
     "version": "1.0.0",
     "description": "An  app for tracking location",
     "main": "index-popup.js",

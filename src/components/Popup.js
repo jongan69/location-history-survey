@@ -36,21 +36,24 @@ const Popup = () => {
 // const {referrer} = this.state;
   return (
     <div style={styles.container}>
-      <b style={{ padding: "16px" }}>Location History Survey</b><br /><br />
-
+      <b style={{ padding: "10px" }}>Location History Survey</b><br /><br />
+      <p style={styles.text}> Can  you remember your last 14 days?</p>
       <img src={image} style={styles.image} alt="loading..." />
 
-      <p style={styles.text}> Can  you remember your last 14 days?</p>
+      <p style={styles.text}> To take the suvey, simply enter the locations you can remember for any day in the last 14 days and we'll  compare is to your Google Timeline!</p>
      
-      {!loadMap ? <div>Loading...</div> : 
-      <div>
-      <GPlace />
-      <button onClick={ () => {chrome.tabs.create( { url: chrome.extension.getURL('/foreground.html') })} }> 
-      View Results!
-      </button>
-      <p >
+      {!loadMap 
+      ? 
+      <div>Loading API...</div> 
+      : 
+      <div style={{ alignItems: 'center', justifyContent: 'center' }}>
+       <GPlace />
+       <button style={{ padding: "10px" }} onClick={ () => {chrome.tabs.create( { url: chrome.extension.getURL('/foreground.html') })} }> 
+        View Results!
+       </button>
+       <p>
         This is a React Chrome Extension being built by Blockspaces under grant by USF for proof of concept on contact tracing.
-    </p>
+       </p>
       </div>
     }
      
@@ -62,6 +65,9 @@ const Popup = () => {
 }
 
 const styles = {
+  main: {
+
+  },
   container: {
     flexDirection: 'column',
     display: 'flex',
@@ -81,6 +87,7 @@ const styles = {
 },
 text: {
   alignItems: 'center',
+  padding: '5px',
 }
 }
  

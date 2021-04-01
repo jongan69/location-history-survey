@@ -9,8 +9,8 @@ const from = moment().subtract(13, 'days').calendar();
 var GoogledataLocal = []
 let unparsedAns = localStorage.getItem('savedAddress')
 var Answers = unparsedAns ? JSON.parse(unparsedAns ): [];
+let items = [ "address", "endTime", "Status"];
 
-let items = [ "address", "endTime"];
 let tbodyData = []
 // function BuildTable (){
 //     return  
@@ -60,6 +60,7 @@ function Foreground() {
                         } 
                         else {
                                 alert('Got your data!')
+                                alert('Youve been to ' + JSON.stringify(GoogledataLocal.items.length) + ' locations in the past 14 days')
                                 console.log('Checking Table again', GoogledataLocal,tbodyData);
                                 return tbodyData; 
                             }
@@ -83,16 +84,16 @@ const styles = {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: 'gray',
     },
     buttons: {
         justifyContent: 'center',
         flexDirection: 'row',
         padding: '10px',
         alignItems: 'center',
-        backgroundColor: 'gray',
     },
     table: {
-        backgroundColor: 'gray',
+        backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center'
     }
