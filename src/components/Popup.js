@@ -4,7 +4,7 @@ import fetchGoogleTimelineData from '../fetch-google-timeline-data';
 import GPlace from './GPlace';
 import image from  './plane.gif';
 import moment from 'moment';
-import Table from './Table';
+// import Table from './Table';
 
 let GoogledataLocal = [];
 let tbodyData = [];
