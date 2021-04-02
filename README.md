@@ -1,6 +1,15 @@
 # location-history-survey
 A Browser extension being developed by Blockspaces under research grant from USF
 
+# Requirements:
+Mac:
+- brew
+- npm
+
+Windows:
+- Choco
+- npm
+
 # To build/run the extension
 1. Git clone the repo
 2. cd into the project
