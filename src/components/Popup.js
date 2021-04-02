@@ -6,7 +6,8 @@ import image from  './plane.gif';
 import moment from 'moment';
 import Table from './Table';
 
-
+let GoogledataLocal = [];
+let tbodyData = [];
 const to = new Date();
 const from = moment().subtract(13, 'days').calendar();
 // var GoogledataLocal = []
@@ -54,33 +55,33 @@ const Popup = () => {
                 onClick={ () => {
                     fetchGoogleTimelineData(from, to)
                     .then(data => {
-                        console.log('Checking Google Timeline Data', data)
+                        console.log('Checking Google Timeline Data', data);
                         let GoogledataLocal = data;
-                        let tbodyData = localStorage.setItem(GoogledataLocal, function(items){
-                          console.log('Google timeline data set to: ', items);
-                        });
+
                        
                         if(GoogledataLocal == data ){
-                          alert('Youve got data!')
-                          alert('Youve been to ' + JSON.stringify(GoogledataLocal.items.length) + ' locations in the past 14 days')
-                          console.log('Checking Table again', GoogledataLocal, tbodyData);
-                          return GoogledataLocal, tbodyData;                            
-                        } 
-                        else {
-                          alert('Make sure youve  logged into timeline!')
-                          console.log('no google data ', GoogledataLocal, tbodyData);
-                          return tbodyData;     
-                            }
+                          alert('Youve been to ' + JSON.stringify(GoogledataLocal.items.length) + ' locations in the past 14 days');
+                          alert('You may take the extension quiz to see what you remember');
+                          console.log('Checking Table again', GoogledataLocal);
+                          // localStorage.setItem(GoogledataLocal, function(savedAddress){
+                          //   console.log('Test: ', savedAddress )
+                          // })
+                          return GoogledataLocal;                            
+                          } 
                         })
                     .catch(error => {
-                        alert(`Failed to fetch data: ${error}`)
+                        alert(`Failed to fetch data: ${error}`, 'Make sure youve  logged into timeline!')
+                        console.log('no google data ', GoogledataLocal);
+                        return GoogledataLocal;     
                     })
                 }
             }> 
                 Check for Timeline Data
             </button>
 
-      <p style={styles.text}> First Check for Google Timeline data using the button above, if you have data take the quiz to see if you remember where you've been in the past 14 days!</p>
+      <p style={styles.text}> 
+        First Check for Google Timeline data using the button above, if you have data take the quiz to see if you remember where you've been in the past 14 days!
+      </p>
      
       {!loadMap 
       ? 

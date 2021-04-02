@@ -83,17 +83,17 @@ const GPlace = () => {
         let tbodyData = GoogledataLocal.items;
 
         let Answers = localStorage.getItem('savedAddress')
-        console.log('Answers retrieved', saveAddress);
+        console.log('Answers retrieved', savedAddress);
 
         console.log('Checking Table', tbodyData);
-        console.log('Checking Survey', saveAddress);
+        console.log('Checking Survey', savedAddress);
        
-        if(GoogledataLocal == data && saveAddress != null){
+        if(GoogledataLocal == data && savedAddress != null){
           alert('Youve got data!')
           alert('Youve been to ' + JSON.stringify(GoogledataLocal.items.length) + ' locations in the past 14 days')
           alert('You answered ' + JSON.stringify(savedAddress.length)+ 'addresses')
           console.log('Checking Table again', GoogledataLocal, savedAddress);
-          return GoogledataLocal, tbodyData, saveAddress;                            
+          return GoogledataLocal, tbodyData, savedAddress;                            
         } 
         else {
           alert('Make sure youve  logged into timeline!')
@@ -131,6 +131,7 @@ function SaveDataToLocalStorage() {
         if(savedAddress==null){
         localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
         savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
+        TableBuilder();
         }
 
         console.log('savedAddress was not null so we push to local: ', saveAddress); 
