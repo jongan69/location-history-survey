@@ -45,7 +45,6 @@ function Options() {
                         link.click();
                         return null;
                         }}>
-                        {/* <Redirect to="/foreground" /> */}
                     </Route>
                 </Switch>
             </div>
