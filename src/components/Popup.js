@@ -89,9 +89,6 @@ const Popup = () => {
       : 
       <div style={{ alignItems: 'center', justifyContent: 'center' }}>
        <GPlace />
-       <button style={{ padding: "10px" }} onClick={ () => {chrome.tabs.create( { url: chrome.extension.getURL('/foreground.html') })} }> 
-        View Results!
-       </button>
        <p>
         This is a React Chrome Extension being built by Blockspaces under grant by USF for proof of concept on contact tracing.
        </p>

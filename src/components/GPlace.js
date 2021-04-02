@@ -10,14 +10,22 @@ const from = moment().subtract(13, 'days').calendar();
 
 const GPlace = () => {
   const placeInputRef = useRef(null);
+
   const [place, setPlace] = useState(null);
-  const [saveAddress, setAddress] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
+  const [saveAddress, setAddress] = useState([]);
+
   var $pull = localStorage.getItem('savedAddress');
   var savedAddress = typeof $pull!='undefined' ? $pull : [];
   let count = 0; 
+
   const dayset = !setStartDate ? startDate.getDay() : null;
   const monthset = startDate.toLocaleString('default', { month: 'long' });
+
+  let GoogledataLocal = [];
+  let tbodyData = [];
+  const to = new Date();
+  const from = moment().subtract(13, 'days').calendar();
 
   useEffect(() => {
 
@@ -75,6 +83,7 @@ const GPlace = () => {
   };
 
   const TableBuilder = () => {
+    // First Grab Google Data
     fetchGoogleTimelineData(from, to)
     .then(data => {
         console.log('Checking Google Timeline Data', data)
@@ -89,9 +98,6 @@ const GPlace = () => {
         console.log('Checking Survey', savedAddress);
        
         if(GoogledataLocal == data && savedAddress != null){
-          alert('Youve got data!')
-          alert('Youve been to ' + JSON.stringify(GoogledataLocal.items.length) + ' locations in the past 14 days')
-          alert('You answered ' + JSON.stringify(savedAddress.length)+ 'addresses')
           console.log('Checking Table again', GoogledataLocal, savedAddress);
           return GoogledataLocal, tbodyData, savedAddress;                            
         } 
@@ -100,10 +106,38 @@ const GPlace = () => {
           console.log('no google data ', GoogledataLocal, tbodyData);
           return tbodyData;     
             }
-        })
+        }
+        )
     .catch(error => {
         alert(`Failed to fetch data: ${error}`)
     })
+// Create Switch statement for conditional rendering
+// switch(typeof GoogledataLocal) {
+//   case 'author':
+//     return <AuthorLayout>What will you write today?</AuthorLayout>
+//   case 'admin':
+//     return <AdminLayout>Your latest reports </AdminLayout>
+//   case 'moderator':
+//     return <ModeratorLayout>Your ongoing events</ModeratorLayout>
+//   default:
+//     return <GuestLayout>Your current feed</GuestLayout>
+// }
+if(!GoogledataLocal){
+  alert('Google data local doesnt exist')
+}
+
+if(!savedAddress){
+  alert('Saved Address doesnt exist')
+}
+
+if(GoogledataLocal&&savedAddress){
+  console.log('Got both pieces of data: ', GoogledataLocal, savedAddress)
+  alert(GoogledataLocal)
+  alert(savedAddress)
+}
+
+
+return <div> Aye yooooo </div>
 }
 
 // Sleep
@@ -131,7 +165,6 @@ function SaveDataToLocalStorage() {
         if(savedAddress==null){
         localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
         savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
-        TableBuilder();
         }
 
         console.log('savedAddress was not null so we push to local: ', saveAddress); 
@@ -199,7 +232,9 @@ function SaveDataToLocalStorage() {
         ))}
       </ul> 
       }
-      
+       <button style={{ padding: "10px" }} onClick={TableBuilder()}> 
+        View Results!
+       </button>
     </>
   );
 };
