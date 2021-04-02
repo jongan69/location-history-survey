@@ -137,13 +137,37 @@ if(GoogledataLocal&&savedAddress){
 }
 
 
-return <div> Aye yooooo </div>
+return  <div > <Table theadData={items} tbodyData={tbodyData} /> </div>
 }
 
 // Sleep
   const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
   }
+
+  // Compare Data
+  let compare = (arr1,arr2) => {
+    //If not array then return false
+    if(!arr1  || !arr2) return false;
+     
+    if(arr1.length !== arr2.length) return false;
+   
+    let result;
+   
+     arr1.forEach(e1 => arr2.forEach( e2 => {  
+            if(e1.length > 1 && e2.length){
+               //If nested array then recursively compare it
+               result = compare(e1,  e2);
+            }else if(e1 !== e2 ){
+               result = false
+            }else{
+               result = true
+            }
+       })
+     );
+   
+    return result 
+ }
 
 // Function for setting current state of address and then pushing that array to the savedAddress Object
 function SaveDataToLocalStorage() {
@@ -209,7 +233,7 @@ function SaveDataToLocalStorage() {
 
       <div style={styles.text}>
       <button onClick={() => {SaveDataToLocalStorage()}} style={{ marginTop: 10 }}> Add Location </button>
-      <button onClick={ localStorage.clear() } style={{ marginTop: 10 }}> Clear Addreeses </button>
+      {/* <button onClick={ localStorage.clear() } style={{ marginTop: 10 }}> Clear Addreeses </button> */}
       </div>
 
 
