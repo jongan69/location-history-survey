@@ -9,8 +9,13 @@ const to = new Date();
 const from = moment().subtract(13, 'days').calendar();
 
 const GPlace = () => {
-  const placeInputRef = useRef(null);
 
+  // Sleep
+  const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  }
+  const placeInputRef = useRef(null);
+  let items = [ "address", "endTime", "Status"];
   const [place, setPlace] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
   const [saveAddress, setAddress] = useState([]);
@@ -28,12 +33,9 @@ const GPlace = () => {
   const from = moment().subtract(13, 'days').calendar();
 
   useEffect(() => {
-
     console.log('useEffect is has run: ', count, ' times');  
     console.log('Pull is: ', $pull);
     console.log('savedAddress is: ', savedAddress);
-    
-  
    
     for(var key in savedAddress){
       var isEmpty = true
@@ -53,7 +55,6 @@ const GPlace = () => {
     console.log('Current saveAddress is: ' , saveAddress );
   }, [saveAddress]);
  
-
   // initialize the google place autocomplete
   const initPlaceAPI = () => {
     let autocomplete = new window.google.maps.places.Autocomplete(placeInputRef.current);
@@ -82,135 +83,125 @@ const GPlace = () => {
     );
   };
 
+
+
+  function SaveDataToLocalStorage() {
+    console.log('Button Clicked');
+    console.log('Month: ', monthset);
+    console.log('Day: ', dayset);
+    if(place!=null){
+      setAddress([
+        ...saveAddress,
+          {
+          id: count,
+          day: dayset,
+          month: monthset,
+          value: place.address,
+          }
+          ]);
+  
+          if(savedAddress==null){
+          localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
+          savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
+          }
+  
+          console.log('savedAddress was not null so we push to local: ', saveAddress); 
+          savedAddress.push(saveAddress);
+          localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
+          savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
+          return savedAddress;
+      } 
+  
+    if(place==null) {
+        console.log('savedAddress was null so we alert: ', savedAddress); 
+        alert('You have to enter an address')
+        console.log('Sate of saveAddress: ', saveAddress);
+        console.log('Local Storage: ', savedAddress);  
+      }
+  
+  
+      console.log('Local Storage: ', savedAddress);
+      // localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
+      // savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
+      return savedAddress;
+  }
+
+
   const TableBuilder = () => {
     // First Grab Google Data
     fetchGoogleTimelineData(from, to)
     .then(data => {
         console.log('Checking Google Timeline Data', data)
         let GoogledataLocal = data;
-        localStorage.setItem(GoogledataLocal);
+        // localStorage.setItem(GoogledataLocal);
         let tbodyData = GoogledataLocal.items;
 
         let Answers = localStorage.getItem('savedAddress')
         console.log('Answers retrieved', savedAddress);
 
         console.log('Checking Table', tbodyData);
-        console.log('Checking Survey', savedAddress);
+        console.log('Checking Survey', Answers);
        
         if(GoogledataLocal == data && savedAddress != null){
           console.log('Checking Table again', GoogledataLocal, savedAddress);
+          alert('Current Table info: ', GoogledataLocal, savedAddress);
           return GoogledataLocal, tbodyData, savedAddress;                            
         } 
         else {
-          alert('Make sure youve  logged into timeline!')
+          alert('Make sure youve  logged into timeline and have answered at least one address!')
           console.log('no google data ', GoogledataLocal, tbodyData);
-          return tbodyData;     
+             
             }
+        if(!GoogledataLocal){
+              alert('Google data local doesnt exist')
+          }
+            
+          if(!savedAddress){
+              alert('Saved Address doesnt exist')
+          }
+            
+          if(GoogledataLocal&&savedAddress){
+              console.log('Got both pieces of data: ', GoogledataLocal, savedAddress)
+              alert(GoogledataLocal)
+              alert(savedAddress)
+          }
+          return tbodyData;  
         }
         )
     .catch(error => {
         alert(`Failed to fetch data: ${error}`)
     })
-// Create Switch statement for conditional rendering
-// switch(typeof GoogledataLocal) {
-//   case 'author':
-//     return <AuthorLayout>What will you write today?</AuthorLayout>
-//   case 'admin':
-//     return <AdminLayout>Your latest reports </AdminLayout>
-//   case 'moderator':
-//     return <ModeratorLayout>Your ongoing events</ModeratorLayout>
-//   default:
-//     return <GuestLayout>Your current feed</GuestLayout>
-// }
-if(!GoogledataLocal){
-  alert('Google data local doesnt exist')
-}
-
-if(!savedAddress){
-  alert('Saved Address doesnt exist')
-}
-
-if(GoogledataLocal&&savedAddress){
-  console.log('Got both pieces of data: ', GoogledataLocal, savedAddress)
-  alert(GoogledataLocal)
-  alert(savedAddress)
+  return  <div > <Table theadData={items} tbodyData={tbodyData} /> </div>
 }
 
 
-return  <div > <Table theadData={items} tbodyData={tbodyData} /> </div>
-}
-
-// Sleep
-  const sleep = (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds))
-  }
 
   // Compare Data
-  let compare = (arr1,arr2) => {
-    //If not array then return false
-    if(!arr1  || !arr2) return false;
+//   let compare = (arr1,arr2) => {
+//     //If not array then return false
+//     if(!arr1  || !arr2) return false;
      
-    if(arr1.length !== arr2.length) return false;
+//     if(arr1.length !== arr2.length) return false;
    
-    let result;
+//     let result;
    
-     arr1.forEach(e1 => arr2.forEach( e2 => {  
-            if(e1.length > 1 && e2.length){
-               //If nested array then recursively compare it
-               result = compare(e1,  e2);
-            }else if(e1 !== e2 ){
-               result = false
-            }else{
-               result = true
-            }
-       })
-     );
+//      arr1.forEach(e1 => arr2.forEach( e2 => {  
+//             if(e1.length > 1 && e2.length){
+//                //If nested array then recursively compare it
+//                result = compare(e1,  e2);
+//             }else if(e1 !== e2 ){
+//                result = false
+//             }else{
+//                result = true
+//             }
+//        })
+//      );
    
-    return result 
- }
+//     return result 
+//  }
 
 // Function for setting current state of address and then pushing that array to the savedAddress Object
-function SaveDataToLocalStorage() {
-  console.log('Button Clicked');
-  
-  console.log('Month: ', monthset);
-  console.log('Day: ', dayset);
-  if(place!=null){
-    setAddress([
-      ...saveAddress,
-        {
-        id: count,
-        day: dayset,
-        month: monthset,
-        value: place.address,
-        }
-        ]);
 
-        if(savedAddress==null){
-        localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
-        savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
-        }
-
-        console.log('savedAddress was not null so we push to local: ', saveAddress); 
-        savedAddress.push(saveAddress);
-        localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
-        savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
-        return savedAddress;
-    } 
-
-  if(place==null) {
-      console.log('savedAddress was null so we alert: ', savedAddress); 
-      alert('You have to enter an address')
-      console.log('Sate of saveAddress: ', saveAddress);
-      console.log('Local Storage: ', savedAddress);  
-    }
-
-
-    console.log('Local Storage: ', savedAddress);
-    // localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
-    // savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
-    return savedAddress;
-}
   
 
   return (
@@ -256,9 +247,9 @@ function SaveDataToLocalStorage() {
         ))}
       </ul> 
       }
-       <button style={{ padding: "10px" }} onClick={TableBuilder()}> 
+       {/* <button style={{ padding: "10px" }} onClick={TableBuilder()}> 
         View Results!
-       </button>
+       </button> */}
     </>
   );
 };
