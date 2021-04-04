@@ -93,13 +93,15 @@ const Popup = () => {
           Check for Timeline Data
       </button>
 
-      <p style={styles.text}> 
-        First Check for Google Timeline data using the button above, if you have data take the quiz to see if you remember where you've been in the past 14 days!
-      </p>
+     
      
       {(!loadMap||!checkData)
       ? 
-      <div>No data</div> 
+      <div> 
+        <p style={styles.text}> 
+          First Check for Google Timeline data using the button above, if you have data take the quiz to see if you remember where you've been in the past 14 days!
+        </p>
+    </div> 
       : 
       <div style={{ alignItems: 'center', justifyContent: 'center' }}>
         {alert('checkData was true! You have Timeline data so you may take the survey to see what you remember' )}

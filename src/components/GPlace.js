@@ -5,32 +5,24 @@ import fetchGoogleTimelineData from '../fetch-google-timeline-data';
 import moment from 'moment';
 import Table from './Table';
 
-const to = new Date();
-const from = moment().subtract(13, 'days').calendar();
-
 const GPlace = () => {
 
-  // Sleep
-  const sleep = (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds))
-  }
   const placeInputRef = useRef(null);
   let items = [ "address", "endTime", "Status"];
   const [place, setPlace] = useState(null);
-  const [startDate, setStartDate] = useState(new Date());
   const [saveAddress, setAddress] = useState([]);
-
   var $pull = localStorage.getItem('savedAddress');
   var savedAddress = typeof $pull!='undefined' ? $pull : [];
-  let count = 0; 
 
-  const dayset = !setStartDate ? startDate.getDay() : null;
-  const monthset = startDate.toLocaleString('default', { month: 'long' });
+
+  const [startDate, setStartDate] = useState(new Date());
 
   let GoogledataLocal = [];
   let tbodyData = [];
   const to = new Date();
   const from = moment().subtract(13, 'days').calendar();
+  var count = !saveAddress.id ? 0 : savedAddress.id; 
+
 
   useEffect(() => {
     console.log('useEffect is has run: ', count, ' times');  
@@ -54,6 +46,12 @@ const GPlace = () => {
     initPlaceAPI();  
     console.log('Current saveAddress is: ' , saveAddress );
   }, [saveAddress]);
+
+   // Sleep
+   const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  }
+
  
   // initialize the google place autocomplete
   const initPlaceAPI = () => {
@@ -86,44 +84,49 @@ const GPlace = () => {
 
 
   function SaveDataToLocalStorage() {
-    console.log('Button Clicked');
-    console.log('Month: ', monthset);
-    console.log('Day: ', dayset);
-    if(place!=null){
-      setAddress([
-        ...saveAddress,
-          {
-          id: count,
-          day: dayset,
-          month: monthset,
-          value: place.address,
-          }
-          ]);
+    let dayset = startDate.getDate();
+    let monthset = startDate.toLocaleString('default', { month: 'long' });
+    alert('Adding Address: '  + dayset + ' of ' + monthset)
+    console.log('Adding Address: ' + dayset + ' of ' + monthset);
+    try{
+      if(place!=null){
+        count++;
+        alert('Place is: ', place)
+        setAddress([
+          ...saveAddress,
+            {
+            id: count,
+            day: dayset,
+            month: monthset,
+            value: place.address,
+            }
+            ]);
   
-          if(savedAddress==null){
+        if(savedAddress.length<0){
+          alert('savedAddress was null, setting savedAdress to local storage')
           localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
           savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
-          }
+          return savedAddress, count;
+        }
   
-          console.log('savedAddress was not null so we push to local: ', saveAddress); 
-          savedAddress.push(saveAddress);
-          localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
-          savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
-          return savedAddress;
+        savedAddress.push(saveAddress);
+        localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
+        savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
+        return savedAddress, count;
       } 
   
-    if(place==null) {
-        console.log('savedAddress was null so we alert: ', savedAddress); 
-        alert('You have to enter an address')
-        console.log('Sate of saveAddress: ', saveAddress);
-        console.log('Local Storage: ', savedAddress);  
-      }
-  
-  
       console.log('Local Storage: ', savedAddress);
-      // localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
-      // savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
-      return savedAddress;
+      return savedAddress, count;
+    }
+    catch {
+      if(place==null) {
+        console.log('savedAddress was null so we alert: ', savedAddress); 
+        alert('You have to enter an address first')
+        console.log('Sate of saveAddress: ', saveAddress);
+        console.log('Local Storage: ', savedAddress); 
+      }
+    }
+    return savedAddress, count;
   }
 
 
@@ -223,8 +226,8 @@ const GPlace = () => {
       </div>
 
       <div style={styles.text}>
-      <button onClick={() => {SaveDataToLocalStorage()}} style={{ marginTop: 10 }}> Add Location </button>
-      {/* <button onClick={ localStorage.clear() } style={{ marginTop: 10 }}> Clear Addreeses </button> */}
+      <button onClick={SaveDataToLocalStorage} style={{ marginTop: 10 }}> Add Location </button>
+      {/* <button onClick={ localStorage.clear() } style={{ marginTop: 10 }}> Clear All Addreeses </button> */}
       </div>
 
 
@@ -243,7 +246,7 @@ const GPlace = () => {
       :
       <ul>
       {saveAddress.map(item => (
-      <li key={item.id}>You went to {item.value} on {item.day} of {item.month}</li>
+      <li key={item.id}>{item.id}: You went to {item.value} on {item.day} of {item.month}</li>
         ))}
       </ul> 
       }
