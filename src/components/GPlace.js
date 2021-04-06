@@ -3,7 +3,7 @@ import DatePicker, { CalendarContainer } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import fetchGoogleTimelineData from '../fetch-google-timeline-data';
 import moment from 'moment';
-import Table from './Table';
+import BasicTable from './Table';
 
 const GPlace = () => {
 
@@ -23,6 +23,7 @@ const GPlace = () => {
   const from = moment().subtract(13, 'days').calendar();
   var count = !saveAddress.id ? 0 : savedAddress.id; 
 
+  
 
   useEffect(() => {
     console.log('useEffect is has run: ', count, ' times');  
@@ -152,29 +153,26 @@ const GPlace = () => {
         } 
         else {
           alert('Make sure youve  logged into timeline and have answered at least one address!')
-          console.log('no google data ', GoogledataLocal, tbodyData);
-             
+          console.log('no google data ', GoogledataLocal, tbodyData); 
             }
+
         if(!GoogledataLocal){
-              alert('Google data local doesnt exist')
+          console.log('Google data local doesnt exist')
           }
             
-          if(!savedAddress){
-              alert('Saved Address doesnt exist')
+          if(!saveAddress){
+            console.log('Saved Address doesnt exist')
           }
             
-          if(GoogledataLocal&&savedAddress){
-              console.log('Got both pieces of data: ', GoogledataLocal, savedAddress)
-              alert(GoogledataLocal)
-              alert(savedAddress)
+          if(GoogledataLocal&&saveAddress){
+              alert('Got both pieces of data: ', GoogledataLocal, savedAddress)
           }
-          return tbodyData;  
+          return GoogledataLocal, savedAddress, tbodyData;  
         }
         )
     .catch(error => {
         alert(`Failed to fetch data: ${error}`)
     })
-  return  <div > <Table theadData={items} tbodyData={tbodyData} /> </div>
 }
 
 
@@ -244,15 +242,19 @@ const GPlace = () => {
       ? 
       <div>No saveAddress</div> 
       :
+      <div>
       <ul>
       {saveAddress.map(item => (
-      <li key={item.id}>{item.id}: You went to {item.value} on {item.day} of {item.month}</li>
+      <li key={item.id}>You went to {item.value} on {item.day} of {item.month}</li>
         ))}
       </ul> 
-      }
-       {/* <button style={{ padding: "10px" }} onClick={TableBuilder()}> 
+      <button style={{ padding: "10px" }} onClick={TableBuilder()}> 
         View Results!
-       </button> */}
+       </button>
+      </div>
+      }
+
+      {!GoogledataLocal||!saveAddress ? <div style={styles.table}> Results will display here </div> : <div  style={styles.table}><BasicTable/></div>}
     </>
   );
 };
@@ -274,8 +276,12 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center'
   },
+  table :{
+    width: '300px',
+    padding: "5px"
+  },
   bar: {
-    with: '100%'
+    width: '100%'
   },
   nav_bar: {
       position: 'relative',
