@@ -19,11 +19,11 @@ function createData(answer, googletimeline, result) {
 }
 
 const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+  createData('Address 1', 159, 6.0, 24, 4.0),
+  createData('Address 2', 237, 9.0, 37, 4.3),
+  createData('Address 3', 262, 16.0, 24, 6.0),
+  createData('Address 4', 305, 3.7, 67, 4.3),
+  createData('Address 5', 356, 16.0, 49, 3.9),
 ];
 
 export default function BasicTable() {
