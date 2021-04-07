@@ -176,7 +176,7 @@ const GPlace = () => {
 }
 
 function viewResults() {
-  if(!GoogledataLocal||!savedAddress) {
+  if(!GoogledataLocal||!saveAddress) {
     alert('No Results found!');
   } else {
     setClick(true);
@@ -275,14 +275,11 @@ function viewResults() {
 
 const styles = {
   main: {
-    padding: "10px", 
-    marginTop: '5px', 
     alignItems: 'center', 
     justifyContent: 'center'
   },
   container: {
-      display: 'flex',
-      flexDirection: 'column',
+
       justifyContent: 'center',
       alignItems: 'center'
   },
@@ -293,19 +290,10 @@ const styles = {
   table :{
     justifyContent: 'center',
     alignItems: 'center',
-    width: '300px',
-    padding: "10px", 
   },
   bar: {
     width: '100%'
   },
-  nav_bar: {
-      position: 'relative',
-      left: '50%',
-      transform: 'translate(-50%, 0%)',
-      width: 'fit-content',
-      marginBottom: '50px'
-  }
 }
  
 export default GPlace;

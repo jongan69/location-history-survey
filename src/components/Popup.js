@@ -131,7 +131,6 @@ const styles = {
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'pink'
   },
   image: {
     justifyContent: 'center',

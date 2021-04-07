@@ -10,9 +10,12 @@ import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 100,
+    minWidth: 30,
   },
 });
+
+const to = new Date();
+const from = moment().subtract(13, 'days').calendar();
 
 function createData( id, answer, google, result) {
   return { id, answer, google, result };
