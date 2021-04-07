@@ -12,7 +12,7 @@ const GPlace = () => {
   const [place, setPlace] = useState(null);
   const [saveAddress, setAddress] = useState([]);
   var $pull = localStorage.getItem('savedAddress');
-  var savedAddress = typeof $pull!='undefined' ? $pull : [];
+  var savedAddress = typeof $pull!='null' ? $pull : [];
   const [click, setClick] = useState(false);
 
   const [startDate, setStartDate] = useState(new Date());
@@ -91,7 +91,7 @@ const GPlace = () => {
     try{
       if(place!=null){
         count++;
-        alert('Place is: ', place)
+        alert('Place is: ', JSON.stringify(place))
         setAddress([
           ...saveAddress,
             {
@@ -115,9 +115,10 @@ const GPlace = () => {
         return savedAddress, count;
       } 
   
-      console.log('Local Storage: ', savedAddress);
+      console.log('Local Storage is: ', savedAddress);
       return savedAddress, count;
     }
+    
     catch {
       if(place==null) {
         console.log('savedAddress was null so we alert: ', savedAddress); 
@@ -175,7 +176,7 @@ const GPlace = () => {
 }
 
 function viewResults() {
-  if(!GoogledataLocal||!saveAddress) {
+  if(!GoogledataLocal||!savedAddress) {
     alert('No Results found!');
   } else {
     setClick(true);
