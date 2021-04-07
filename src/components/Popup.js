@@ -126,7 +126,6 @@ const styles = {
   },
   container: {
     flexDirection: 'column',
-    display: 'flex',
     width: '350px',
     height: '100%',
     alignItems: 'center',

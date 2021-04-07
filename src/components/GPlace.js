@@ -183,6 +183,9 @@ function viewResults() {
   }
 }
 
+function compareData() {
+  
+}
 
 
   // Compare Data

@@ -31,7 +31,7 @@ function fetchGoogleTimelineData(from, to) {
             const gj = toGeoJSON.kml(kml)
             gj.features.forEach(feature => {
               const timeBegin = moment(feature.properties.timespan.begin)
-              const timeEnd = moment(feature.properties.timespan.end).format("MMM Do YY")
+              const timeEnd = moment(feature.properties.timespan.end)
               const duration = moment.duration(timeEnd.diff(timeBegin)).asMilliseconds()
               data.items.push({
                 name: feature.properties.name,
@@ -40,6 +40,7 @@ function fetchGoogleTimelineData(from, to) {
                 timeEnd: feature.properties.timespan.end,
                 duration: duration,
                 category: feature.properties.Category,
+                distance: feature.properties.Distance
               })
             })
           })
