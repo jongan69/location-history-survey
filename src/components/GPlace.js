@@ -104,7 +104,7 @@ const GPlace = () => {
   
         if(savedAddress.length<0){
           alert('savedAddress was null, setting savedAdress to local storage')
-          localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
+          localStorage.setItem('savedAddress', JSON.stringify(setAddress.saveAddress));
           savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
           return savedAddress, count;
         }
@@ -115,10 +115,9 @@ const GPlace = () => {
         return savedAddress, count;
       } 
   
-      console.log('Local Storage is: ', savedAddress);
+      console.log('Local Storage is : ', savedAddress);
       return savedAddress, count;
     }
-    
     catch {
       if(place==null) {
         console.log('savedAddress was null so we alert: ', savedAddress); 
