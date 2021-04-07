@@ -91,33 +91,29 @@ const GPlace = () => {
     console.log('Adding Address: ' + dayset + ' of ' + monthset);
     try{
       if(place!=null){
-        count++;
-        alert('Place is: ', JSON.stringify(place))
         setAddress([
           ...saveAddress,
             {
-            id: count,
-            day: dayset,
-            month: monthset,
-            value: place.address,
-            }
-            ]);
+                date: JSON.stringify(startDate),
+                address: place.address,
+              }
+          ]);
   
-        if(savedAddress.length<0){
+        if(saveAddress.items.length<0){
           alert('savedAddress was null, setting savedAdress to local storage')
-          localStorage.setItem('savedAddress', JSON.stringify(setAddress.saveAddress));
+          localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
           savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
-          return savedAddress, count;
+          return savedAddress;
         }
   
-        savedAddress.push(saveAddress);
+        savedAddress.push(saveAddress.items);
         localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
         savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
-        return savedAddress, count;
+        return savedAddress;
       } 
   
       console.log('Local Storage is : ', savedAddress);
-      return savedAddress, count;
+      return savedAddress;
     }
     catch {
       if(place==null) {
@@ -127,7 +123,7 @@ const GPlace = () => {
         console.log('Local Storage: ', savedAddress); 
       }
     }
-    return savedAddress, count;
+    return savedAddress;
   }
 
 //  Unsure if will delete this yet
@@ -178,7 +174,7 @@ const GPlace = () => {
 // Checks for required data, if data present, begin sorting algorithm
 function viewResults() {
   if(!GoogledataLocal||!saveAddress) {
-    alert('No Results found!');
+    alert('No data to display found!');
   } else {
     setClick(true);
       /*!
@@ -364,14 +360,15 @@ function viewResults() {
       </div>
       }
 
+
       {saveAddress==null
       ? 
-      <div>No saveAddress</div> 
+      <div>No savedAddress</div> 
       :
-      <div>
+      <div style={{ justifyContent: 'center' }}>
       <ul>
       {saveAddress.map(item => (
-      <li key={item.id}>You went to {item.value} on {item.day} of {item.month}</li>
+      <li key={item.id}> You went to {item.address} on {item.date} </li>
         ))}
       </ul> 
       <button style={{ padding: "10px" }} onClick={viewResults}> 

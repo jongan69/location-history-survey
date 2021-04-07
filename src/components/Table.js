@@ -12,7 +12,7 @@ import moment from 'moment';
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 30,
+    minWidth: 25,
   },
 });
 
@@ -24,9 +24,9 @@ function createData( id, answer, google, result) {
 }
 
 const rows = [
-  createData('id','Answer date & Address Address', 'Google TL date & Google TL address', 'correct/incorrect'),
-  createData('id','Answer date & Address Address', 'Google TL date & Google TL address', 'correct/incorrect'),
-  createData('id','Answer date & Address Address', 'Google TL date & Google TL address', 'correct/incorrect')
+  createData('Date','Answer Address', 'Google TL address', 'correct/incorrect'),
+  createData('Date','Answer Address', 'Google TL address', 'correct/incorrect'),
+  createData('Date','Answer Address', 'Google TL address', 'correct/incorrect')
 ];
 
 export default function BasicTable() {
@@ -37,7 +37,7 @@ export default function BasicTable() {
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>id</TableCell>
+            <TableCell>Date</TableCell>
             <TableCell>Answer</TableCell>
             <TableCell align="right">Google  Timeline</TableCell>
             <TableCell align="right">Result</TableCell>

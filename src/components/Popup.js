@@ -103,7 +103,7 @@ const Popup = () => {
         </p>
     </div> 
       : 
-      <div style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <div >
         {alert('checkData was true! You have Timeline data so you may take the survey to see what you remember' )}
         {console.log('check data is ', checkData, ' set data is ', setData)}
        <GPlace />
