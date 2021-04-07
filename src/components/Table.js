@@ -10,20 +10,18 @@ import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 50,
+    minWidth: 100,
   },
 });
 
-function createData(answer, googletimeline, result) {
-  return { answer, googletimeline, result };
+function createData( id, answer, google, result) {
+  return { id, answer, google, result };
 }
 
 const rows = [
-  createData('Address 1', 159, 6.0, 24, 4.0),
-  createData('Address 2', 237, 9.0, 37, 4.3),
-  createData('Address 3', 262, 16.0, 24, 6.0),
-  createData('Address 4', 305, 3.7, 67, 4.3),
-  createData('Address 5', 356, 16.0, 49, 3.9),
+  createData('id','Answer date & Address Address', 'Google TL date & Google TL address', 'correct/incorrect'),
+  createData('id','Answer date & Address Address', 'Google TL date & Google TL address', 'correct/incorrect'),
+  createData('id','Answer date & Address Address', 'Google TL date & Google TL address', 'correct/incorrect')
 ];
 
 export default function BasicTable() {
@@ -34,18 +32,20 @@ export default function BasicTable() {
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
+            <TableCell>id</TableCell>
             <TableCell>Answer</TableCell>
-            <TableCell align="right">Google Data</TableCell>
+            <TableCell align="right">Google  Timeline</TableCell>
             <TableCell align="right">Result</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow key={row.name}>
+            <TableRow key={row.id}>
               <TableCell component="th" scope="row">
-                {row.answer}
+                {row.id}
               </TableCell>
-              <TableCell align="right">{row.googletimeline}</TableCell>
+              <TableCell align="right">{row.answer}</TableCell>
+              <TableCell align="right">{row.google}</TableCell>
               <TableCell align="right">{row.result}</TableCell>
             </TableRow>
           ))}

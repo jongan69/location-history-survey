@@ -130,6 +130,7 @@ const styles = {
     width: '350px',
     height: '100%',
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: 'pink'
   },
   image: {
@@ -137,7 +138,6 @@ const styles = {
     alignItems: 'center',
     height: '75px',
     width: '150px',
-    boxSizing: 'border-box',
     marginTop: '10px',
     marginBottom: '10px',
     padding: '5px'
