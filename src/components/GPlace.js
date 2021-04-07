@@ -5,6 +5,7 @@ import fetchGoogleTimelineData from '../fetch-google-timeline-data';
 import moment from 'moment';
 import BasicTable from './Table';
 
+
 const GPlace = () => {
 
   const placeInputRef = useRef(null);
@@ -23,8 +24,7 @@ const GPlace = () => {
   const from = moment().subtract(13, 'days').calendar();
   var count = !saveAddress.id ? 0 : savedAddress.id; 
 
-  
-
+// UseEffect runs periodically over component lifecycle
   useEffect(() => {
     console.log('useEffect is has run: ', count, ' times');  
     console.log('Pull is: ', $pull);
@@ -47,13 +47,14 @@ const GPlace = () => {
     console.log('Current savedAddress is: ' , savedAddress );
   }, [saveAddress]);
 
-   // Sleep
+
+  // Sleep
    const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
   }
 
  
-  // initialize the google place autocomplete
+// initialize the google place autocomplete
   const initPlaceAPI = () => {
     let autocomplete = new window.google.maps.places.Autocomplete(placeInputRef.current);
     new window.google.maps.event.addListener(autocomplete, "place_changed", function () {
@@ -82,7 +83,7 @@ const GPlace = () => {
   };
 
 
-
+// This function is responsible for adding the user input to local storage
   function SaveDataToLocalStorage() {
     let dayset = startDate.getDate();
     let monthset = startDate.toLocaleString('default', { month: 'long' });
@@ -129,7 +130,7 @@ const GPlace = () => {
     return savedAddress, count;
   }
 
-
+//  Unsure if will delete this yet
   const TableBuilder = () => {
     // First Grab Google Data
     fetchGoogleTimelineData(from, to)
@@ -174,50 +175,165 @@ const GPlace = () => {
     })
 }
 
+// Checks for required data, if data present, begin sorting algorithm
 function viewResults() {
   if(!GoogledataLocal||!saveAddress) {
     alert('No Results found!');
   } else {
     setClick(true);
-  }
-}
+      /*!
+      * Find the differences between two objects and push to a new object
+      * (c) 2019 Chris Ferdinandi & Jascha Brinkmann, MIT License, https://gomakethings.com & https://twitter.com/jaschaio
+      * @param  {Object} obj1 The original object
+      * @param  {Object} obj2 The object to compare against it
+      * @return {Object}      An object of differences between the two
+      */
+      var diff = function (obj1, obj2) {
+    // Make sure an object to compare is provided
+      if (!obj2 || Object.prototype.toString.call(obj2) !== '[object Object]') {
+        return obj1;
+      }
+      //
+      // Variables
+      //
+      var diffs = {};
+      var key;
+      //
+      // Methods
+      //
+      /*
+      *
+      * Check if two arrays are equal
+      * @param  {Array}   arr1 The first array
+      * @param  {Array}   arr2 The second array
+      * @return {Boolean}      If true, both arrays are equal
+      */
+      var arraysMatch = function (arr1, arr2) {
+      // Check if the arrays are the same length
+      if (arr1.length !== arr2.length) return false;
 
-function compareData() {
-  
-}
+      // Check if all items exist and are in the same order
+      for (var i = 0; i < arr1.length; i++) {
+          if (arr1[i] !== arr2[i]) return false;
+      }
+
+      // Otherwise, return true
+      return true;
+
+    };
+      /*
+      *
+      * Compare two items and push non-matches to object
+      * @param  {*}      item1 The first item
+      * @param  {*}      item2 The second item
+      * @param  {String} key   The key in our object
+      */
+      var compare = function (item1, item2, key) {
+
+      // Get the object type
+      var type1 = Object.prototype.toString.call(item1);
+      var type2 = Object.prototype.toString.call(item2);
+
+      // If type2 is undefined it has been removed
+      if (type2 === '[object Undefined]') {
+          diffs[key] = null;
+          return;
+      }
+
+      // If items are different types
+      if (type1 !== type2) {
+          diffs[key] = item2;
+          return;
+      }
+
+      // If an object, compare recursively
+      if (type1 === '[object Object]') {
+          var objDiff = diff(item1, item2);
+          if (Object.keys(objDiff).length > 0) {
+              diffs[key] = objDiff;
+          }
+          return;
+      }
+
+      // If an array, compare
+      if (type1 === '[object Array]') {
+          if (!arraysMatch(item1, item2)) {
+              diffs[key] = item2;
+          }
+          return;
+      }
+
+      // Else if it's a function, convert to a string and compare
+      // Otherwise, just compare
+      if (type1 === '[object Function]') {
+          if (item1.toString() !== item2.toString()) {
+              diffs[key] = item2;
+          }
+      } else {
+          if (item1 !== item2 ) {
+              diffs[key] = item2;
+          }
+      }
+    };
 
 
-  // Compare Data
-//   let compare = (arr1,arr2) => {
-//     //If not array then return false
-//     if(!arr1  || !arr2) return false;
-     
-//     if(arr1.length !== arr2.length) return false;
-   
-//     let result;
-   
-//      arr1.forEach(e1 => arr2.forEach( e2 => {  
-//             if(e1.length > 1 && e2.length){
-//                //If nested array then recursively compare it
-//                result = compare(e1,  e2);
-//             }else if(e1 !== e2 ){
-//                result = false
-//             }else{
-//                result = true
-//             }
-//        })
-//      );
-   
-//     return result 
-//  }
+      //
+      // Compare our objects
+      //
 
-// Function for setting current state of address and then pushing that array to the savedAddress Object
+      // Loop through the first object
+      for (key in obj1) {
+          if (obj1.hasOwnProperty(key)) {
+            compare(obj1[key], obj2[key], key);
+      }
+    }
 
-  
+      // Loop through the second object and find missing items
+      for (key in obj2) {
+          if (obj2.hasOwnProperty(key)) {
+            if (!obj1[key] && obj1[key] !== obj2[key] ) {
+              diffs[key] = obj2[key];
+          }
+      }
+    }
+
+      // Return the object of differences
+      return diffs;
+    };
+      var order1 = {
+      sandwich: 'tuna',
+      chips: true,
+      drink: 'soda',
+      order: 1,
+      toppings: ['pickles', 'mayo', 'lettuce'],
+      details: {
+      name: 'Chris',
+      phone: '555-555-5555',
+      email: 'no@thankyou.com'
+      },
+      otherVal1: '1'
+    };
+
+      var order2 = {
+        sandwich: 'turkey',
+        chips: true,
+        drink: 'soda',
+        order: 2,
+        toppings: ['pickles', 'lettuce'],
+        details: {
+          name: 'Jon',
+          phone: '(555) 555-5555',
+          email: 'yes@please.com'
+        },
+        otherVal2: '2'
+      };
+      console.log(diff(order1, order2));
+      }
+    }
+
 
   return (
     <>
-
       <div style={styles.main} >
       <p style={styles.text}> What day ... </p>
 
