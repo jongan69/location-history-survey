@@ -31,7 +31,7 @@ function Foreground() {
     
     return (
         <div style={styles.main}>
-            <b  style={{ marginTop: '10px' }}> View your results here:</b>
+            {/* <b  style={{ marginTop: '10px' }}> View your results here:</b>
           
 
            <div style={{ padding: '10px' }}>
@@ -82,7 +82,7 @@ function Foreground() {
             }> 
                 Load Data and  Build Table
             </button>
-            </div>
+            </div> */}
         </div>
     )
 }
@@ -93,7 +93,6 @@ const styles = {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'gray',
     },
     buttons: {
         justifyContent: 'center',
