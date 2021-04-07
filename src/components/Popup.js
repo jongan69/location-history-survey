@@ -129,7 +129,11 @@ const styles = {
     width: '350px',
     height: '100%',
     alignItems: 'center',
+<<<<<<< HEAD
     justifyContent: 'center',
+=======
+    backgroundColor: 'pink'
+>>>>>>> da950a0 (Starting to test the extension on chrome os)
   },
   image: {
     justifyContent: 'center',
