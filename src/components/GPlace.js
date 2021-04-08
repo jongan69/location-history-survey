@@ -9,7 +9,7 @@ import BasicTable from './Table';
 const GPlace = () => {
 
   const placeInputRef = useRef(null);
-  let items = [ "address", "endTime", "Status"];
+  // let items = [ "address", "endTime", "Status"];
   const [place, setPlace] = useState(null);
   const [saveAddress, setAddress] = useState([]);
   var $pull = localStorage.getItem('savedAddress');
@@ -48,9 +48,9 @@ const GPlace = () => {
 
 
   // Sleep
-   const sleep = (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds))
-  }
+  //  const sleep = (milliseconds) => {
+  //   return new Promise(resolve => setTimeout(resolve, milliseconds))
+  // }
 
  
 // initialize the google place autocomplete
@@ -59,6 +59,7 @@ const GPlace = () => {
     new window.google.maps.event.addListener(autocomplete, "place_changed", function () {
       let place = autocomplete.getPlace();
       setPlace({
+        name: place.description,
         address: place.formatted_address,
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng()
@@ -93,6 +94,7 @@ const GPlace = () => {
         setAddress([
           ...saveAddress,
             {
+                name: place.name,
                 date: JSON.stringify(startDate),
                 address: place.address,
               }
@@ -130,12 +132,12 @@ const GPlace = () => {
     // First Grab Google Data
     fetchGoogleTimelineData(from, to)
     .then(data => {
-        console.log('Checking Google Timeline Data', data)
+        console.log('Getting Google Timeline Data', data)
         let GoogledataLocal = data;
         // localStorage.setItem(GoogledataLocal);
         let tbodyData = GoogledataLocal.items;
 
-        let Answers = localStorage.getItem('savedAddress')
+        let Answers = saveAddress
         console.log('Answers retrieved', savedAddress);
 
         console.log('Checking Table', tbodyData);
@@ -161,6 +163,7 @@ const GPlace = () => {
             
           if(GoogledataLocal&&saveAddress){
               alert('Got both pieces of data: ', GoogledataLocal, savedAddress)
+              setClick(true);
           }
           return GoogledataLocal, savedAddress, tbodyData;  
         }
@@ -177,22 +180,8 @@ const GPlace = () => {
 
 
 // Checks for required data, if data present, begin sorting algorithm
-function viewResults(obj1,obj2) {
-  try{
-    if(obj1||obj2===null||undefined) {
-      alert('No data to display found!');
-    } 
+
   
-    else {
-      console.log(JSON.stringify(obj1));
-      console.log(JSON.stringify(obj2));
-      setClick(true);
-    }
-  }
-  catch{
-    alert('There was an error')
-  }
-}
 
 
 
@@ -250,7 +239,26 @@ function viewResults(obj1,obj2) {
       </ul> 
       </div>
       }
-      <button style={{ padding: "10px" }} onClick={viewResults(GoogledataLocal,saveAddress)}> 
+
+      <button style={{ padding: "10px" }} onClick={() => {
+        let obj1 = GoogledataLocal;
+        let obj2 = saveAddress
+        try{
+          if(obj1||obj2===null) {
+            TableBuilder();
+            alert('No data to display found! Please try again in a few seconds');
+          } 
+        
+          else {
+            console.log(JSON.stringify(obj1));
+            console.log(JSON.stringify(obj2));
+            setClick(true);
+          }
+        }
+        catch{
+          alert('There was an error')
+        }
+      }}> 
         View Results!
        </button>
 
@@ -258,7 +266,7 @@ function viewResults(obj1,obj2) {
       ? 
       <div style={styles.table}> Results will display here </div> 
       : 
-      <div  style={styles.table}>  <BasicTable/> </div>
+      <div  style={styles.table}>  {BasicTable(GoogledataLocal, saveAddress)} </div>
       }
 
     </>

@@ -44,7 +44,7 @@ const checkGoogleData = (checkData, setData) => {
         })
 
         .catch(error => {
-          alert(`Failed to fetch data: ${error}`, 'Make sure youve  logged into timeline!')
+          alert(`Failed to fetch data: ${error}`, 'Make sure youve  logged into timeline before!')
           console.log('no google data ', GoogledataLocal);
           return GoogledataLocal;     
         })

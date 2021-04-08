@@ -18,20 +18,48 @@ const useStyles = makeStyles({
 
 const to = new Date();
 const from = moment().subtract(13, 'days').calendar();
+let GoogledataLocal;
+let saveAddress;
 
-function createData( id, answer, google, result) {
-  return { id, answer, google, result };
+function createData( GoogledataLocal, saveAddress) {
+  if(GoogledataLocal||saveAddress==null){
+    let GoogledataLocal = { 
+      'name': name,
+      'address': address,
+      'date': date 
+    }
+
+    let saveAddress = { 
+      'name': name,
+      'address': address,
+      'date': date 
+    }
+    // let saveAddress = { name, address, date}
+    return GoogledataLocal, saveAddress;
+  }
+
+  if (GoogledataLocal!=null){
+    alert('dank')
+    return { 
+      'name': GoogledataLocal.name,
+      'address': GoogledataLocal.address,
+      'date': GoogledataLocal.date 
+    }
+
+  }
+
+  const rows = [
+    createData(GoogledataLocal, saveAddress),
+  ];
+
+  console.log(GoogledataLocal, saveAddress)
+  return GoogledataLocal;
 }
 
-const rows = [
-  createData('Date','Answer Address', 'Google TL address', 'correct/incorrect'),
-  createData('Date','Answer Address', 'Google TL address', 'correct/incorrect'),
-  createData('Date','Answer Address', 'Google TL address', 'correct/incorrect')
-];
 
-export default function BasicTable() {
+export default function BasicTable (GoogledataLocal, saveAddress) {
   const classes = useStyles();
-
+ 
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
@@ -45,13 +73,12 @@ export default function BasicTable() {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow key={row.id}>
+            <TableRow key={row.date}>
               <TableCell component="th" scope="row">
-                {row.id}
+                {row.date}
               </TableCell>
-              <TableCell align="right">{row.answer}</TableCell>
-              <TableCell align="right">{row.google}</TableCell>
-              <TableCell align="right">{row.result}</TableCell>
+              <TableCell align="right">{row.name}</TableCell>
+              <TableCell align="right">{row.address}</TableCell>
             </TableRow>
           ))}
         </TableBody>
