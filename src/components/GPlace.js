@@ -242,11 +242,13 @@ const TableBuilder = (tbodyData) => {
 
       <button style={{ padding: "10px" }} onClick={() => {
         try{
+
           setTimeout(TableBuilder(tbodyData), 3000);
-          if( (typeof tbodyData!="undefined") && (JSON.stringify(tbodyData)!=JSON.stringify([])) && (JSON.stringify(saveAddress)!=JSON.stringify([])) ) {
+          if( (JSON.stringify(tbodyData)!=JSON.stringify([])) && (JSON.stringify(saveAddress)!=JSON.stringify([])) ) {
             alert('Displaying Table');
             setClick(true);
           }
+          
           else {
             alert('Missing data, try again in a little while');
             console.log('saveAddress: ' + JSON.stringify(saveAddress));
