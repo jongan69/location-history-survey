@@ -25,7 +25,7 @@ function fetchGoogleTimelineData(from, to) {
         axios.spread((...responses) => {
           const data = {
             items: []
-            }
+          }
           responses.forEach(response => {
             const kml = new DOMParser().parseFromString(response.data, 'application/xml')
             const gj = toGeoJSON.kml(kml)
@@ -36,11 +36,7 @@ function fetchGoogleTimelineData(from, to) {
               data.items.push({
                 name: feature.properties.name,
                 address: feature.properties.address,
-                timeBegin: feature.properties.timespan.begin,
-                timeEnd: feature.properties.timespan.end,
-                duration: duration,
-                category: feature.properties.Category,
-                distance: feature.properties.Distance
+                date: feature.properties.timespan.end,
               })
             })
           })
