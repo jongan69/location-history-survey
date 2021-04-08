@@ -5,7 +5,6 @@ import fetchGoogleTimelineData from '../fetch-google-timeline-data';
 import moment from 'moment';
 import BasicTable from './Table';
 
-
 const GPlace = () => {
 
   const placeInputRef = useRef(null);
@@ -15,18 +14,18 @@ const GPlace = () => {
   var $pull = localStorage.getItem('savedAddress');
   var savedAddress = typeof $pull!='null' ? $pull : [];
   const [click, setClick] = useState(false);
-
+  let tbodyData = [];
   const [startDate, setStartDate] = useState(new Date());
   
-  const GoogledataLocal = [];
-  let tbodyData = [];
+  // const GoogledataLocal = [];
+
   const to = new Date();
   const from = moment().subtract(13, 'days').calendar();
   var count = !saveAddress.id ? 0 : savedAddress.id; 
 
 // UseEffect runs periodically over component lifecycle
   useEffect(() => {
-    let tbodyData = !GoogledataLocal.items ? [] : GoogledataLocal.items;
+    // let tbodyData = !GoogledataLocal.items ? [] : GoogledataLocal.items;
     console.log('useEffect is has run: ', count, ' times');  
     console.log('Pull is: ', $pull);
     console.log('savedAddress is: ', savedAddress);
@@ -126,51 +125,52 @@ const GPlace = () => {
         console.log('Local Storage: ', savedAddress); 
       }
     }
-    return savedAddress;
+    return savedAddress, saveAddress;
   }
 
-//  Unsure if will delete this yet
-  const TableBuilder = () => {
-    // First Grab Google Data
-    fetchGoogleTimelineData(from, to)
-    .then(data => {
-        // console.log('Getting Google Timeline Data', data)
-        let GoogledataLocal = data;
-        // localStorage.setItem(GoogledataLocal);
-        let tbodyData = GoogledataLocal.items;
-        let Answers = saveAddress
 
-        // console.log('Answers retrieved', saveAddress);
-        // console.log('Checking Table', tbodyData);
-        // console.log('Checking Survey', Answers);
-       
-        if(tbodyData == GoogledataLocal.items && saveAddress != null){
+
+//  Unsure if will delete this yet
+const TableBuilder = (tbodyData) => {
+    // First Grab Google Data
+    if( tbodyData===JSON.stringify([]) ) {
+      fetchGoogleTimelineData(from, to)
+      .then(data => {
+        let GoogledataLocal = data;
+        tbodyData = GoogledataLocal.items;
+        
+        if(tbodyData === GoogledataLocal.items && saveAddress != null){
           console.log('Checking Table ' + tbodyData + saveAddress);
           // alert('Current Table info: ', JSON.stringify(tbodyData), JSON.stringify(saveAddress));              
         } 
+
+        if(JSON.stringify(tbodyData)!=JSON.stringify([])&&JSON.stringify(saveAddress)!=JSON.stringify([])){
+          console.log('Got both pieces of data: ', JSON.stringify(tbodyData), JSON.stringify(saveAddress))
+          setClick(true);
+          return saveAddress, tbodyData;  
+        } 
+        
         else {
           alert('Make sure youve  logged into timeline and have answered at least one address!')
           console.log('no google data ', tbodyData); 
-            }
-
-        if(!data){
-          console.log('Google data local doesnt exist')
-          }
-            
-          if(!saveAddress){
-            console.log('Save Address doesnt exist')
-          }
-            
-          if(JSON.stringify(tbodyData)!=JSON.stringify([])&&JSON.stringify(saveAddress)!=JSON.stringify([])){
-            console.log('Got both pieces of data: ', JSON.stringify(tbodyData), JSON.stringify(saveAddress))
-              return saveAddress, tbodyData;  
-          } 
         }
-        )
-    .catch(error => {
+
+            
+        
+        }
+      ).catch(error => {
         alert(`Failed to fetch data: ${error}`)
-    })
-    return saveAddress, tbodyData;
+      })   
+    }
+
+    // if(!data){
+    //   console.log('Google data local doesnt exist')
+    //   }
+        
+    if(!saveAddress){
+      console.log('Save Address doesnt exist')
+    }
+    
 }
 
 
@@ -242,24 +242,25 @@ const GPlace = () => {
 
       <button style={{ padding: "10px" }} onClick={() => {
         try{
-          if(JSON.stringify(tbodyData)==JSON.stringify([])) {
-            TableBuilder();
-            console.log(JSON.stringify(saveAddress));
-            console.log(JSON.stringify(tbodyData));
-          } 
-
-          if(JSON.stringify(tbodyData)!=JSON.stringify([])&&JSON.stringify(saveAddress)!=JSON.stringify([])) {
+          setTimeout(TableBuilder(tbodyData), 3000);
+          if( (typeof tbodyData!="undefined") && (JSON.stringify(tbodyData)!=JSON.stringify([])) && (JSON.stringify(saveAddress)!=JSON.stringify([])) ) {
             alert('Displaying Table');
             setClick(true);
           }
-        } catch {
+          else {
+            alert('Missing data, try again in a little while');
+            console.log('saveAddress: ' + JSON.stringify(saveAddress));
+            console.log('tbodyData: ' + JSON.stringify(tbodyData));
+          } 
+
+        } catch(err) {
           alert(err)
         }
       }}> 
         Grab data and compare
        </button>
 
-      {!click
+    {!click||!tbodyData||!saveAddress
       ? 
       <div style={styles.table}> Results will display here </div> 
       : 
@@ -276,7 +277,6 @@ const styles = {
     justifyContent: 'center'
   },
   container: {
-
       justifyContent: 'center',
       alignItems: 'center'
   },

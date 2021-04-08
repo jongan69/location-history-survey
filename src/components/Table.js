@@ -9,24 +9,28 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
 
-let tbodyData, saveAddress;
+
 const useStyles = makeStyles({
   table: {
     minWidth: 25,
   },
 });
 
-const to = new Date();
-const from = moment().subtract(13, 'days').calendar();
 
-function createData( tbodyData, saveAddress) {
-  if(tbodyData||saveAddress==undefined){
+var dates = []
+const to = new Date();
+for(const from = moment().subtract(13, 'days').calendar(); from <= to; from.setDate(from.getDate() + 1)){
+  dates.push(new Date(from));
+}
+
+let saveAddress, tbodyData;
+
+var result = []
+
+
+function createData( dates, tbodyData, saveAddress, result) {
+  if(tbodyData==undefined){
     let tbodyData = { 
-      'name': String,
-      'address': String,
-      'date': String 
-    }
-    let saveAddress = { 
       'name': String,
       'address': String,
       'date': String 
@@ -35,7 +39,7 @@ function createData( tbodyData, saveAddress) {
     return tbodyData, saveAddress;
   }
 
-  if (tbodyData!=null){
+  if (dates&&saveAddress&&tbodyData&&result!=null){
     alert('dank')
     return [{ 
       'name': tbodyData.name,
@@ -45,7 +49,7 @@ function createData( tbodyData, saveAddress) {
 
   }
 
-  console.log(tbodyData, saveAddress)
+  console.log('tbody: ' + tbodyData + 'saveAddress: ' + saveAddress + 'dates: ' + dates + 'results: ' + results)
   return [{ 
     'name': tbodyData.name,
     'address': tbodyData.address,
@@ -55,10 +59,10 @@ function createData( tbodyData, saveAddress) {
 
 
 const rows = [
-  createData(tbodyData, saveAddress),
+  createData(dates, tbodyData, saveAddress, result ),
 ];
 
-export default function BasicTable(tbodyData, saveAddress) {
+export default function BasicTable() {
 
   const classes = useStyles();
   
