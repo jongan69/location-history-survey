@@ -17,14 +17,16 @@ const GPlace = () => {
   const [click, setClick] = useState(false);
 
   const [startDate, setStartDate] = useState(new Date());
-
+  
   const GoogledataLocal = [];
+  let tbodyData = [];
   const to = new Date();
   const from = moment().subtract(13, 'days').calendar();
   var count = !saveAddress.id ? 0 : savedAddress.id; 
 
 // UseEffect runs periodically over component lifecycle
   useEffect(() => {
+    let tbodyData = !GoogledataLocal.items ? [] : GoogledataLocal.items;
     console.log('useEffect is has run: ', count, ' times');  
     console.log('Pull is: ', $pull);
     console.log('savedAddress is: ', savedAddress);
@@ -59,7 +61,7 @@ const GPlace = () => {
     new window.google.maps.event.addListener(autocomplete, "place_changed", function () {
       let place = autocomplete.getPlace();
       setPlace({
-        name: place.description,
+        name: place.name,
         address: place.formatted_address,
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng()
@@ -132,45 +134,43 @@ const GPlace = () => {
     // First Grab Google Data
     fetchGoogleTimelineData(from, to)
     .then(data => {
-        console.log('Getting Google Timeline Data', data)
+        // console.log('Getting Google Timeline Data', data)
         let GoogledataLocal = data;
         // localStorage.setItem(GoogledataLocal);
         let tbodyData = GoogledataLocal.items;
-
         let Answers = saveAddress
-        console.log('Answers retrieved', saveAddress);
 
-        console.log('Checking Table', tbodyData);
-        console.log('Checking Survey', Answers);
+        // console.log('Answers retrieved', saveAddress);
+        // console.log('Checking Table', tbodyData);
+        // console.log('Checking Survey', Answers);
        
-        if(GoogledataLocal == data && saveAddress != null){
-          console.log('Checking Table again', GoogledataLocal, saveAddress);
-          alert('Current Table info: ', GoogledataLocal, saveAddress);
-          return GoogledataLocal, tbodyData, saveAddress;                            
+        if(tbodyData == GoogledataLocal.items && saveAddress != null){
+          console.log('Checking Table ' + tbodyData + saveAddress);
+          // alert('Current Table info: ', JSON.stringify(tbodyData), JSON.stringify(saveAddress));              
         } 
         else {
           alert('Make sure youve  logged into timeline and have answered at least one address!')
-          console.log('no google data ', GoogledataLocal, tbodyData); 
+          console.log('no google data ', tbodyData); 
             }
 
-        if(!GoogledataLocal){
+        if(!data){
           console.log('Google data local doesnt exist')
           }
             
           if(!saveAddress){
-            console.log('Saved Address doesnt exist')
+            console.log('Save Address doesnt exist')
           }
             
-          if(GoogledataLocal&&saveAddress){
-              alert('Got both pieces of data: ', JSON.stringify(GoogledataLocal, saveAddress))
-              setClick(true);
-          }
-          return GoogledataLocal, saveAddress, tbodyData;  
+          if(JSON.stringify(tbodyData)!=JSON.stringify([])&&JSON.stringify(saveAddress)!=JSON.stringify([])){
+            console.log('Got both pieces of data: ', JSON.stringify(tbodyData), JSON.stringify(saveAddress))
+              return saveAddress, tbodyData;  
+          } 
         }
         )
     .catch(error => {
         alert(`Failed to fetch data: ${error}`)
     })
+    return saveAddress, tbodyData;
 }
 
 
@@ -241,31 +241,29 @@ const GPlace = () => {
       }
 
       <button style={{ padding: "10px" }} onClick={() => {
-        let obj2 = saveAddress
         try{
-          if(GoogledataLocal===null) {
+          if(JSON.stringify(tbodyData)==JSON.stringify([])) {
             TableBuilder();
-            alert('No data to display found! Please try again in a few seconds');
+            console.log(JSON.stringify(saveAddress));
+            console.log(JSON.stringify(tbodyData));
           } 
-        
-          else {
-            console.log(JSON.stringify(obj1));
-            console.log(JSON.stringify(obj2));
+
+          if(JSON.stringify(tbodyData)!=JSON.stringify([])&&JSON.stringify(saveAddress)!=JSON.stringify([])) {
+            alert('Displaying Table');
             setClick(true);
           }
-        }
-        catch{
-          alert('There was an error')
+        } catch {
+          alert(err)
         }
       }}> 
-        View Results!
+        Grab data and compare
        </button>
 
       {!click
       ? 
       <div style={styles.table}> Results will display here </div> 
       : 
-      <div  style={styles.table}>  {BasicTable(GoogledataLocal, saveAddress)} </div>
+      <div  style={styles.table}>  {BasicTable(tbodyData, saveAddress)} </div>
       }
 
     </>

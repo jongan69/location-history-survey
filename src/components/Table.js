@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
 
-
+let tbodyData, saveAddress;
 const useStyles = makeStyles({
   table: {
     minWidth: 25,
@@ -18,71 +18,82 @@ const useStyles = makeStyles({
 
 const to = new Date();
 const from = moment().subtract(13, 'days').calendar();
-let GoogledataLocal;
-let saveAddress;
 
-function createData( GoogledataLocal, saveAddress) {
-  if(GoogledataLocal||saveAddress==null){
-    let GoogledataLocal = { 
-      'name': name,
-      'address': address,
-      'date': date 
+function createData( tbodyData, saveAddress) {
+  if(tbodyData||saveAddress==undefined){
+    let tbodyData = { 
+      'name': String,
+      'address': String,
+      'date': String 
     }
-
     let saveAddress = { 
-      'name': name,
-      'address': address,
-      'date': date 
+      'name': String,
+      'address': String,
+      'date': String 
     }
     // let saveAddress = { name, address, date}
-    return GoogledataLocal, saveAddress;
+    return tbodyData, saveAddress;
   }
 
-  if (GoogledataLocal!=null){
+  if (tbodyData!=null){
     alert('dank')
-    return { 
-      'name': GoogledataLocal.name,
-      'address': GoogledataLocal.address,
-      'date': GoogledataLocal.date 
-    }
+    return [{ 
+      'name': tbodyData.name,
+      'address': tbodyData.address,
+      'date': tbodyData.date 
+    }]
 
   }
 
-  const rows = [
-    createData(GoogledataLocal, saveAddress),
-  ];
-
-  console.log(GoogledataLocal, saveAddress)
-  return GoogledataLocal;
+  console.log(tbodyData, saveAddress)
+  return [{ 
+    'name': tbodyData.name,
+    'address': tbodyData.address,
+    'date': tbodyData.date 
+  }];
 }
 
 
-export default function BasicTable () {
+const rows = [
+  createData(tbodyData, saveAddress),
+];
+
+export default function BasicTable(tbodyData, saveAddress) {
+
   const classes = useStyles();
- 
+  
+
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Answer</TableCell>
-            <TableCell align="right">Google  Timeline</TableCell>
-            <TableCell align="right">Result</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.date}>
-              <TableCell component="th" scope="row">
-                {row.date}
-              </TableCell>
-              <TableCell align="right">{row.name}</TableCell>
-              <TableCell align="right">{row.address}</TableCell>
+    <>
+      {
+      !tbodyData||!saveAddress
+      ? 
+      <div> Missing Data </div> 
+      :
+     <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="simple table">
+          <TableHead>
+           <TableRow>
+              <TableCell>Date</TableCell>
+              <TableCell>Answer</TableCell>
+              <TableCell align="right">Google  Timeline</TableCell>
+              <TableCell align="right">Result</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+          {rows.map((row) => (
+              <TableRow key={row.date}>
+                <TableCell component="th" scope="row">
+                  {row.date}
+                </TableCell>
+                <TableCell align="right">{row.name}</TableCell>
+                <TableCell align="right">{row.address}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      }
+    </>
   );
 }
