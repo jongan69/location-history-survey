@@ -131,9 +131,9 @@ const GPlace = () => {
 
 
 //  Unsure if will delete this yet
-const TableBuilder = (tbodyData) => {
+const TableBuilder = () => {
     // First Grab Google Data
-    if( tbodyData===JSON.stringify([]) ) {
+    if( JSON.stringify(tbodyData)===JSON.stringify([]) ) {
       fetchGoogleTimelineData(from, to)
       .then(data => {
         let GoogledataLocal = data;
@@ -243,7 +243,7 @@ const TableBuilder = (tbodyData) => {
       <button style={{ padding: "10px" }} onClick={() => {
         try{
 
-          setTimeout(TableBuilder(tbodyData), 3000);
+          TableBuilder(tbodyData);
           if( (JSON.stringify(tbodyData)!=JSON.stringify([])) && (JSON.stringify(saveAddress)!=JSON.stringify([])) ) {
             alert('Displaying Table');
             setClick(true);
@@ -266,7 +266,7 @@ const TableBuilder = (tbodyData) => {
       ? 
       <div style={styles.table}> Results will display here </div> 
       : 
-      <div  style={styles.table}>  {BasicTable(tbodyData, saveAddress)} </div>
+      <div  style={styles.table}>  <BasicTable/> </div>
       }
 
     </>
