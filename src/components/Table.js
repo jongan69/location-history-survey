@@ -17,6 +17,7 @@ const useStyles = makeStyles({
 });
 
 
+
 var dates = []
 const to = new Date();
 for(const from = moment().subtract(13, 'days').calendar(); from <= to; from.setDate(from.getDate() + 1)){
@@ -27,39 +28,35 @@ let saveAddress, tbodyData;
 
 var result = []
 
+// let table = { 
+//   'date': dates,
+//   'google': tbodyData,
+//   'answer': saveAddress 
+// }
 
-function createData( dates, tbodyData, saveAddress, result) {
-  if(tbodyData==undefined){
-    let tbodyData = { 
-      'name': String,
-      'address': String,
-      'date': String 
-    }
-    // let saveAddress = { name, address, date}
-    return tbodyData, saveAddress;
-  }
+function createData( dates, tbodyData, saveAddress ) {
 
-  if (dates&&saveAddress&&tbodyData&&result!=null){
+  
+  if (dates&&saveAddress&&tbodyData!=null){
     alert('dank')
     return [{ 
       'name': tbodyData.name,
       'address': tbodyData.address,
       'date': tbodyData.date 
-    }]
-
+    }];
   }
 
-  console.log('tbody: ' + tbodyData + 'saveAddress: ' + saveAddress + 'dates: ' + dates + 'results: ' + results)
+  console.log('tbody: ' + tbodyData )
   return [{ 
-    'name': tbodyData.name,
-    'address': tbodyData.address,
-    'date': tbodyData.date 
+    'name': 'name of place',
+    'address': 'address of place',
+    'date': 'date' 
   }];
 }
 
 
 const rows = [
-  createData(dates, tbodyData, saveAddress, result ),
+  createData(dates, tbodyData, saveAddress ),
 ];
 
 export default function BasicTable() {
