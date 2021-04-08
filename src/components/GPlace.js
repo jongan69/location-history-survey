@@ -138,15 +138,15 @@ const GPlace = () => {
         let tbodyData = GoogledataLocal.items;
 
         let Answers = saveAddress
-        console.log('Answers retrieved', savedAddress);
+        console.log('Answers retrieved', saveAddress);
 
         console.log('Checking Table', tbodyData);
         console.log('Checking Survey', Answers);
        
-        if(GoogledataLocal == data && savedAddress != null){
-          console.log('Checking Table again', GoogledataLocal, savedAddress);
-          alert('Current Table info: ', GoogledataLocal, savedAddress);
-          return GoogledataLocal, tbodyData, savedAddress;                            
+        if(GoogledataLocal == data && saveAddress != null){
+          console.log('Checking Table again', GoogledataLocal, saveAddress);
+          alert('Current Table info: ', GoogledataLocal, saveAddress);
+          return GoogledataLocal, tbodyData, saveAddress;                            
         } 
         else {
           alert('Make sure youve  logged into timeline and have answered at least one address!')
@@ -162,10 +162,10 @@ const GPlace = () => {
           }
             
           if(GoogledataLocal&&saveAddress){
-              alert('Got both pieces of data: ', GoogledataLocal, savedAddress)
+              alert('Got both pieces of data: ', JSON.stringify(GoogledataLocal, saveAddress))
               setClick(true);
           }
-          return GoogledataLocal, savedAddress, tbodyData;  
+          return GoogledataLocal, saveAddress, tbodyData;  
         }
         )
     .catch(error => {
@@ -241,10 +241,9 @@ const GPlace = () => {
       }
 
       <button style={{ padding: "10px" }} onClick={() => {
-        let obj1 = GoogledataLocal;
         let obj2 = saveAddress
         try{
-          if(obj1||obj2===null) {
+          if(GoogledataLocal===null) {
             TableBuilder();
             alert('No data to display found! Please try again in a few seconds');
           } 

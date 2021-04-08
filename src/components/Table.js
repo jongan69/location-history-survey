@@ -57,7 +57,7 @@ function createData( GoogledataLocal, saveAddress) {
 }
 
 
-export default function BasicTable (GoogledataLocal, saveAddress) {
+export default function BasicTable () {
   const classes = useStyles();
  
   return (
