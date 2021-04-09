@@ -10,7 +10,7 @@ const GPlace = () => {
   const placeInputRef = useRef(null);
   // let items = [ "address", "endTime", "Status"];
   const [place, setPlace] = useState(null);
-  const [saveAddress, setAddress] = useState([]);
+  let [saveAddress, setAddress] = useState([]);
   var $pull = localStorage.getItem('savedAddress');
   var savedAddress = typeof $pull!='null' ? $pull : [];
   const [click, setClick] = useState(false);
@@ -131,7 +131,7 @@ const GPlace = () => {
 
 
 //  Unsure if will delete this yet
-const TableBuilder = () => {
+const TableBuilder = (tbodyData) => {
     // First Grab Google Data
     if( JSON.stringify(tbodyData)===JSON.stringify([]) ) {
       fetchGoogleTimelineData(from, to)
@@ -170,7 +170,7 @@ const TableBuilder = () => {
     if(!saveAddress){
       console.log('Save Address doesnt exist')
     }
-    
+    return saveAddress, tbodyData;
 }
 
 
@@ -241,19 +241,24 @@ const TableBuilder = () => {
       }
 
       <button style={{ padding: "10px" }} onClick={() => {
+          
         try{
-
-          TableBuilder(tbodyData);
+          
           if( (JSON.stringify(tbodyData)!=JSON.stringify([])) && (JSON.stringify(saveAddress)!=JSON.stringify([])) ) {
             alert('Displaying Table');
             setClick(true);
           }
           
-          else {
-            alert('Missing data, try again in a little while');
+          if((JSON.stringify(tbodyData)===JSON.stringify([]))) {
+            alert('Missing google data, try again in a little while');
+            TableBuilder(tbodyData);
             console.log('saveAddress: ' + JSON.stringify(saveAddress));
             console.log('tbodyData: ' + JSON.stringify(tbodyData));
           } 
+
+          if((JSON.stringify(saveAddress)===JSON.stringify([]))) {
+            alert('Missing answer data, try answering some locations');
+          }
 
         } catch(err) {
           alert(err)
@@ -266,7 +271,7 @@ const TableBuilder = () => {
       ? 
       <div style={styles.table}> Results will display here </div> 
       : 
-      <div  style={styles.table}>  <BasicTable/> </div>
+      <div  style={styles.table}>  <BasicTable {...(tbodyData, saveAddress)} /> </div>
       }
 
     </>

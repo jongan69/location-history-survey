@@ -20,13 +20,27 @@ const useStyles = makeStyles({
 
 var dates = []
 const to = new Date();
-for(const from = moment().subtract(13, 'days').calendar(); from <= to; from.setDate(from.getDate() + 1)){
-  dates.push(new Date(from));
+const from = moment().subtract(13, 'days').calendar()
+const fromDate = new Date(from)
+const toDate = new Date(to)
+
+function createDates() {
+  console.log(from);
+  for (let date = fromDate; date <= toDate; date.setDate(date.getDate() + 1)) {
+    dates.push(new Date(date));
+    console.log(JSON.stringify(dates));
+    console.log(toDate);
+    console.log(fromDate);
+  }
+  return dates
 }
 
 let saveAddress, tbodyData;
-
 var result = []
+
+const rows = [
+  createData(dates, tbodyData, saveAddress ),
+];
 
 // let table = { 
 //   'date': dates,
@@ -35,43 +49,45 @@ var result = []
 // }
 
 function createData( dates, tbodyData, saveAddress ) {
-
-  
-  if (dates&&saveAddress&&tbodyData!=null){
-    alert('dank')
-    return [{ 
-      'name': tbodyData.name,
-      'address': tbodyData.address,
-      'date': tbodyData.date 
-    }];
-  }
-
+    return [ 
+      row = { 
+        dates,
+        tbodyData,
+        saveAddress,
+      }
+    ];
   console.log('tbody: ' + tbodyData )
-  return [{ 
-    'name': 'name of place',
-    'address': 'address of place',
-    'date': 'date' 
-  }];
+  // return [{ 
+  //   'name': 'name of place',
+  //   'address': 'address of place',
+  //   'date': 'date' 
+  // }];
 }
 
 
-const rows = [
-  createData(dates, tbodyData, saveAddress ),
-];
-
-export default function BasicTable() {
+export default function BasicTable(tbodyData, saveAddress) {
 
   const classes = useStyles();
   
-
   return (
     <>
       {
-      !tbodyData||!saveAddress
+      !tbodyData||!saveAddress||!dates
       ? 
-      <div> Missing Data </div> 
+      <div> 
+        Missing Data 
+        {console.log('dates: ' + JSON.stringify(dates))}
+        {console.log('google: ' + JSON.stringify(tbodyData))}
+        {console.log('ans: ' + JSON.stringify(saveAddress))}
+        {console.log('rows: ' + rows)}
+        {createDates}
+      </div> 
       :
      <TableContainer component={Paper}>
+       {console.log('dates: ' + JSON.stringify(dates))}
+       {console.log('google: ' + JSON.stringify(tbodyData))}
+       {console.log('ans: ' + JSON.stringify(saveAddress))}
+       {console.log('rows: ' + rows)}
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
            <TableRow>
