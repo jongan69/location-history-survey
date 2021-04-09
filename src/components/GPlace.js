@@ -4,6 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import fetchGoogleTimelineData from '../fetch-google-timeline-data';
 import moment from 'moment';
 import BasicTable from './Table';
+// import localizedFormat from 'dayjs/plugin/localizedFormat'
 
 const GPlace = () => {
 
@@ -16,11 +17,21 @@ const GPlace = () => {
   const [click, setClick] = useState(false);
   let tbodyData = [];
   const [startDate, setStartDate] = useState(new Date());
-  
-  // const GoogledataLocal = [];
-
+  const rows = [
+      createData(dates, tbodyData, saveAddress ),
+  ];
+  var dates = []
   const to = new Date();
-  const from = moment().subtract(13, 'days').calendar();
+  const from = moment().subtract(13, 'days').calendar()
+  const fromDate = new Date(from)
+  const toDate = new Date(to)
+  var result = []
+
+  for (let date = fromDate; date <= toDate; date.setDate(date.getDate() + 1)) {
+    dates.push(new Date(date));
+    console.log(JSON.stringify(dates));
+  }
+  // const GoogledataLocal = [];
   var count = !saveAddress.id ? 0 : savedAddress.id; 
 
 // UseEffect runs periodically over component lifecycle
@@ -128,7 +139,9 @@ const GPlace = () => {
     return savedAddress, saveAddress;
   }
 
-
+  function createData( dates, tbodyData, saveAddress ) {
+    return { dates, tbodyData, saveAddress } 
+  }
 
 //  Unsure if will delete this yet
 const TableBuilder = (tbodyData) => {
@@ -147,7 +160,7 @@ const TableBuilder = (tbodyData) => {
         if(JSON.stringify(tbodyData)!=JSON.stringify([])&&JSON.stringify(saveAddress)!=JSON.stringify([])){
           console.log('Got both pieces of data: ', JSON.stringify(tbodyData), JSON.stringify(saveAddress))
           setClick(true);
-          return saveAddress, tbodyData;  
+          return saveAddress, tbodyData, rows;  
         } 
         
         else {
@@ -170,7 +183,7 @@ const TableBuilder = (tbodyData) => {
     if(!saveAddress){
       console.log('Save Address doesnt exist')
     }
-    return saveAddress, tbodyData;
+    return saveAddress, tbodyData, rows;
 }
 
 
@@ -267,11 +280,11 @@ const TableBuilder = (tbodyData) => {
         Grab data and compare
        </button>
 
-    {!click||!tbodyData||!saveAddress
+    {!click||!rows
       ? 
       <div style={styles.table}> Results will display here </div> 
       : 
-      <div  style={styles.table}>  <BasicTable {...(tbodyData, saveAddress)} /> </div>
+      <div  style={styles.table}>  <BasicTable {...rows} /> </div>
       }
 
     </>

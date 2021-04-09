@@ -9,6 +9,11 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
 
+// let table = { 
+//   'date': dates,
+//   'google': tbodyData,
+//   'answer': saveAddress 
+// }
 
 const useStyles = makeStyles({
   table: {
@@ -42,20 +47,10 @@ const rows = [
   createData(dates, tbodyData, saveAddress ),
 ];
 
-// let table = { 
-//   'date': dates,
-//   'google': tbodyData,
-//   'answer': saveAddress 
-// }
 
 function createData( dates, tbodyData, saveAddress ) {
-    return [ 
-      rows = { 
-        dates,
-        tbodyData,
-        saveAddress,
-      }
-    ];
+    return { dates, tbodyData, saveAddress,
+  }
   console.log('tbody: ' + tbodyData )
   // return [{ 
   //   'name': 'name of place',
@@ -88,6 +83,7 @@ export default function BasicTable(tbodyData, saveAddress) {
        {console.log('dates: ' + JSON.stringify(dates))}
        {console.log('google: ' + JSON.stringify(tbodyData))}
        {console.log('ans: ' + JSON.stringify(saveAddress))}
+       {console.log('rows: ' + JSON.stringify(rows))}
        {console.log('rows: ' + rows)}
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
@@ -100,12 +96,12 @@ export default function BasicTable(tbodyData, saveAddress) {
           </TableHead>
           <TableBody>
           {rows.map((row) => (
-              <TableRow key={row.date}>
+              <TableRow key={row.dates}>
                 <TableCell component="th" scope="row">
-                  {row.date}
+                  {row.dates}
                 </TableCell>
-                <TableCell align="right">{row.name}</TableCell>
-                <TableCell align="right">{row.address}</TableCell>
+                <TableCell align="right">{row.saveAddress}</TableCell>
+                <TableCell align="right">{row.tbodyData}</TableCell>
               </TableRow>
             ))}
           </TableBody>
