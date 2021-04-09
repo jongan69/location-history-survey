@@ -50,7 +50,7 @@ const rows = [
 
 function createData( dates, tbodyData, saveAddress ) {
     return [ 
-      row = { 
+      rows = { 
         dates,
         tbodyData,
         saveAddress,
@@ -79,6 +79,7 @@ export default function BasicTable(tbodyData, saveAddress) {
         {console.log('dates: ' + JSON.stringify(dates))}
         {console.log('google: ' + JSON.stringify(tbodyData))}
         {console.log('ans: ' + JSON.stringify(saveAddress))}
+        {console.log('rows: ' + JSON.stringify(rows))}
         {console.log('rows: ' + rows)}
         {createDates}
       </div> 
