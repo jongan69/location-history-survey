@@ -36,7 +36,7 @@ const useStyles = makeStyles({
 
 
 export default function BasicTable(rows) {
-
+  var one = 1;
   const classes = useStyles();
   console.log('rows: ' + JSON.stringify(rows))
   return (
@@ -60,12 +60,13 @@ export default function BasicTable(rows) {
           </TableHead>
           <TableBody>
           {rows.map((row) => (
-              <TableRow key={row}>
+              <TableRow key={row.date.dates}>
                 <TableCell component="th" scope="row">
-                  {row.dates}
+                  {row.date.dates}
                 </TableCell>
-                <TableCell align="right">{rows.dates.answer}</TableCell>
-                <TableCell align="right">{rows.dates.google}</TableCell>
+                <TableCell align="right">Result</TableCell>
+                <TableCell align="right">Result</TableCell>
+                <TableCell align="right">Result</TableCell>
               </TableRow>
             ))}
           </TableBody>

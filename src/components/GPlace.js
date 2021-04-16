@@ -1,30 +1,42 @@
 import React, { useEffect, useRef, useState } from "react";
 import DatePicker, { CalendarContainer } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import fetchGoogleTimelineData from '../fetch-google-timeline-data';
+// import fetchGoogleTimelineData from '../fetch-google-timeline-data';
 import moment from 'moment';
 import BasicTable from './Table';
-// import localizedFormat from 'dayjs/plugin/localizedFormat'
+// import diffs from './sort';
+
 
 const GPlace = (tbodyData) => {
+
   // State Variables
   let [saveAddress, setAddress] = useState([]);
-  // let [rows, setRows] = useState([]);
+  let [rows, setRows] = useState([]);
   const [click, setClick] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [place, setPlace] = useState(null);
+  let dates = []
+  let googleDates = []
+  let answerDates = []
 
   // Variables 
   const placeInputRef = useRef(null);
   var $pull = localStorage.getItem('savedAddress');
   var savedAddress = typeof $pull!='null' ? $pull : [];
-  let dates = [];
+  // let dates = [];
   var count = !saveAddress.id ? 0 : savedAddress.id++; 
-  const rows = [
-    createData( dates, tbodyData, saveAddress ),
-  ];
-  
- 
+  // const rows = [
+  //   createData( dates, tbodyData, saveAddress ),
+  // ];
+  const to = moment().format('MM/DD/YYYY')
+    const from = moment().subtract(13, 'days').calendar()
+    const fromDate = new Date(from)
+    const toDate = new Date(to)
+  // Creates dates Array
+  for (let date = fromDate; date <= toDate; date.setDate(date.getDate() + 1)) {
+    let pushDate = moment(date).format('MM/DD/YYYY')
+    dates.push(pushDate);
+  }
   
   
 
@@ -32,7 +44,7 @@ const GPlace = (tbodyData) => {
   useEffect(() => {
     console.log('useEffect is has run: ', count++, ' times');  
     console.log('Pull is: ', $pull);
-    console.log('savedAddress is: ', savedAddress);
+    console.log('saveAddress is: ', saveAddress);
     console.log('tbodyData is : ', tbodyData);  
    
     if(saveAddress!=null){
@@ -51,8 +63,6 @@ const GPlace = (tbodyData) => {
     
 
     initPlaceAPI();  
-    console.log('Current saveAddress is: ' , saveAddress );
-    // console.log('Current savedAddress is: ' , savedAddress );
   }, [saveAddress]);
 
 
@@ -90,6 +100,9 @@ const GPlace = (tbodyData) => {
       </div>
     );
   };
+
+
+
 
 
 // This function is responsible for adding the user input to local storage
@@ -142,97 +155,75 @@ const GPlace = (tbodyData) => {
 
 
 
-  function createData(dates, tbodyData, saveAddress ) {
-
-    const to =  moment().format('MMMM Do YYYY')
-    const from = moment().subtract(13, 'days').calendar()
-    const fromDate = new Date(from)
-    const toDate = new Date(to)
+  function createData( dates, tbodyData, saveAddress ) {
+    let answerAddresses = saveAddress.address;
+    let googleAddresses = tbodyData.address;
+    var i,n;
     
-    try {
-      if(saveAddress&&tbodyData!=null) {
-        for (let date = fromDate; date <= toDate; date.setDate(date.getDate() + 1)) {
-          dates.push(new Date(
-            ...dates,{
-              date: date,
-              answer: saveAddress,
-              google: tbodyData
+    
+    // Creates date array of google data
+    n = 0, i = 0;
+    while(n <= dates.length, n++){
+      saveAddress.forEach(
+        function sort(date,index){
+          let answersDay = [index]
+          let dateDay = dates[n]
+          let add1 = []
+            if(answersDay.date==dateDay){
+              add1.push(answersDay)
+            } else {
+              answerDates.push(date[i],add1);
             }
-            ));
-          console.log('Current dates: ' + dates + ' Current Data: ' + tbodyData + ' Current Data: ' + saveAddress);
-          console.log(JSON.stringify(dates));
-      } 
-      } else {
-        console.log('saveAddress is: ', saveAddress)
-        console.log('tbodyData is: ', tbodyData)
-        console.log('You must have data!')
-      }
-    }
-    catch {
-      console.log('There was an error: ' + ' tbodyData: ' + tbodyData + ' saveAddress: ' + saveAddress +  ' dates: ' + dates + ' rows: ' + rows  ); 
-    }
-  
-    return dates
+        })
+  }
+
+
+    // creates date array of google data
+    while(i <= dates.length, i++){
+      tbodyData.forEach(
+        function sort(items,index){
+          let googleDay = items[index]
+          let dateDay = dates[i]
+          let add2 = []
+            if(googleDay.date==dateDay){
+              add2.push(googleDay)
+            } else {
+              googleDates.push(dates[i], add2)
+            }
+        })
+  }
+
+  function createRows(dates, google, answers) {
+    return [dates,{google,answers}];
+  }
+
+  const data = createRows({dates}, {googleAddresses}, {answerAddresses})
+
+//   var keys = dates;
+//   for(var i = 0; i < keys.length; i++){ 
+    
+// } 
+
+
+
+// for (let date = fromDate; date <= toDate; date.setDate(date.getDate() + 1)) {
+//   let pushDate = moment(date).format('MM/DD/YYYY')
+//   dates.push(pushDate);
+// }
+      // console.log('Current dates: ' + JSON.stringify(dates) + ' Current Data: ' + JSON.stringify(tbodyData) + ' Current Data: ' + JSON.stringify(saveAddress))
+    console.log('The google dates array is ' + JSON.stringify(googleDates));
+    console.log('data is ' + JSON.stringify(data));
+    console.log('The Answer dates array is ' + JSON.stringify(answerDates));
+    console.log('The dates array is ' + JSON.stringify(dates));
+    console.log('The tbody array is ' + JSON.stringify(tbodyData));
+    console.log('The saveAddress array is ' + JSON.stringify(saveAddress));
+    return data;
   }
 
 
 
 
 
-
-
-
-
-//  Unsure if will delete this yet
-const TableBuilder = (tbodyData) => {
-
-  // First Grab Google Data
-    if( JSON.stringify(tbodyData)===JSON.stringify([]) ) {
-      fetchGoogleTimelineData(from, to)
-      .then(data => {
-        let GoogledataLocal = data;
-        tbodyData = GoogledataLocal.items;
-
-        // Check  tbodyData
-        if(tbodyData === GoogledataLocal.items && saveAddress != null){
-          console.log('Checking Table ' + tbodyData + saveAddress);
-        } 
-
-        // Checking both pieces of data
-        if(JSON.stringify(tbodyData)!=JSON.stringify([])&&JSON.stringify(saveAddress)!=JSON.stringify([])){
-          console.log('Got both pieces of data: ', JSON.stringify(tbodyData), JSON.stringify(saveAddress))
-          
-          // Rows of Table
-         
-          if(JSON.stringify(rows)!=JSON.stringify({})){
-            setClick(true);
-          }
-          return rows;  
-        } 
-        
-        else {
-          alert('Make sure youve  logged into timeline and have answered at least one address!')
-          console.log('no google data ', tbodyData); 
-        }
-
-            
-        
-        }
-      ).catch(error => {
-        alert(`Failed to fetch data: ${error}`)
-      })   
-    }
-
-  
-
-    // if(!data){
-    //   console.log('Google data local doesnt exist')
-    //   }
-        
-    if(!saveAddress){
-      console.log('Save Address doesnt exist')
-    }
-}
 
 
 
@@ -304,15 +295,23 @@ const TableBuilder = (tbodyData) => {
       <button style={{ padding: "10px" }} onClick={() => {
           
         try{
-          
           if( (JSON.stringify(tbodyData)!=JSON.stringify([])) && (JSON.stringify(saveAddress)!=JSON.stringify([])) ) {
-            alert('Displaying Table');
+            
+            let data = [createData(dates, tbodyData, saveAddress )];
+
+            data.forEach( function TableBuilder (data) {
+              setRows(data)
+            })
+            console.log('The rows is ' + JSON.stringify(rows));
+            console.log('data is ' + JSON.stringify(data));
+
+
+            alert('Displaying Table', JSON.stringify(data));
             setClick(true);
           }
           
           if((JSON.stringify(tbodyData)===JSON.stringify([]))) {
             alert('Missing google data, try again in a little while');
-            TableBuilder(tbodyData);
             console.log('saveAddress: ' + JSON.stringify(saveAddress));
             console.log('tbodyData: ' + JSON.stringify(tbodyData));
           } 
@@ -328,7 +327,7 @@ const TableBuilder = (tbodyData) => {
         Grab data and compare
        </button>
 
-    {!click||!tbodyData||!saveAddress||!rows||JSON.stringify(dates)!=JSON.stringify([])
+    {!click||!tbodyData||!saveAddress||JSON.stringify(rows)==JSON.stringify([])
       ? 
       <div style={styles.table}> Results will display here </div> 
       : 

@@ -31,9 +31,9 @@ const checkGoogleData = (checkData, setData, checktbodyData) => {
       fetchGoogleTimelineData(from, to)
         .then(data => {
           console.log('Checking Google Timeline Data', data);
-          let GoogledataLocal = data.items;
+          let GoogledataLocal = data;
             if(JSON.stringify(GoogledataLocal) != JSON.stringify([]) ){
-              alert('Youve been to ' + JSON.stringify(GoogledataLocal.length) + ' locations in the past 14 days');
+              alert('Youve been to ' + JSON.stringify(GoogledataLocal.items.length) + ' locations in the past 14 days');
               console.log('Checking Table', GoogledataLocal);
               checktbodyData(GoogledataLocal)
               setData(true);
@@ -110,7 +110,7 @@ const Popup = () => {
         {alert('checkData was true! You have Timeline data so you may take the survey to see what you remember' )}
         {console.log('check data is ', checkData)}
         {console.log('tbodyData is ', tbodyData)}
-        <GPlace tbodyData={tbodyData}/>
+        <GPlace tbodyData={tbodyData.items}/>
        <p>
         This is a React Chrome Extension being built by Blockspaces under grant by USF for proof of concept on contact tracing.
        </p>
