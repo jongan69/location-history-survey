@@ -6,7 +6,6 @@ import image from  './plane.gif';
 import moment from 'moment';
 
 let GoogledataLocal = [];
-let tbodyData = GoogledataLocal
 const to = new Date();
 const from = moment().subtract(13, 'days').calendar();
 
@@ -26,7 +25,7 @@ const loadGoogleMapScript = (callback) => {
 }
 
 
-const checkGoogleData = (checkData, setData) => {
+const checkGoogleData = (checkData, setData, checktbodyData) => {
 
     if(checkData==false){
       fetchGoogleTimelineData(from, to)
@@ -36,9 +35,9 @@ const checkGoogleData = (checkData, setData) => {
             if(JSON.stringify(GoogledataLocal) != JSON.stringify([]) ){
               alert('Youve been to ' + JSON.stringify(GoogledataLocal.length) + ' locations in the past 14 days');
               console.log('Checking Table', GoogledataLocal);
+              checktbodyData(GoogledataLocal)
               setData(true);
-              let tbodyData = GoogledataLocal;
-              return tbodyData, GoogledataLocal, checkData;                            
+              return checktbodyData, GoogledataLocal, checkData;                            
             } 
         })
 
@@ -61,7 +60,7 @@ const checkGoogleData = (checkData, setData) => {
  
 
 const Popup = () => {
-
+  const [tbodyData, checktbodyData] = useState([]);
   const [checkData, setData] = useState(false);
   const [loadMap, setLoadMap] = useState(false);
   useEffect(() => {
@@ -71,6 +70,12 @@ const Popup = () => {
   }, []);
 
 
+// function dataCheck(tbodyData){
+//   if(JSON.stringify(tbodyData)!=){
+//     return  <GPlace tbodyData={tbodyData}/>
+//   }
+  
+// }
   
 
   return (
@@ -81,8 +86,7 @@ const Popup = () => {
       
       <button style={{ marginTop: 5 }} onClick={ () => {
         if(checkData==false){
-          checkGoogleData(checkData, setData);
-          console.log('Checking Table again', tbodyData);
+          checkGoogleData(checkData, setData, checktbodyData);
         }
         else {
           alert('There was a problem with your google time line data, checkdata was: ', checkData)
@@ -106,7 +110,7 @@ const Popup = () => {
         {alert('checkData was true! You have Timeline data so you may take the survey to see what you remember' )}
         {console.log('check data is ', checkData)}
         {console.log('tbodyData is ', tbodyData)}
-       <GPlace tbodyData={tbodyData}/>
+        <GPlace tbodyData={tbodyData}/>
        <p>
         This is a React Chrome Extension being built by Blockspaces under grant by USF for proof of concept on contact tracing.
        </p>
