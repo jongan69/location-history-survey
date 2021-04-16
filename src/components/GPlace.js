@@ -6,56 +6,53 @@ import moment from 'moment';
 import BasicTable from './Table';
 // import localizedFormat from 'dayjs/plugin/localizedFormat'
 
-const GPlace = () => {
-
-  const placeInputRef = useRef(null);
-  // let items = [ "address", "endTime", "Status"];
-  const [place, setPlace] = useState(null);
+const GPlace = (tbodyData) => {
+  // State Variables
   let [saveAddress, setAddress] = useState([]);
+  // let [rows, setRows] = useState([]);
+  const [click, setClick] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
+  const [place, setPlace] = useState(null);
+
+  // Variables 
+  const placeInputRef = useRef(null);
   var $pull = localStorage.getItem('savedAddress');
   var savedAddress = typeof $pull!='null' ? $pull : [];
-  const [click, setClick] = useState(false);
-  let tbodyData = [];
-  const [startDate, setStartDate] = useState(new Date());
+  let dates = [];
+  var count = !saveAddress.id ? 0 : savedAddress.id++; 
   const rows = [
-      createData(dates, tbodyData, saveAddress ),
+    createData( dates, tbodyData, saveAddress ),
   ];
-  var dates = []
-  const to = new Date();
-  const from = moment().subtract(13, 'days').calendar()
-  const fromDate = new Date(from)
-  const toDate = new Date(to)
-  var result = []
-
-  for (let date = fromDate; date <= toDate; date.setDate(date.getDate() + 1)) {
-    dates.push(new Date(date));
-    console.log(JSON.stringify(dates));
-  }
-  // const GoogledataLocal = [];
-  var count = !saveAddress.id ? 0 : savedAddress.id; 
+  
+ 
+  
+  
 
 // UseEffect runs periodically over component lifecycle
   useEffect(() => {
-    // let tbodyData = !GoogledataLocal.items ? [] : GoogledataLocal.items;
-    console.log('useEffect is has run: ', count, ' times');  
+    console.log('useEffect is has run: ', count++, ' times');  
     console.log('Pull is: ', $pull);
     console.log('savedAddress is: ', savedAddress);
+    console.log('tbodyData is : ', tbodyData);  
    
-    for(var key in savedAddress){
-      var isEmpty = true
-      if(savedAddress.hasOwnProperty(key)){
-          console.log('savedAddress is not empty');
-          let isEmpty = false;
-          return isEmpty;
-      } else {
-          console.log('savedAddress is empty');
-          return isEmpty;
+    if(saveAddress!=null){
+      for(var key in saveAddress){
+        var isEmpty = true
+        if(saveAddress.hasOwnProperty(key)){
+            console.log('saveAddress is not empty');
+            let isEmpty = false;
+            return isEmpty, rows;
+        } else {
+            console.log('saveAddress is empty');
+            return isEmpty;
+        }
       }
     }
+    
 
     initPlaceAPI();  
     console.log('Current saveAddress is: ' , saveAddress );
-    console.log('Current savedAddress is: ' , savedAddress );
+    // console.log('Current savedAddress is: ' , savedAddress );
   }, [saveAddress]);
 
 
@@ -139,28 +136,78 @@ const GPlace = () => {
     return savedAddress, saveAddress;
   }
 
-  function createData( dates, tbodyData, saveAddress ) {
-    return { dates, tbodyData, saveAddress } 
+
+  
+
+
+
+
+  function createData(dates, tbodyData, saveAddress ) {
+
+    const to =  moment().format('MMMM Do YYYY')
+    const from = moment().subtract(13, 'days').calendar()
+    const fromDate = new Date(from)
+    const toDate = new Date(to)
+    
+    try {
+      if(saveAddress&&tbodyData!=null) {
+        for (let date = fromDate; date <= toDate; date.setDate(date.getDate() + 1)) {
+          dates.push(new Date(
+            ...dates,{
+              date: date,
+              answer: saveAddress,
+              google: tbodyData
+            }
+            ));
+          console.log('Current dates: ' + dates + ' Current Data: ' + tbodyData + ' Current Data: ' + saveAddress);
+          console.log(JSON.stringify(dates));
+      } 
+      } else {
+        console.log('saveAddress is: ', saveAddress)
+        console.log('tbodyData is: ', tbodyData)
+        console.log('You must have data!')
+      }
+    }
+    catch {
+      console.log('There was an error: ' + ' tbodyData: ' + tbodyData + ' saveAddress: ' + saveAddress +  ' dates: ' + dates + ' rows: ' + rows  ); 
+    }
+  
+    return dates
   }
+
+
+
+
+
+
+
+
 
 //  Unsure if will delete this yet
 const TableBuilder = (tbodyData) => {
-    // First Grab Google Data
+
+  // First Grab Google Data
     if( JSON.stringify(tbodyData)===JSON.stringify([]) ) {
       fetchGoogleTimelineData(from, to)
       .then(data => {
         let GoogledataLocal = data;
         tbodyData = GoogledataLocal.items;
-        
+
+        // Check  tbodyData
         if(tbodyData === GoogledataLocal.items && saveAddress != null){
           console.log('Checking Table ' + tbodyData + saveAddress);
-          // alert('Current Table info: ', JSON.stringify(tbodyData), JSON.stringify(saveAddress));              
         } 
 
+        // Checking both pieces of data
         if(JSON.stringify(tbodyData)!=JSON.stringify([])&&JSON.stringify(saveAddress)!=JSON.stringify([])){
           console.log('Got both pieces of data: ', JSON.stringify(tbodyData), JSON.stringify(saveAddress))
-          setClick(true);
-          return saveAddress, tbodyData, rows;  
+          
+          // Rows of Table
+         
+          if(JSON.stringify(rows)!=JSON.stringify({})){
+            setClick(true);
+          }
+          return rows;  
         } 
         
         else {
@@ -176,6 +223,8 @@ const TableBuilder = (tbodyData) => {
       })   
     }
 
+  
+
     // if(!data){
     //   console.log('Google data local doesnt exist')
     //   }
@@ -183,7 +232,6 @@ const TableBuilder = (tbodyData) => {
     if(!saveAddress){
       console.log('Save Address doesnt exist')
     }
-    return saveAddress, tbodyData, rows;
 }
 
 
@@ -280,7 +328,7 @@ const TableBuilder = (tbodyData) => {
         Grab data and compare
        </button>
 
-    {!click||!rows
+    {!click||!tbodyData||!saveAddress||!rows||JSON.stringify(dates)!=JSON.stringify([])
       ? 
       <div style={styles.table}> Results will display here </div> 
       : 

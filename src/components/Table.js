@@ -23,68 +23,32 @@ const useStyles = makeStyles({
 
 
 
-var dates = []
-const to = new Date();
-const from = moment().subtract(13, 'days').calendar()
-const fromDate = new Date(from)
-const toDate = new Date(to)
 
-function createDates() {
-  console.log(from);
-  for (let date = fromDate; date <= toDate; date.setDate(date.getDate() + 1)) {
-    dates.push(new Date(date));
-    console.log(JSON.stringify(dates));
-    console.log(toDate);
-    console.log(fromDate);
-  }
-  return dates
-}
+// var dates, tbodyData, saveAddress = []
 
-let saveAddress, tbodyData;
-var result = []
-
-const rows = [
-  createData(dates, tbodyData, saveAddress ),
-];
+// const rows = [
+//   createData(tbodyData, saveAddress ),
+// ];
 
 
-function createData( dates, tbodyData, saveAddress ) {
-    return { dates, tbodyData, saveAddress,
-  }
-  console.log('tbody: ' + tbodyData )
-  // return [{ 
-  //   'name': 'name of place',
-  //   'address': 'address of place',
-  //   'date': 'date' 
-  // }];
-}
 
 
-export default function BasicTable(tbodyData, saveAddress) {
+
+
+export default function BasicTable(rows) {
 
   const classes = useStyles();
-  
+  console.log('rows: ' + JSON.stringify(rows))
   return (
     <>
       {
-      !tbodyData||!saveAddress||!dates
+      !rows
       ? 
       <div> 
         Missing Data 
-        {console.log('dates: ' + JSON.stringify(dates))}
-        {console.log('google: ' + JSON.stringify(tbodyData))}
-        {console.log('ans: ' + JSON.stringify(saveAddress))}
-        {console.log('rows: ' + JSON.stringify(rows))}
-        {console.log('rows: ' + rows)}
-        {createDates}
       </div> 
       :
      <TableContainer component={Paper}>
-       {console.log('dates: ' + JSON.stringify(dates))}
-       {console.log('google: ' + JSON.stringify(tbodyData))}
-       {console.log('ans: ' + JSON.stringify(saveAddress))}
-       {console.log('rows: ' + JSON.stringify(rows))}
-       {console.log('rows: ' + rows)}
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
            <TableRow>
@@ -96,12 +60,12 @@ export default function BasicTable(tbodyData, saveAddress) {
           </TableHead>
           <TableBody>
           {rows.map((row) => (
-              <TableRow key={row.dates}>
+              <TableRow key={row}>
                 <TableCell component="th" scope="row">
                   {row.dates}
                 </TableCell>
-                <TableCell align="right">{row.saveAddress}</TableCell>
-                <TableCell align="right">{row.tbodyData}</TableCell>
+                <TableCell align="right">{rows.dates.answer}</TableCell>
+                <TableCell align="right">{rows.dates.google}</TableCell>
               </TableRow>
             ))}
           </TableBody>

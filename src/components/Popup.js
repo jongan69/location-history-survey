@@ -4,13 +4,11 @@ import fetchGoogleTimelineData from '../fetch-google-timeline-data';
 import GPlace from './GPlace';
 import image from  './plane.gif';
 import moment from 'moment';
-// import Table from './Table';
 
 let GoogledataLocal = [];
-let tbodyData = [];
+let tbodyData = GoogledataLocal
 const to = new Date();
 const from = moment().subtract(13, 'days').calendar();
-// var GoogledataLocal = []
 
 // API key of the google map
 const GOOGLE_MAP_API_KEY = 'AIzaSyBFAMWOu-6ZKxWkZwC9Q7n0ekfJ8Szc85A';
@@ -34,10 +32,10 @@ const checkGoogleData = (checkData, setData) => {
       fetchGoogleTimelineData(from, to)
         .then(data => {
           console.log('Checking Google Timeline Data', data);
-          let GoogledataLocal = data;
-            if(GoogledataLocal == data ){
-              alert('Youve been to ' + JSON.stringify(GoogledataLocal.items.length) + ' locations in the past 14 days');
-              console.log('Checking Table again', GoogledataLocal);
+          let GoogledataLocal = data.items;
+            if(JSON.stringify(GoogledataLocal) != JSON.stringify([]) ){
+              alert('Youve been to ' + JSON.stringify(GoogledataLocal.length) + ' locations in the past 14 days');
+              console.log('Checking Table', GoogledataLocal);
               setData(true);
               return GoogledataLocal, checkData;                            
             } 
@@ -46,12 +44,12 @@ const checkGoogleData = (checkData, setData) => {
         .catch(error => {
           alert(`Failed to fetch data: ${error}`, 'Make sure youve  logged into timeline before!')
           console.log('no google data ', GoogledataLocal);
-          return GoogledataLocal;     
+          alert('There was a problem with your google time line data, checkdata was: ', checkData);    
         })
       }
 
       else {
-        alert('There was a problem with your google time line data, checkdata was: ', checkData)
+        alert('There was a problem with your google time line data, checkdata was: ', checkData)  
       }
 }
 
@@ -65,7 +63,6 @@ const Popup = () => {
 
   const [checkData, setData] = useState(false);
   const [loadMap, setLoadMap] = useState(false);
-  
   useEffect(() => {
     loadGoogleMapScript(() => {
       setLoadMap(true)
@@ -84,6 +81,9 @@ const Popup = () => {
       <button style={{ marginTop: 5 }} onClick={ () => {
         if(checkData==false){
           checkGoogleData(checkData, setData);
+          let tbodyData = GoogledataLocal
+          console.log('Checking Table again', tbodyData);
+          return tbodyData;
         }
         else {
           alert('There was a problem with your google time line data, checkdata was: ', checkData)
@@ -95,7 +95,7 @@ const Popup = () => {
 
      
      
-      {(!loadMap||!checkData)
+      {(!loadMap||!checkData||JSON.stringify(tbodyData)==JSON.stringify([]))
       ? 
       <div> 
         <p style={styles.text}> 
@@ -105,8 +105,9 @@ const Popup = () => {
       : 
       <div >
         {alert('checkData was true! You have Timeline data so you may take the survey to see what you remember' )}
-        {console.log('check data is ', checkData, ' set data is ', setData)}
-       <GPlace />
+        {console.log('check data is ', checkData)}
+        {console.log('tbodyData is ', tbodyData)}
+       <GPlace tbodyData={tbodyData}/>
        <p>
         This is a React Chrome Extension being built by Blockspaces under grant by USF for proof of concept on contact tracing.
        </p>
