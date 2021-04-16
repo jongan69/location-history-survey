@@ -32,22 +32,31 @@ const useStyles = makeStyles({
 
 
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
 
-const rows1 = [
-  createData('Date 1', 159, 6.0, 24, 4.0),
-  createData('Date 2', 237, 9.0, 37, 4.3),
-  createData('Date 3', 262, 16.0, 24, 6.0),
-  createData('Date 4', 305, 3.7, 67, 4.3),
-  createData('Date 5', 356, 16.0, 49, 3.9),
-];
+
+
+
+// const rows1 = [
+//   createData('Date 1', 159, 6.0, 24, 4.0),
+//   createData('Date 2', 237, 9.0, 37, 4.3),
+//   createData('Date 3', 262, 16.0, 24, 6.0),
+//   createData('Date 4', 305, 3.7, 67, 4.3),
+//   createData('Date 5', 356, 16.0, 49, 3.9),
+// ];
 
 
 export default function BasicTable(rows) {
   // var one = 1;
+  function createData(date, google, answer) {
+    return { date, google, answer };
+  }
 
+  
+    const rows1 = [
+      createData(rows.date, 'google', 'answer'),
+    ]
+
+  
   // function createData(rows) {
   //   return rows;
   // }
@@ -79,12 +88,12 @@ export default function BasicTable(rows) {
           </TableHead>
           <TableBody>
           {rows1.map((row) => (
-              <TableRow key={row.name}>
+              <TableRow key={row.date}>
                 <TableCell component="th" scope="row">
-                  {row.name}
+                  {row.date}
                 </TableCell>
-                <TableCell align="right">Test Result</TableCell>
-                <TableCell align="right">Test Result</TableCell>
+                <TableCell align="right">{row.google}</TableCell>
+                <TableCell align="right">{row.answer}</TableCell>
                 <TableCell align="right">Test Result</TableCell>
               </TableRow>
             ))}

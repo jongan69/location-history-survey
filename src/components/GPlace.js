@@ -159,12 +159,13 @@ const GPlace = (tbodyData) => {
 
 
   function createData( dates, tbodyData, saveAddress ) {
+    alert('You had: ' + saveAddress.length + ' answers, google reprted: '+ tbodyData.length + 'locations')
     let answerAddresses = saveAddress.address;
     let googleAddresses = tbodyData.address;
     var i,n;
     
     
-    // Creates date array of google data
+    // Creates date array of answer data
     n = 0, i = 0;
     while(n <= dates.length, n++){
       saveAddress.forEach(
