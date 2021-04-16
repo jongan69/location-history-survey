@@ -33,9 +33,12 @@ const GPlace = (tbodyData) => {
     const fromDate = new Date(from)
     const toDate = new Date(to)
   // Creates dates Array
+  let id = 0
+
   for (let date = fromDate; date <= toDate; date.setDate(date.getDate() + 1)) {
     let pushDate = moment(date).format('MM/DD/YYYY')
     dates.push(pushDate);
+    id++;
   }
   
   
@@ -193,11 +196,11 @@ const GPlace = (tbodyData) => {
         })
   }
 
-  function createRows(dates, google, answers) {
-    return [dates,{google,answers}];
+  function createRows(dates) {
+      return dates;
   }
 
-  const data = createRows({dates}, {googleAddresses}, {answerAddresses})
+  const data = createRows(dates)
 
 //   var keys = dates;
 //   for(var i = 0; i < keys.length; i++){ 
@@ -297,10 +300,10 @@ const GPlace = (tbodyData) => {
         try{
           if( (JSON.stringify(tbodyData)!=JSON.stringify([])) && (JSON.stringify(saveAddress)!=JSON.stringify([])) ) {
             
-            let data = [createData(dates, tbodyData, saveAddress )];
+            let data = createData(dates, tbodyData, saveAddress);
 
             data.forEach( function TableBuilder (data) {
-              setRows(data)
+              setRows({'date' : data})
             })
             console.log('The rows is ' + JSON.stringify(rows));
             console.log('data is ' + JSON.stringify(data));

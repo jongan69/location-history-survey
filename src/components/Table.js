@@ -32,13 +32,32 @@ const useStyles = makeStyles({
 
 
 
+function createData(name, calories, fat, carbs, protein) {
+  return { name, calories, fat, carbs, protein };
+}
 
+const rows1 = [
+  createData('Date 1', 159, 6.0, 24, 4.0),
+  createData('Date 2', 237, 9.0, 37, 4.3),
+  createData('Date 3', 262, 16.0, 24, 6.0),
+  createData('Date 4', 305, 3.7, 67, 4.3),
+  createData('Date 5', 356, 16.0, 49, 3.9),
+];
 
 
 export default function BasicTable(rows) {
-  var one = 1;
+  // var one = 1;
+
+  // function createData(rows) {
+  //   return rows;
+  // }
+  
+  // const data = createData(rows);
   const classes = useStyles();
-  console.log('rows: ' + JSON.stringify(rows))
+  // console.log('rows: ' + JSON.stringify(rows))
+  // console.log('data: ' + JSON.stringify(data))
+
+
   return (
     <>
       {
@@ -59,14 +78,14 @@ export default function BasicTable(rows) {
             </TableRow>
           </TableHead>
           <TableBody>
-          {rows.map((row) => (
-              <TableRow key={row.date.dates}>
+          {rows1.map((row) => (
+              <TableRow key={row.name}>
                 <TableCell component="th" scope="row">
-                  {row.date.dates}
+                  {row.name}
                 </TableCell>
-                <TableCell align="right">Result</TableCell>
-                <TableCell align="right">Result</TableCell>
-                <TableCell align="right">Result</TableCell>
+                <TableCell align="right">Test Result</TableCell>
+                <TableCell align="right">Test Result</TableCell>
+                <TableCell align="right">Test Result</TableCell>
               </TableRow>
             ))}
           </TableBody>
