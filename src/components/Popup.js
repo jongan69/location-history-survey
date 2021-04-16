@@ -37,7 +37,8 @@ const checkGoogleData = (checkData, setData) => {
               alert('Youve been to ' + JSON.stringify(GoogledataLocal.length) + ' locations in the past 14 days');
               console.log('Checking Table', GoogledataLocal);
               setData(true);
-              return GoogledataLocal, checkData;                            
+              let tbodyData = GoogledataLocal;
+              return tbodyData, GoogledataLocal, checkData;                            
             } 
         })
 
@@ -81,9 +82,7 @@ const Popup = () => {
       <button style={{ marginTop: 5 }} onClick={ () => {
         if(checkData==false){
           checkGoogleData(checkData, setData);
-          let tbodyData = GoogledataLocal
           console.log('Checking Table again', tbodyData);
-          return tbodyData;
         }
         else {
           alert('There was a problem with your google time line data, checkdata was: ', checkData)
