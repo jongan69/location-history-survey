@@ -33,7 +33,6 @@ const checkGoogleData = (checkData, setData, checktbodyData) => {
           console.log('Checking Google Timeline Data', data);
           let GoogledataLocal = data;
             if(JSON.stringify(GoogledataLocal) != JSON.stringify([]) ){
-              alert('Youve been to ' + JSON.stringify(GoogledataLocal.items.length) + ' locations in the past 14 days');
               console.log('Checking Table', GoogledataLocal);
               checktbodyData(GoogledataLocal)
               setData(true);
@@ -107,7 +106,7 @@ const Popup = () => {
     </div> 
       : 
       <div >
-        {alert('checkData was true! You have Timeline data so you may take the survey to see what you remember' )}
+        {alert('We got your Google Timeline Data! You have Timeline data so you may take the survey to see what you remember' )}
         {console.log('check data is ', checkData)}
         {console.log('tbodyData is ', tbodyData)}
         <GPlace tbodyData={tbodyData.items}/>

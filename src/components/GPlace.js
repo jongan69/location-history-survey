@@ -159,68 +159,107 @@ const GPlace = (tbodyData) => {
 
 
   function createData( dates, tbodyData, saveAddress ) {
-    alert('You had: ' + saveAddress.length + ' answers, google reprted: '+ tbodyData.length + 'locations')
+    let locationCount = tbodyData.tbodyData.length
+    alert('You had: ' + saveAddress.length + ' answers, google reprted: '+  locationCount + ' locations')
     let answerAddresses = saveAddress.address;
     let googleAddresses = tbodyData.address;
-    var i,n;
-    
-    
-    // Creates date array of answer data
-    n = 0, i = 0;
-    while(n <= dates.length, n++){
-      saveAddress.forEach(
-        function sort(date,index){
-          let answersDay = [index]
-          let dateDay = dates[n]
-          let add1 = []
-            if(answersDay.date==dateDay){
-              add1.push(answersDay)
-            } else {
-              answerDates.push(date[i],add1);
-            }
-        })
-  }
+    console.log('Dates.length is: ' + dates.length);
 
 
-    // creates date array of google data
-    while(i <= dates.length, i++){
-      tbodyData.forEach(
-        function sort(items,index){
-          let googleDay = items[index]
-          let dateDay = dates[i]
+        // creates date array of google data
+        for(let i = 0; i <= dates.length; i++){
+          console.log('for googleDates');
+          console.log('i is ' + i);
+          console.log('dates is ' + dates.length);
+          console.log('tbodyData is ' + tbodyData.tbodyData.length);
+         
+          tbodyData.tbodyData.forEach( function sort(item,index){
           let add2 = []
-            if(googleDay.date==dateDay){
-              add2.push(googleDay)
+          let googleDay = JSON.stringify(item)
+          console.log('item is ' + googleDay);
+          console.log('index is ' + index);
+
+              console.log('date is ' + googleDay);
+              let dateDay = dates[i]
+              let googleAddress = googleDay.address
+              
+              console.log('gd is ' + googleDay);
+              console.log('ga is ' + googleAddress);
+              console.log('dd is ' + dateDay);
+              console.log( 'googleDay.date is '+ JSON.stringify(googleDay.date) );
+              console.log( 'dayDay.date is '+ JSON.stringify(dateDay) );
+              console.log('Preloop');
+
+                if(JSON.stringify(googleDay)==JSON.stringify(dateDay)){
+                  console.log( 'googleDay.date is '+ JSON.stringify(googleDay.date) );
+                  console.log( 'dayDay.date is '+ JSON.stringify(dateDay) );
+                  add2.push(googleDay.address)
+                } else {
+                  googleDates.push(dates[i], add2)
+                }
+            })
+            console.log('The google dates array is now: ' + googleDates);
+            return googleDates;      
+      }
+
+
+    // Creates date array of answer data
+    for(let n = 0; n <= dates.length; n++){
+      console.log('for answerDates');
+      console.log('n is ' + n);
+      console.log('dates is ' + dates.length);
+
+      saveAddress.forEach( function sort(item, n){
+          let add1 = []
+          let answersDay = item[n]
+          let dateDay = dates[n]
+          let answersAddress = answerDay
+          
+          console.log('ad is ' + answerDay);
+          console.log('aa is ' + answersAddress);
+          console.log('dd is ' + dateDay);
+
+            if(JSON.stringify(answersDay.date)==JSON.stringify(dateDay.date)){
+              add1.push(answersAddress)
             } else {
-              googleDates.push(dates[i], add2)
+              answerDates.push(date[n],add1);
             }
+
         })
+        console.log('The Answer dates array is now: ' + answerDates);
+        return answerDates;
   }
 
-  function createRows(dates) {
-      return dates;
+
+
+
+  function createRows(dates , googleDates, answerDates) {
+      return dates , googleDates, answerDates;
   }
 
-  const data = createRows(dates)
+  const data = createRows(dates, googleDates, answerDates)
 
 //   var keys = dates;
 //   for(var i = 0; i < keys.length; i++){ 
     
 // } 
 
-
-
 // for (let date = fromDate; date <= toDate; date.setDate(date.getDate() + 1)) {
 //   let pushDate = moment(date).format('MM/DD/YYYY')
 //   dates.push(pushDate);
 // }
       // console.log('Current dates: ' + JSON.stringify(dates) + ' Current Data: ' + JSON.stringify(tbodyData) + ' Current Data: ' + JSON.stringify(saveAddress))
-    console.log('The google dates array is ' + JSON.stringify(googleDates));
-    console.log('data is ' + JSON.stringify(data));
-    console.log('The Answer dates array is ' + JSON.stringify(answerDates));
-    console.log('The dates array is ' + JSON.stringify(dates));
+    // Passed in 
+    console.log('Input');
     console.log('The tbody array is ' + JSON.stringify(tbodyData));
     console.log('The saveAddress array is ' + JSON.stringify(saveAddress));
+    console.log('The dates array is ' + JSON.stringify(dates));
+
+    // Output
+    console.log('Output');
+    console.log('The Answer dates array is ' + JSON.stringify(answerDates));
+    console.log('The google dates array is ' + JSON.stringify(googleDates));
+    console.log('data is ' + JSON.stringify(data));
     return data;
   }
 
@@ -303,8 +342,8 @@ const GPlace = (tbodyData) => {
             
             let data = createData(dates, tbodyData, saveAddress);
 
-            data.forEach( function TableBuilder (data) {
-              setRows({'date' : data})
+            data.forEach( function TableBuilder (dates) {
+              setRows({'date' : dates}, {'google': googleDates}, {'answer' : answerDates})
             })
             console.log('The rows is ' + JSON.stringify(rows));
             console.log('data is ' + JSON.stringify(data));
