@@ -53,7 +53,7 @@ export default function BasicTable(rows) {
 
   
     const rows1 = [
-      createData(rows.date, 'google', 'answer'),
+      createData(rows.date, rows.google, rows.answer),
     ]
 
   
