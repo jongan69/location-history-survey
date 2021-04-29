@@ -7,13 +7,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import moment from 'moment';
-
-// let table = { 
-//   'date': dates,
-//   'google': tbodyData,
-//   'answer': saveAddress 
-// }
 
 const useStyles = makeStyles({
   table: {
@@ -22,18 +15,11 @@ const useStyles = makeStyles({
 });
 
 
-
-
 // var dates, tbodyData, saveAddress = []
 
 // const rows = [
 //   createData(tbodyData, saveAddress ),
 // ];
-
-
-
-
-
 
 
 // const rows1 = [
@@ -47,6 +33,8 @@ const useStyles = makeStyles({
 
 export default function BasicTable(rows) {
   // var one = 1;
+  console.log('table stuff: ' + rows.date + ' ' + rows.google + ' ' +  rows.answer)
+  
   function createData(date, google, answer) {
     return { date, google, answer };
   }
@@ -56,15 +44,7 @@ export default function BasicTable(rows) {
       createData(rows.date, rows.google, rows.answer),
     ]
 
-  
-  // function createData(rows) {
-  //   return rows;
-  // }
-  
-  // const data = createData(rows);
   const classes = useStyles();
-  // console.log('rows: ' + JSON.stringify(rows))
-  // console.log('data: ' + JSON.stringify(data))
 
 
   return (

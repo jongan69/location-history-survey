@@ -29,13 +29,19 @@ function fetchGoogleTimelineData(from, to) {
           responses.forEach(response => {
             const kml = new DOMParser().parseFromString(response.data, 'application/xml')
             const gj = toGeoJSON.kml(kml)
+
+            console.log(JSON.stringify(gj))
+
             gj.features.forEach(feature => {
+              
               const timeBegin = moment(feature.properties.timespan.begin).format('MM/DD/YYYY');
               const timeEnd = moment(feature.properties.timespan.end).format('MM/DD/YYYY');
               data.items.push({
                 name: feature.properties.name,
                 address: feature.properties.address,
+                cordinates: feature.properties.cordinates,
                 date: timeEnd,
+
               })
             })
           })
@@ -53,6 +59,7 @@ function fetchGoogleTimelineData(from, to) {
 
           const fullResponse = data.items;
 
+
           function withoutPropVal(ary, propVal){
             var a = [];
             for(var i=0,l=ary.length; i<l; i++){
@@ -67,6 +74,7 @@ function fetchGoogleTimelineData(from, to) {
           data.items = withoutPropVal(data.items, "Driving" );
           
           
+
           function withoutPropVal(ary, propVal){
             var a = [];
             for(var i=0,l=ary.length; i<l; i++){
