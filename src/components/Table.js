@@ -33,17 +33,19 @@ const useStyles = makeStyles({
 
 export default function BasicTable(rows) {
   // var one = 1;
-  console.log('table stuff: ' + rows.date + ' ' + rows.google + ' ' +  rows.answer)
+  console.log('table stuff: ' + rows.date + ' ' + rows.google )
   
+  const rows1 = [
+    createData(rows.dates, rows.tbodydata.tbodydata, rows.saveAddresss),
+  ]
+
+
   function createData(date, google, answer) {
     return { date, google, answer };
   }
 
   
-    const rows1 = [
-      createData(rows.date, rows.google, rows.answer),
-    ]
-
+    
   const classes = useStyles();
 
 
@@ -61,19 +63,22 @@ export default function BasicTable(rows) {
           <TableHead>
            <TableRow>
               <TableCell>Date</TableCell>
-              <TableCell>Answer</TableCell>
-              <TableCell align="right">Google  Timeline</TableCell>
-              <TableCell align="right">Result</TableCell>
+              <TableCell align="right">Google Timeline Answers</TableCell>
+              <TableCell align="right">Your Answers</TableCell>
+              {/* <TableCell align="right">Matches</TableCell>
+                <TableCell align="right">Inncorrect </TableCell>
+              <TableCell align="right">Close (Proximity)</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
           {rows1.map((row) => (
-              <TableRow key={row.date}>
+              <TableRow key={row}>
                 <TableCell component="th" scope="row">
                   {row.date}
                 </TableCell>
                 <TableCell align="right">{row.google}</TableCell>
                 <TableCell align="right">{row.answer}</TableCell>
+
                 <TableCell align="right">Test Result</TableCell>
               </TableRow>
             ))}

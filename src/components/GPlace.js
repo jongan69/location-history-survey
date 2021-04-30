@@ -1,39 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
 import DatePicker, { CalendarContainer } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-// import fetchGoogleTimelineData from '../fetch-google-timeline-data';
 import moment from 'moment';
 import BasicTable from './Table';
-// import diffs from './sort';
 
 
 const GPlace = (tbodyData) => {
 
   // State Variables
   let [saveAddress, setAddress] = useState([]);
-
-
   let [rows, setRows] = useState([]);
-
-
-
 
   const [click, setClick] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [place, setPlace] = useState(null);
   let dates = []
-  let googleDates = []
-  let answerDates = []
+ 
 
   // Variables 
   const placeInputRef = useRef(null);
   var $pull = localStorage.getItem('savedAddress');
   var savedAddress = typeof $pull!='null' ? $pull : [];
-  // let dates = [];
-  var count = !saveAddress.id ? 0 : savedAddress.id++; 
-  // const rows = [
-  //   createData( dates, tbodyData, saveAddress ),
-  // ];
   const to = moment().format('MM/DD/YYYY')
     const from = moment().subtract(13, 'days').calendar()
     const fromDate = new Date(from)
@@ -49,8 +36,6 @@ const GPlace = (tbodyData) => {
 
 // UseEffect runs periodically over component lifecycle
   useEffect(() => {
-    console.log('useEffect is has run: ', count++, ' times');  
-    console.log('Pull is: ', $pull);
     console.log('saveAddress is: ', saveAddress);
     console.log('tbodyData is : ', tbodyData);  
    
@@ -165,84 +150,57 @@ const GPlace = (tbodyData) => {
 
   function createData( dates, tbodyData, saveAddress ) {
     let locationCount = tbodyData.tbodyData.length
-    alert('You had: ' + saveAddress.length + ' answers, google reprted: '+  locationCount + ' locations')
+    alert('You answered: ' + saveAddress.length + ' locations, google reprted: '+  locationCount + ' locations')
     let answerAddresses = saveAddress.address;
     let googleAddresses = tbodyData.address;
+    let googleDates = {}
+    let answerDates = {}
     console.log('Dates.length is: ' + dates.length);
+    console.log('tbody.length is: ' + tbodyData.tbodyData.length);
+  //   var Obj = {            
+  //     dayOne: [],
+  //     dayTwo: [],
+  //     dayThree: [],
+  //     dayFour: [],
+  //     dayFive: [],
+  //     daySix: [],
+  //     daySeven: [],
+  //     dayEight: [],
+  //     dayNine: [],
+  //     dayTen: [],
+  // };
 
+    // try{
 
-    dates.forEach(function (item, index) {
-      let dateDay = item
-      console.log('dates index is ' + index);              
+    //   dates.forEach( function built( item, index){
+    //     let add1 = []
+    //     let date = item
+    //     let dateNum = index
+    //     let answerDate = saveAddress[index].date
+    //     tbodyData.tbodyData.forEach( function sort(item,index){
+    //       let google = item
+    //       let googleDay = google["date"]
+    //       let googleAddress = google["address"]
+
+    //       switch (date) {
+    //         case 0: 
+    //         date === googleDates 
+
+    //         case 1: 
+    //         date != googleDates 
+    //         case 2:
+    //         case 3:
+    //       }
+    //     })
+    //   })
       
-      tbodyData.tbodyData.forEach( function sort(item,index){
-      let add1 = []
-      let google = item
-      let googleDay = google["date"]
-      let googleAddress = google["address"]
-          console.log('tbody index is ' + index);              
-          console.log('google data is ' + google);
-          console.log('gd is ' + googleDay);
-          console.log('ga is ' + googleAddress);
-          console.log('dd is ' + dateDay);
-          console.log( 'googleDay is '+ JSON.stringify(googleDay) );
-          console.log( 'dayDay is '+ JSON.stringify(dateDay) );
-          console.log('Preloop google');
-          
-          if(googleDay === dateDay){
-            add1.push(googleAddress)
-            console.log('test is : ' + JSON.stringify(add1))
-          }
-
-          if(googleDay != dateDay){
-            googleDates.push(add1)
-          }
-        })
+    // } 
+    // catch {
+    //   alert('There was an error generating the table')
+    // }
 
 
-        saveAddress.forEach( function sort(item,index){
-          let add2 = []
-          let answer = item
-          let answerDay = answer["date"];
-          let answerAddress = answer["address"];
-          console.log('answer is ' + answer);
-          console.log('index is ' + index);
-          console.log('date is ' + JSON.stringify(answerDay));
-          console.log('ad is ' + answerDay);
-          console.log('aa is ' + answerAddress);
-          console.log('dd is ' + dateDay);
-          console.log( 'answerDay is '+ JSON.stringify(answerDay) );
-          console.log( 'dayDay is '+ JSON.stringify(dateDay) );
-          console.log('Preloop answer');
-          if(answerDay === dateDay){
-            add2.push(answerAddress)
-          }
-          
-          if(answerDay != dateDay){
-            answerDates.push(add2)
-            console.log( 'add2 is '+ add2 );
-          }
-
-          console.log( 'add2 is '+ add2 );
-          console.log( 'add2 is '+ JSON.stringify(answerDates) );
-              
-        })
-    })
-
-  dates.forEach( function TableBuilder(item, index) {
-    setRows([
-      ...rows,
-        {
-          'date': item, 
-          'google': googleDates[index], 
-          'answer' : answerDates[index] 
-          }
-      ]);
-    })
-
-            
-
-
+    
     // Passed in 
     console.log('Input');
     console.log('The tbody array is ' + JSON.stringify(tbodyData.tbodyData));
@@ -254,14 +212,21 @@ const GPlace = (tbodyData) => {
     console.log('The Answer dates array is ' + JSON.stringify(answerDates));
     console.log('The google dates array is ' + JSON.stringify(googleDates));
     console.log('rows is ' + JSON.stringify(rows));
-    console.log('setrows is ' + JSON.stringify(setRows));
 
-    return { rows };
+    return { dates, tbodyData, saveAddress };
   }
 
 
 
 
+
+
+
+
+
+
+
+  // })
 
 
 
@@ -382,7 +347,7 @@ const GPlace = (tbodyData) => {
       ? 
       <div style={styles.table}> Results will display here </div> 
       : 
-      <div  style={styles.table}>  <BasicTable {...rows} /> </div>
+      <div  style={styles.table}>  <BasicTable {...result} /> </div>
       }
 
     </>
