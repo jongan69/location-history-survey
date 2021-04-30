@@ -102,7 +102,6 @@ const GPlace = (tbodyData) => {
     let dayset = startDate.getDate();
     let monthset = startDate.toLocaleString('default', { month: 'long' });
     let dayanswer = moment(startDate).format('MM/DD/YYYY');
-    alert('Adding Address: '  + dayset + ' of ' + monthset)
     console.log('Adding Address: ' + dayset + ' of ' + monthset);
     try{
       if(place!=null){
@@ -116,7 +115,6 @@ const GPlace = (tbodyData) => {
           ]);
   
         if(saveAddress.items.length<0){
-          alert('savedAddress was null, setting savedAdress to local storage')
           localStorage.setItem('savedAddress', JSON.stringify(saveAddress));
           savedAddress = JSON.parse(localStorage.getItem('savedAddress'));
           return savedAddress;
@@ -134,7 +132,6 @@ const GPlace = (tbodyData) => {
     catch {
       if(place==null) {
         console.log('savedAddress was null so we alert: ', savedAddress); 
-        alert('You have to enter an address first')
         console.log('Sate of saveAddress: ', saveAddress);
         console.log('Local Storage: ', savedAddress); 
       }
@@ -150,57 +147,56 @@ const GPlace = (tbodyData) => {
 
   function createData( dates, tbodyData, saveAddress ) {
     let locationCount = tbodyData.tbodyData.length
-    alert('You answered: ' + saveAddress.length + ' locations, google reprted: '+  locationCount + ' locations')
     let answerAddresses = saveAddress.address;
     let googleAddresses = tbodyData.address;
     let googleDates = {}
     let answerDates = {}
     console.log('Dates.length is: ' + dates.length);
     console.log('tbody.length is: ' + tbodyData.tbodyData.length);
-  //   var Obj = {            
-  //     dayOne: [],
-  //     dayTwo: [],
-  //     dayThree: [],
-  //     dayFour: [],
-  //     dayFive: [],
-  //     daySix: [],
-  //     daySeven: [],
-  //     dayEight: [],
-  //     dayNine: [],
-  //     dayTen: [],
-  // };
+ 
+    let result = []
 
-    // try{
+    dates.forEach( function (item){
+      let dd = item
 
-    //   dates.forEach( function built( item, index){
-    //     let add1 = []
-    //     let date = item
-    //     let dateNum = index
-    //     let answerDate = saveAddress[index].date
-    //     tbodyData.tbodyData.forEach( function sort(item,index){
-    //       let google = item
-    //       let googleDay = google["date"]
-    //       let googleAddress = google["address"]
+      tbodyData.tbodyData.forEach( function (item, index){
+        let gd = item["date"]
 
-    //       switch (date) {
-    //         case 0: 
-    //         date === googleDates 
+        saveAddress.forEach( function (item, index){
+          let sd = saveAddress["date"]
 
-    //         case 1: 
-    //         date != googleDates 
-    //         case 2:
-    //         case 3:
-    //       }
-    //     })
-    //   })
-      
-    // } 
-    // catch {
-    //   alert('There was an error generating the table')
-    // }
+          switch (dd,gd,sd,sa) {
+            
+            case dd === gd && dd === sd:
+              let text = "Both have answers for date";
+              result.push({dates:{dd} , google: {ga}, answer: {sa} })
+              break;
+  
+            case dd === gd && (!sd || sd != dd):
+              result.push({dates:{dd} , google: {ga}, answer: "no answer or empty" })
+              console.log("Google has an answer but user doesnt for date");
+              break;
+  
+            case dd === sd && (!gd || gd != dd):
+              result.push({dates:{dd} , google: "no answer or empty", answer: {sa} })
+              console.log("User has an answer but google doesnt for date");
+              break;
+  
+            case !gd && !sd :
+              result.push({ dates:{dd} , google: "no answer or empty", answer: "no answer or empty" })
+              console.log("Both dont have address for date");
+              break;
+  
+            default:
+              console.log("No data");
+          }
+        })
+      })
+    })
+   
 
+    setRows(result)
 
-    
     // Passed in 
     console.log('Input');
     console.log('The tbody array is ' + JSON.stringify(tbodyData.tbodyData));
@@ -212,8 +208,7 @@ const GPlace = (tbodyData) => {
     console.log('The Answer dates array is ' + JSON.stringify(answerDates));
     console.log('The google dates array is ' + JSON.stringify(googleDates));
     console.log('rows is ' + JSON.stringify(rows));
-
-    return { dates, tbodyData, saveAddress };
+    return result;
   }
 
 
@@ -221,30 +216,7 @@ const GPlace = (tbodyData) => {
 
 
 
-
-
-
-
-
-  // })
-
-
-
-
-
-
-
-
 // Checks for required data, if data present, begin sorting algorithm
-
-  
-
-
-
-
-
-
-
 
 
 
@@ -304,12 +276,9 @@ const GPlace = (tbodyData) => {
             let result = createData(dates, tbodyData, saveAddress);
             
             console.log('The result is ' + JSON.stringify(result));
-            // setRows(result)
-
             console.log('The rows is ' + JSON.stringify(rows));
-            console.log('result is ' + JSON.stringify(result));
             setClick(true);
-            return result;
+            return rows,  result;
           }
 
 
@@ -327,13 +296,12 @@ const GPlace = (tbodyData) => {
 
           
           if((JSON.stringify(tbodyData)===JSON.stringify([]))) {
-            alert('Missing google data, try again in a little while');
             console.log('saveAddress: ' + JSON.stringify(saveAddress));
             console.log('tbodyData: ' + JSON.stringify(tbodyData));
           } 
 
           if((JSON.stringify(saveAddress)===JSON.stringify([]))) {
-            alert('Missing answer data, try answering some locations');
+            console.log('Missing answer data, try answering some locations');
           }
 
         } catch(err) {
@@ -347,7 +315,7 @@ const GPlace = (tbodyData) => {
       ? 
       <div style={styles.table}> Results will display here </div> 
       : 
-      <div  style={styles.table}>  <BasicTable {...result} /> </div>
+      <div  style={styles.table}>  <BasicTable {...rows} /> </div>
       }
 
     </>

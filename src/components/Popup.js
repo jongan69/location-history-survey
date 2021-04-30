@@ -41,14 +41,11 @@ const checkGoogleData = (checkData, setData, checktbodyData) => {
         })
 
         .catch(error => {
-          alert(`Failed to fetch data: ${error}`, 'Make sure youve  logged into timeline before!')
           console.log('no google data ', GoogledataLocal);
-          alert('There was a problem with your google time line data, checkdata was: ', checkData);    
         })
       }
 
       else {
-        alert('There was a problem with your google time line data, checkdata was: ', checkData)  
       }
 }
 
@@ -88,7 +85,6 @@ const Popup = () => {
           checkGoogleData(checkData, setData, checktbodyData);
         }
         else {
-          alert('There was a problem with your google time line data, checkdata was: ', checkData)
         }
       }
         }> 
@@ -106,7 +102,6 @@ const Popup = () => {
     </div> 
       : 
       <div >
-        {alert('We got your Google Timeline Data! You have Timeline data so you may take the survey to see what you remember' )}
         {console.log('check data is ', checkData)}
         {console.log('tbodyData is ', tbodyData)}
         <GPlace tbodyData={tbodyData.items}/>

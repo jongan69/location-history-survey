@@ -33,16 +33,16 @@ const useStyles = makeStyles({
 
 export default function BasicTable(rows) {
   // var one = 1;
-  console.log('table stuff: ' + rows.date + ' ' + rows.google )
+  console.log('table stuff: ' + rows.dates + ' ' + rows.tbodydata )
   
-  const rows1 = [
-    createData(rows.dates, rows.tbodydata.tbodydata, rows.saveAddresss),
-  ]
+  // const rows1 = [
+  //   createData(rows.dates, rows.tbodydata.tbodydata, rows.saveAddresss),
+  // ]
 
 
-  function createData(date, google, answer) {
-    return { date, google, answer };
-  }
+  // function createData(date, google, answer) {
+  //   return { date, google, answer };
+  // }
 
   
     
@@ -71,10 +71,10 @@ export default function BasicTable(rows) {
             </TableRow>
           </TableHead>
           <TableBody>
-          {rows1.map((row) => (
-              <TableRow key={row}>
+          {rows.map((row) => (
+              <TableRow key={row.dates}>
                 <TableCell component="th" scope="row">
-                  {row.date}
+                  {row.dates}
                 </TableCell>
                 <TableCell align="right">{row.google}</TableCell>
                 <TableCell align="right">{row.answer}</TableCell>
