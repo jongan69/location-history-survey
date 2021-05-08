@@ -72,9 +72,9 @@ export default function BasicTable(rows) {
           </TableHead>
           <TableBody>
           {rows.map((row) => (
-              <TableRow key={row.dates}>
+              <TableRow key={row}>
                 <TableCell component="th" scope="row">
-                  {row.dates}
+                  {row}
                 </TableCell>
                 <TableCell align="right">{row.google}</TableCell>
                 <TableCell align="right">{row.answer}</TableCell>

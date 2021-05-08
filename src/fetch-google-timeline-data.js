@@ -30,16 +30,17 @@ function fetchGoogleTimelineData(from, to) {
             const kml = new DOMParser().parseFromString(response.data, 'application/xml')
             const gj = toGeoJSON.kml(kml)
 
-            console.log(JSON.stringify(gj))
+            console.log('The xml DATA IS ' + JSON.stringify(gj))
 
             gj.features.forEach(feature => {
               
               const timeBegin = moment(feature.properties.timespan.begin).format('MM/DD/YYYY');
               const timeEnd = moment(feature.properties.timespan.end).format('MM/DD/YYYY');
+              const cord = JSON.stringify(feature.geometry.coordinates)
               data.items.push({
                 name: feature.properties.name,
                 address: feature.properties.address,
-                cordinates: feature.properties.cordinates,
+                coordinates: cord,
                 date: timeEnd,
 
               })

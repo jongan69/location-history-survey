@@ -157,40 +157,41 @@ const GPlace = (tbodyData) => {
     let result = []
 
     dates.forEach( function (item){
+      console.log("results is "+ JSON.stringify(result));
       let dd = item
-
+      
       tbodyData.tbodyData.forEach( function (item, index){
-        let gd = item["date"]
+        let goog = item
+        let gd = JSON.stringify(goog["date"])
+        let ga = JSON.stringify(goog["address"])
+        let save = saveAddress[index]
+        let sd = JSON.stringify(save["date"])
+        let sa = JSON.stringify(save["address"])
 
-        saveAddress.forEach( function (item, index){
-          let sd = saveAddress["date"]
+          switch (gd,sd,dd) {
 
-          switch (dd,gd,sd,sa) {
-            
-            case dd === gd && dd === sd:
-              let text = "Both have answers for date";
-              result.push({dates:{dd} , google: {ga}, answer: {sa} })
-              break;
-  
-            case dd === gd && (!sd || sd != dd):
-              result.push({dates:{dd} , google: {ga}, answer: "no answer or empty" })
+            case (sd && gd) :
+              console.log("Both have answers for date");
+              result.push({'date': dd, 'google' : ga, 'answer': sa});
+              console.log("results is "+ JSON.stringify(result));
+
+            case (gd) :
               console.log("Google has an answer but user doesnt for date");
-              break;
-  
-            case dd === sd && (!gd || gd != dd):
-              result.push({dates:{dd} , google: "no answer or empty", answer: {sa} })
+              result.push({'date': dd , 'google': ga, 'answer': "no answer or empty" });
+              console.log("results is "+ JSON.stringify(result));
+
+            case (sd) :
               console.log("User has an answer but google doesnt for date");
-              break;
-  
-            case !gd && !sd :
-              result.push({ dates:{dd} , google: "no answer or empty", answer: "no answer or empty" })
-              console.log("Both dont have address for date");
-              break;
-  
+              result.push({ 'date': dd, 'google': "no answer or empty", 'answer' : sa });
+              console.log("results is "+ JSON.stringify(result));
+            
             default:
-              console.log("No data");
+              console.log("Both dont have an address for date");
+              result.push({ 'date': dd, 'google': "no answer or empty", 'answer': "no answer or empty" });
+              console.log("results is "+ JSON.stringify(result));
           }
-        })
+          return result;
+
       })
     })
    
@@ -205,9 +206,7 @@ const GPlace = (tbodyData) => {
 
     // Output
     console.log('Output');
-    console.log('The Answer dates array is ' + JSON.stringify(answerDates));
-    console.log('The google dates array is ' + JSON.stringify(googleDates));
-    console.log('rows is ' + JSON.stringify(rows));
+    console.log('rows is ' + JSON.stringify(result));
     return result;
   }
 
@@ -268,52 +267,39 @@ const GPlace = (tbodyData) => {
       </div>
       }
 
-      <button style={{ padding: "10px" }} onClick={() => {
-          
-        try{
-          if( (JSON.stringify(tbodyData)!=JSON.stringify([])) && (JSON.stringify(saveAddress)!=JSON.stringify([])) ) {
-            
-            let result = createData(dates, tbodyData, saveAddress);
-            
-            console.log('The result is ' + JSON.stringify(result));
-            console.log('The rows is ' + JSON.stringify(rows));
-            setClick(true);
-            return rows,  result;
-          }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          
-          if((JSON.stringify(tbodyData)===JSON.stringify([]))) {
-            console.log('saveAddress: ' + JSON.stringify(saveAddress));
-            console.log('tbodyData: ' + JSON.stringify(tbodyData));
-          } 
-
-          if((JSON.stringify(saveAddress)===JSON.stringify([]))) {
-            console.log('Missing answer data, try answering some locations');
-          }
-
-        } catch(err) {
-          alert(err)
-        }
-      }}> 
-        Grab data and compare
-       </button>
-
+  
     {!click||!tbodyData||!saveAddress||JSON.stringify(rows)==JSON.stringify([])
       ? 
-      <div style={styles.table}> Results will display here </div> 
+      <div style={styles.table}> 
+      <button style={{ padding: "10px" }} onClick={() => {
+          
+          try{
+            if( (JSON.stringify(tbodyData)!=JSON.stringify([])) && (JSON.stringify(saveAddress)!=JSON.stringify([])) ) {
+              
+              let result = createData(dates, tbodyData, saveAddress);
+            
+              console.log('The result is ' + JSON.stringify(result));
+              console.log('The rows is ' + JSON.stringify(rows));
+              setClick(true);
+              return result;
+            }        
+            if((JSON.stringify(tbodyData)===JSON.stringify([]))) {
+              console.log('saveAddress: ' + JSON.stringify(saveAddress));
+              console.log('tbodyData: ' + JSON.stringify(tbodyData));
+            } 
+
+            if((JSON.stringify(saveAddress)===JSON.stringify([]))) {
+              console.log('Missing answer data, try answering some locations');
+            }
+  
+          } catch(err) {
+            alert(err)
+          }
+        }}> 
+          Grab data and compare
+         </button>
+      Results will display here 
+      </div> 
       : 
       <div  style={styles.table}>  <BasicTable {...rows} /> </div>
       }
