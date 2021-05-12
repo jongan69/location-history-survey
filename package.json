@@ -43,7 +43,7 @@
         "is-svg": "^4.2.2",
         "mapbox": "^1.0.0-beta10",
         "moment": "^2.29.1",
-        "postcss": "^8.1.2",
+        "postcss": "^8.2.10",
         "react": "^17.0.1",
         "react-datepicker": "^3.6.0",
         "react-dom": "^17.0.1",
