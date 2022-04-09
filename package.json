@@ -42,7 +42,7 @@
         "hammerjs": "^2.0.8",
         "is-svg": "^4.2.2",
         "mapbox": "^1.0.0-beta10",
-        "moment": "^2.29.1",
+        "moment": "^2.29.2",
         "postcss": "^8.1.2",
         "react": "^17.0.1",
         "react-datepicker": "^3.6.0",
